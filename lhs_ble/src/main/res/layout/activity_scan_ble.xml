@@ -50,6 +50,8 @@
 
     </RelativeLayout>
  <ListView
+     android:divider="#e8e8e8"
+     android:dividerHeight="1dip"
      android:background="#ffffff"
      android:id="@+id/ls_scan"
      android:layout_below="@+id/rl_scan"
