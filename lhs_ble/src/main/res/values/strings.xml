@@ -1,0 +1,54 @@
+<resources>
+    <string name="app_name">Mydemo</string>
+
+    <string name="ble_not_supported">BLE is not supported</string>
+    <string name="label_data">Data:</string>
+    <string name="label_device_address">Device address:</string>
+    <string name="label_state">State:</string>
+    <string name="no_data">No data</string>
+    <string name="connected">Connected</string>
+    <string name="disconnected">Disconnected</string>
+    <string name="title_devices">BLE Device Scan</string>
+    <string name="error_bluetooth_not_supported">Bluetooth not supported.</string>
+
+    <string name="unknown_device">Unknown device</string>
+    <string name="unknown_characteristic">Unknown characteristic</string>
+    <string name="unknown_service">Unknown service</string>
+
+    <!-- Menu items -->
+    <string name="menu_connect">Connect</string>
+    <string name="menu_disconnect">Disconnect</string>
+    <string name="menu_scan">Scan</string>
+    <string name="menu_stop">Stop</string>
+
+
+    - <!-- 蓝牙设置
+  -->
+    <string name="communication_on_or_off">蓝牙开关</string>
+    <string name="communication_paired_device">已配对的设备</string>
+    <string name="communication_available_device">可用设备</string>
+    <string name="communication_device_list">设备列表</string>
+    <string name="communication_search_device">发送数据</string>
+    <string name="communication_device_name">设备名</string>
+    <string name="communication_is_pair">是否配对</string>
+    <string name="communication_mac_address">MAC地址：</string>
+    <string name="communication_address_str">address</string>
+    <string name="communication_select_file">选择文件</string>
+    <string name="communication_send_file1">发送文件：</string>
+    <string name="communication_null_name">null</string>
+    <string name="communication_ensure">确定</string>
+    <string name="communication_cancel">取消</string>
+    <string name="communication_back">返回</string>
+    <string name="communication_set_visible">接收数据</string>
+    <string name="communication_set_visible_time">设置可见时间:</string>
+    <string name="communication_second">秒</string>
+    <string name="exit">退出</string>
+    <string name="manualModel">手动模式</string>
+    <string name="interactionModel">互动模式</string>
+    <string name="enterModel">进入</string>
+    <string name="start">开始</string>
+    <string name="add">+</string>
+    <string name="reduce">-</string>
+    <string name="toTop">↑</string>
+    <string name="toBottom">↓</string>
+</resources>
