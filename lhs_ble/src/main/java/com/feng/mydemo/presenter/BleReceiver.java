@@ -51,7 +51,7 @@ public class BleReceiver extends BroadcastReceiver{
           //  mActivity.displayGattServices(mActivity.getDatas());
 
         } else if (BluetoothLeServiceModel.ACTION_DATA_AVAILABLE.equals(action)) {
-            //Log.d("BleReceiver", action);
+            Log.d("BleReceiver", action);
           //  Toast.makeText(context, intent.getStringExtra(BluetoothLeServiceModel.EXTRA_DATA), Toast.LENGTH_SHORT).show();
           byte[] bytearr=  intent.getByteArrayExtra(BluetoothLeServiceModel.EXTRA_DATA);
           receviedData(bytearr,bytearr.length);

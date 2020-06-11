@@ -2,6 +2,7 @@ package com.hnnk.lsh.ble;
 
 
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -12,12 +13,13 @@ import com.feng.mydemo.activity.BleScanActivity;
 import com.feng.mydemo.activity.BleTestMainActivity;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-
+    static Activity  activity;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         findViewById(R.id.btn_start).setOnClickListener(this);
+        activity=this;
      //   startActivity(new Intent(this, BleTestMainActivity.class));
 
 //        Intent dialogIntent = new Intent(getBaseContext(), BleScanActivity.class);
@@ -27,7 +29,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View view) {
-        BleScanActivity  bleScanActivity=new BleScanActivity(this);
-        bleScanActivity.showBleWindow();
+//        BleScanActivity  bleScanActivity=new BleScanActivity(this);
+//        bleScanActivity.showBleWindow();
+    onStartBlueTooth(1);
     }
+    public static void onStartBlueTooth(int isStart) {
+        BleScanActivity  bleScanActivity=new BleScanActivity(activity);
+        bleScanActivity.show();
+    }
+
 }

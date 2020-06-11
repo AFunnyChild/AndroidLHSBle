@@ -21,6 +21,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -343,7 +344,10 @@ public class BleScanActivity extends Dialog implements View.OnClickListener, Ada
     @Override
     public void onDetachedFromWindow() {
         super.onDetachedFromWindow();
+
         scanLeDevice(false);
+
         mLeDeviceListAdapter.clear();
+
     }
 }
