@@ -113,7 +113,7 @@ public class DeviceControlActivity extends Activity implements View.OnClickListe
     @Override
     protected void onResume() {
         super.onResume();
-        mBleReceiver = new BleReceiver(this);
+        mBleReceiver = BleReceiver.getInstance();
         registerReceiver(mBleReceiver, makeGattUpdateIntentFilter());
         if (mBluetoothLeService != null) {
             final boolean result = mBluetoothLeService.connect(mDeviceAddress);
@@ -164,7 +164,7 @@ public class DeviceControlActivity extends Activity implements View.OnClickListe
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                //  ddmConnectionState.setText(resourceId);
+                // ddmConnectionState.setText(resourceId);
             }
         });
     }
@@ -221,11 +221,12 @@ public class DeviceControlActivity extends Activity implements View.OnClickListe
                 gattCharacteristicGroupData.add(currentCharaData);
                 uuid = gattCharacteristic.getUuid().toString();
                 Log.d("DeviceControlActivity", uuid);
-                if (uuid.contains("ffe1")) {
+                if (uuid.contains("6e400003")) {
                     Log.e("console", "2gatt Characteristic: " + uuid);
                     mBluetoothLeService.setCharacteristicNotification(gattCharacteristic, true);
                     mNotifyCharacteristic = mBluetoothLeService.getBluetoothGattCharacteristic();
-//                    mBluetoothLeService.readCharacteristic(gattCharacteristic);
+                    Log.e("console", "2gatt Characteristic: " + mNotifyCharacteristic.describeContents());
+                   mBluetoothLeService.readCharacteristic(gattCharacteristic);
                 }
 
             }
@@ -259,7 +260,9 @@ public class DeviceControlActivity extends Activity implements View.OnClickListe
         //                Toast.makeText(DeviceControlActivity.this,""+b,Toast.LENGTH_SHORT).show();
         //mNotifyCharacteristic.setValue(getHexBytes(s));
         try{
-            mNotifyCharacteristic.setValue(s.getBytes());
+            byte[] ss=new byte[1];
+            ss[0]=7;
+            mNotifyCharacteristic.setValue(ss);
             mBluetoothLeService.writeCharacteristic(mNotifyCharacteristic);
         }catch (Exception e){
             System.out.println("null connect"+e.getStackTrace());

@@ -12,15 +12,19 @@ import android.bluetooth.BluetoothManager;
 import android.bluetooth.BluetoothProfile;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.feng.mydemo.R;
 import com.feng.mydemo.bean.BleConstant;
 import com.feng.mydemo.bean.SampleGattAttributes;
+import com.feng.mydemo.presenter.BleReceiver;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
@@ -81,13 +85,12 @@ public class BluetoothLeServiceModel extends Service {
                 List<BluetoothGattCharacteristic> characteristics = service.getCharacteristics();
                 for (BluetoothGattCharacteristic characteristic : characteristics) {
                     Log.d("onServicesDiscovered", characteristic.getUuid().toString());
-
-
                 }
             }
 
             if (status == BluetoothGatt.GATT_SUCCESS) {
                 broadcastUpdate(ACTION_GATT_SERVICES_DISCOVERED);
+                displayGattServices(getSupportedGattServices());
             } else {
             }
         }
@@ -102,7 +105,8 @@ public class BluetoothLeServiceModel extends Service {
         public void onCharacteristicRead(BluetoothGatt gatt,
                                          BluetoothGattCharacteristic characteristic,
                                          int status) {
-            Toast.makeText(BluetoothLeServiceModel.this, "读取到数据", Toast.LENGTH_SHORT).show();
+         //   Log.d(TAG, "onCharacteristicRead: "+"读取到数据");
+            //Toast.makeText(BluetoothLeServiceModel.this, "读取到数据", Toast.LENGTH_SHORT).show();
             if (status == BluetoothGatt.GATT_SUCCESS) {
                 broadcastUpdate(ACTION_DATA_AVAILABLE, characteristic);
             }
@@ -114,6 +118,10 @@ public class BluetoothLeServiceModel extends Service {
             broadcastUpdate(ACTION_DATA_AVAILABLE, characteristic);
         }
     };
+    private String mDeviceAddress;
+    private String mDeviceName;
+    private BleReceiver mBleReceiver;
+
     public void writeCharacteristic(BluetoothGattCharacteristic paramBluetoothGattCharacteristic)
     {
         if ((this.mBluetoothAdapter == null) || (this.mBluetoothGatt == null))
@@ -146,18 +154,11 @@ public class BluetoothLeServiceModel extends Service {
                 format = BluetoothGattCharacteristic.FORMAT_UINT8;
             }
             //1为整数值的偏移量
-            final int heartRate = characteristic.getIntValue(format, 1);
-            Log.d(TAG, String.format("Received heart rate: %d", heartRate));
-            intent.putExtra(EXTRA_DATA, String.valueOf(heartRate));
-          //  Toast.makeText(this, "heartRate:" + heartRate, Toast.LENGTH_SHORT).show();
-        } else {
-            // 对于所有配置文件，写入格式为十六进制的数据。
-            final byte[] data = characteristic.getValue();
-           // String s = bytes2HexString(data);
-            String s=new String(data);
-            intent.putExtra(EXTRA_DATA,  s);
-      //   Toast.makeText(this, "heartRate:" + s, Toast.LENGTH_SHORT).show();
 
+//            final int heartRate = characteristic.getIntValue(format, 1);
+          //  Log.d(TAG, bytes2HexString(characteristic.getValue()));
+            intent.putExtra(EXTRA_DATA,characteristic.getValue());
+          //  Toast.makeText(this, "heartRate:" + heartRate, Toast.LENGTH_SHORT).show();
         }
         sendBroadcast(intent);
     }
@@ -299,6 +300,7 @@ public class BluetoothLeServiceModel extends Service {
             Log.w(TAG, "BluetoothAdapter not initialized");
             return;
         }
+        Log.w(TAG, "BluetoothAdapter  initialized");
         mBluetoothGatt.setCharacteristicNotification(characteristic, enabled);
 
         // This is specific to Heart Rate Measurement.
@@ -324,7 +326,13 @@ public class BluetoothLeServiceModel extends Service {
 
     public BluetoothGattCharacteristic getBluetoothGattCharacteristic()
     {
+        Log.d(TAG, "getBluetoothGattCharacteristic: =="+(mBluetoothGatt==null));
         return this.mBluetoothGatt.getService(UUID.fromString(BleConstant.service)).getCharacteristic(UUID.fromString(BleConstant.Characteristic1a));
+    }
+    public BluetoothGattCharacteristic getWriteCharacteristic()
+    {
+        Log.d(TAG, "getBluetoothGattCharacteristic: =="+(mBluetoothGatt==null));
+        return this.mBluetoothGatt.getService(UUID.fromString(BleConstant.service)).getCharacteristic(UUID.fromString(BleConstant.WriteCharacteristic1a));
     }
 
     /**
@@ -342,6 +350,117 @@ public class BluetoothLeServiceModel extends Service {
         }
         return ret;
     }
+    public static final String EXTRAS_DEVICE_NAME = "DEVICE_NAME";
+    public static final String EXTRAS_DEVICE_ADDRESS = "DEVICE_ADDRESS";
+    @Override
+    public void onStart(Intent intent, int startId) {
+        super.onStart(intent, startId);
+
+        mDeviceAddress = intent.getStringExtra(EXTRAS_DEVICE_ADDRESS);
+        mDeviceName = intent.getStringExtra(EXTRAS_DEVICE_NAME);
+        if (!initialize()) {
+            Toast.makeText(this, "UnSupport "+"Bluetooth", Toast.LENGTH_SHORT).show();
+        }
+        mBleReceiver = new BleReceiver();
+        // 成功启动初始化后自动连接到设备。
+        boolean connect = connect(mDeviceAddress);
+        if (connect==false){
+            Toast.makeText(this, "UnConnect to"+mDeviceName, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        registerReceiver(mBleReceiver, makeGattUpdateIntentFilter());
+ //       mSupportedGattServices = mBluetoothLeService.getSupportedGattServices();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "onDestroy: service");
+        unregisterReceiver(mBleReceiver);
+        close();
+    }
+    private IntentFilter makeGattUpdateIntentFilter() {
+
+        final IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(BluetoothLeServiceModel.ACTION_GATT_CONNECTED);
+        intentFilter.addAction(BluetoothLeServiceModel.ACTION_GATT_DISCONNECTED);
+        intentFilter.addAction(BluetoothLeServiceModel.ACTION_GATT_SERVICES_DISCOVERED);
+        intentFilter.addAction(BluetoothLeServiceModel.ACTION_DATA_AVAILABLE);
+
+        return intentFilter;
+        // return BleUtils.makeGattUpdateIntentFilter();
+    }
+    ArrayList<String>  mUDs=new ArrayList<>();
+
+    private ArrayList<ArrayList<BluetoothGattCharacteristic>> mGattCharacteristics =
+            new ArrayList<ArrayList<BluetoothGattCharacteristic>>();
+    private boolean mConnected = false;
+    private final String LIST_NAME = "NAME";
+    private final String LIST_UUID = "UUID";
+    private BluetoothGattCharacteristic mNotifyCharacteristic;
+    private BluetoothGattCharacteristic mWriteCharacteristic;
+
+    public void displayGattServices(List<BluetoothGattService> gattServices) {
+        if (gattServices == null) return;
+        String uuid = null;
+        String unknownServiceString = getResources().getString(R.string.unknown_service);
+        String unknownCharaString = getResources().getString(R.string.unknown_characteristic);
+        ArrayList<HashMap<String, String>> gattServiceData = new ArrayList<HashMap<String, String>>();
+        ArrayList<ArrayList<HashMap<String, String>>> gattCharacteristicData
+                = new ArrayList<ArrayList<HashMap<String, String>>>();
+        mGattCharacteristics = new ArrayList<ArrayList<BluetoothGattCharacteristic>>();
+        for (BluetoothGattService gattService : gattServices) {
+            HashMap<String, String> currentServiceData = new HashMap<String, String>();
+            uuid = gattService.getUuid().toString();
+            currentServiceData.put(
+                    LIST_NAME, SampleGattAttributes.lookup(uuid, unknownServiceString));
+            currentServiceData.put(LIST_UUID, uuid);
+            gattServiceData.add(currentServiceData);
+            ArrayList<HashMap<String, String>> gattCharacteristicGroupData =
+                    new ArrayList<HashMap<String, String>>();
+            List<BluetoothGattCharacteristic> gattCharacteristics =
+                    gattService.getCharacteristics();
+            ArrayList<BluetoothGattCharacteristic> charas =
+                    new ArrayList<BluetoothGattCharacteristic>();
+            for (BluetoothGattCharacteristic gattCharacteristic : gattCharacteristics) {
+                mUDs.add(gattCharacteristic.getUuid().toString().substring(4,7));
+                Log.d("DeviceControlActivity", gattCharacteristic.getUuid().toString().substring(4, 7));
+                charas.add(gattCharacteristic);
+                HashMap<String, String> currentCharaData = new HashMap<String, String>();
+                uuid = gattCharacteristic.getUuid().toString();
+                currentCharaData.put(
+                        LIST_NAME, SampleGattAttributes.lookup(uuid, unknownCharaString));
+                currentCharaData.put(LIST_UUID, uuid);
+                gattCharacteristicGroupData.add(currentCharaData);
+                uuid = gattCharacteristic.getUuid().toString();
+                Log.d("DeviceControlActivity", uuid);
+                if (uuid.contains("6e400003")) {
+                    Log.e("console", "2gatt Characteristic: " + uuid);
+                   setCharacteristicNotification(gattCharacteristic, true);
+                    mNotifyCharacteristic = getBluetoothGattCharacteristic();
+                    Log.e("console", "2gatt Characteristic: " + mNotifyCharacteristic.describeContents());
+                  readCharacteristic(gattCharacteristic);
+                }   if (uuid.contains("6e400002")) {
+                    Log.e("console", "2gatt Characteristic: write" + uuid);
+                    mWriteCharacteristic = getWriteCharacteristic();
+
+                }
+
+            }
+            mGattCharacteristics.add(charas);
+            gattCharacteristicData.add(gattCharacteristicGroupData);
+        }
 
 
+    }
+      public  void  writeInt(int value){
+        if (mWriteCharacteristic==null){
+            return;
+        }
+        byte[]  writeByte=new byte[1];
+        writeByte[0]=(byte)value;
+        mWriteCharacteristic.setValue(writeByte);
+        writeCharacteristic(mWriteCharacteristic);
+      }
 }

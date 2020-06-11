@@ -15,8 +15,9 @@ public class BleConstant {
 
 
 
-    public static final String  service="0000ffe0-0000-1000-8000-00805f9b34fb";
-    public static final String  Characteristic1a="0000ffe1-0000-1000-8000-00805f9b34fb";
+    public static final String  service="6e400001-b5a3-f393-e0a9-e50e24dcca9e";
+    public static final String  Characteristic1a="6e400003-b5a3-f393-e0a9-e50e24dcca9e";
+    public static final String  WriteCharacteristic1a="6e400002-b5a3-f393-e0a9-e50e24dcca9e";
 
 
 

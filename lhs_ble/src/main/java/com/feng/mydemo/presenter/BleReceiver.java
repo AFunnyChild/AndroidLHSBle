@@ -1,5 +1,6 @@
 package com.feng.mydemo.presenter;
 
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -8,6 +9,7 @@ import android.widget.Toast;
 
 import com.feng.mydemo.Model.BluetoothLeServiceModel;
 import com.feng.mydemo.R;
+import com.feng.mydemo.interf.IBleState;
 import com.feng.mydemo.view.DeviceControlActivity;
 
 /**
@@ -16,9 +18,17 @@ import com.feng.mydemo.view.DeviceControlActivity;
  * @desc ${决定view显示什么界面}
  */
 public class BleReceiver extends BroadcastReceiver{
-    DeviceControlActivity mActivity;
-
-    public BleReceiver(DeviceControlActivity activity) {
+    IBleState mActivity;
+    static BleReceiver  mBleReceiver;
+    public BleReceiver() {
+    }
+   public static BleReceiver  getInstance(){
+        if (mBleReceiver==null){
+            mBleReceiver=new BleReceiver();
+        }
+        return mBleReceiver;
+   };
+    public BleReceiver(IBleState activity) {
         mActivity = activity;
     }
     @Override
@@ -26,22 +36,27 @@ public class BleReceiver extends BroadcastReceiver{
         final String action = intent.getAction();
 
         if (BluetoothLeServiceModel.ACTION_GATT_CONNECTED.equals(action)) {
-            mActivity.setConnected(true);
-            mActivity.updateConnectionState(R.string.connected);
-            mActivity.invalidateOptionsMenu();
+            if (mActivity!=null)
+           mActivity.setConnected(true);
+//            mActivity.updateConnectionState(R.string.connected);
+//            mActivity.invalidateOptionsMenu();
         } else if (BluetoothLeServiceModel.ACTION_GATT_DISCONNECTED.equals(action)) {
-            mActivity.setConnected(false);
-            mActivity.updateConnectionState(R.string.disconnected);
-            mActivity.invalidateOptionsMenu();
-            mActivity.clearUI();
+            if (mActivity!=null)
+           mActivity.setConnected(false);
+//            mActivity.updateConnectionState(R.string.disconnected);
+//            mActivity.invalidateOptionsMenu();
+//            mActivity.clearUI();
         } else if (BluetoothLeServiceModel.ACTION_GATT_SERVICES_DISCOVERED.equals(action)) {
             // Show all the supported services and characteristics on the user interface.
-            mActivity.displayGattServices(mActivity.getDatas());
+          //  mActivity.displayGattServices(mActivity.getDatas());
 
         } else if (BluetoothLeServiceModel.ACTION_DATA_AVAILABLE.equals(action)) {
-            Log.d("BleReceiver", action);
-            Toast.makeText(context, intent.getStringExtra(BluetoothLeServiceModel.EXTRA_DATA), Toast.LENGTH_SHORT).show();
-            mActivity.displayData(intent.getStringExtra(BluetoothLeServiceModel.EXTRA_DATA));
+            //Log.d("BleReceiver", action);
+          //  Toast.makeText(context, intent.getStringExtra(BluetoothLeServiceModel.EXTRA_DATA), Toast.LENGTH_SHORT).show();
+          byte[] bytearr=  intent.getByteArrayExtra(BluetoothLeServiceModel.EXTRA_DATA);
+          receviedData(bytearr,bytearr.length);
         }
     }
+
+    public static native void   receviedData(byte[] data,int len);
 }

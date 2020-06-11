@@ -3,18 +3,25 @@ package com.feng.mydemo.activity;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Dialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Rect;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+
+import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+
+import android.util.DisplayMetrics;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,6 +36,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.feng.mydemo.Model.BluetoothLeServiceModel;
 import com.feng.mydemo.R;
 import com.feng.mydemo.view.DeviceControlActivity;
 
@@ -40,7 +48,7 @@ import java.util.ArrayList;
  * @desc ${TODD}
  */
 @SuppressLint("NewApi")
-public class BleScanActivity extends Activity implements View.OnClickListener, AdapterView.OnItemClickListener {
+public class BleScanActivity extends Dialog implements View.OnClickListener, AdapterView.OnItemClickListener {
     private LeDeviceListAdapter mLeDeviceListAdapter;
     private BluetoothAdapter mBluetoothAdapter;
     private boolean mScanning;
@@ -52,7 +60,25 @@ public class BleScanActivity extends Activity implements View.OnClickListener, A
     private ListView mListView;
     private TextView mBtnScan;
     private ProgressBar mPbScan;
+   public Context mContext;
+    public BleScanActivity(@NonNull Context context) {
+        super(context);
+        this.mContext=context;
+    }
+   public void showBleWindow(){
+        show();
+       WindowManager wm = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
+       DisplayMetrics dm = new DisplayMetrics();
+       wm.getDefaultDisplay().getMetrics(dm);
 
+       Window window = getWindow();
+       WindowManager.LayoutParams params = window.getAttributes();
+       params .width = dm.widthPixels*2/3;
+       params .height =dm.heightPixels*2/3;
+       params.gravity = Gravity.CENTER;
+       window.setAttributes(params);
+
+   }
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,23 +94,28 @@ public class BleScanActivity extends Activity implements View.OnClickListener, A
         mBtnScan.setOnClickListener(this);
         mListView.setOnItemClickListener(this);
         mHandler = new Handler();
-        // 检查当前手机是否支持ble 蓝牙,如果不支持退出程序
-        if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
-            Toast.makeText(this, R.string.ble_not_supported, Toast.LENGTH_SHORT).show();
-            finish();
-        }
+//        // 检查当前手机是否支持ble 蓝牙,如果不支持退出程序
+//        if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
+//            Toast.makeText(this, R.string.ble_not_supported, Toast.LENGTH_SHORT).show();
+//            finish();
+//        }
         if(Build.VERSION.SDK_INT>=23){
             setPermission();
         }
         // 初始化 Bluetooth adapter, 通过蓝牙管理器得到一个参考蓝牙适配器(API必须在以上android4.3或以上和版本)
-        final BluetoothManager bluetoothManager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
+        final BluetoothManager bluetoothManager = (BluetoothManager) mContext.getSystemService(Context.BLUETOOTH_SERVICE);
         mBluetoothAdapter = bluetoothManager.getAdapter();
         // 检查设备上是否支持蓝牙
         if (mBluetoothAdapter == null) {
-            Toast.makeText(this, R.string.error_bluetooth_not_supported, Toast.LENGTH_SHORT).show();
-            finish();
+            Toast.makeText(mContext, R.string.error_bluetooth_not_supported, Toast.LENGTH_SHORT).show();
+
             return;
         }
+        // 初始化蓝牙列表adapter
+        mLeDeviceListAdapter = new LeDeviceListAdapter();
+        mListView.setAdapter(mLeDeviceListAdapter);
+        // setListAdapter(mLeDeviceListAdapter);
+        scanLeDevice(true);
     }
 
     //    @Override
@@ -113,40 +144,9 @@ public class BleScanActivity extends Activity implements View.OnClickListener, A
 //        }
         return true;
     }
-    @Override
-    protected void onResume() {
-        super.onResume();
-        // 为了确保设备上蓝牙能使用, 如果当前蓝牙设备没启用,弹出对话框向用户要求授予权限来启用
-        if (!mBluetoothAdapter.isEnabled()) {
-            if (!mBluetoothAdapter.isEnabled()) {
-                Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-                startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
-            }
-        }
 
-        // 初始化蓝牙列表adapter
-        mLeDeviceListAdapter = new LeDeviceListAdapter();
-        mListView.setAdapter(mLeDeviceListAdapter);
-        // setListAdapter(mLeDeviceListAdapter);
-        scanLeDevice(true);
-    }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        // 用户关闭蓝牙会触发此方法
-        if (requestCode == REQUEST_ENABLE_BT && resultCode == Activity.RESULT_CANCELED) {
-            finish();
-            return;
-        }
-        super.onActivityResult(requestCode, resultCode, data);
-    }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        scanLeDevice(false);
-        mLeDeviceListAdapter.clear();
-    }
 
 //    @Override
 //    protected void onListItemClick(ListView l, View v, int position, long id) {
@@ -212,14 +212,16 @@ public class BleScanActivity extends Activity implements View.OnClickListener, A
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         final BluetoothDevice device = mLeDeviceListAdapter.getDevice(position);
         if (device == null) return;
-        final Intent intent = new Intent(this, DeviceControlActivity.class);
+        final Intent intent = new Intent(mContext, BluetoothLeServiceModel.class);
         intent.putExtra(DeviceControlActivity.EXTRAS_DEVICE_NAME, device.getName());
         intent.putExtra(DeviceControlActivity.EXTRAS_DEVICE_ADDRESS, device.getAddress());
+         mContext.startService(intent);
+         BleScanActivity.this.dismiss();
         if (mScanning) {
             mBluetoothAdapter.stopLeScan(mLeScanCallback);
             mScanning = false;
         }
-        startActivity(intent);
+       // startActivity(intent);
     }
 
     // 蓝牙设备列表适配器
@@ -292,28 +294,32 @@ public class BleScanActivity extends Activity implements View.OnClickListener, A
 
         @Override
         public void onLeScan(final BluetoothDevice device, int rssi, byte[] scanRecord) {
-            runOnUiThread(new Runnable() {
+
+            new Handler(mContext.getMainLooper()).post(new Runnable() {
                 @Override
                 public void run() {
+                    // 在这里执行你要想的操作 比如直接在这里更新ui或者调用回调在 在回调中更新ui
                     mLeDeviceListAdapter.addDevice(device);
                     mLeDeviceListAdapter.notifyDataSetChanged();
                 }
             });
+
+
         }
     };
 
     //android6.0以上启用
     private void setPermission() {
         //判断是否有权限
-        if (ContextCompat.checkSelfPermission(this,
+        if (ContextCompat.checkSelfPermission(mContext,
                 Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             //请求权限
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
+            ActivityCompat.requestPermissions((Activity) mContext, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
                     MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION);
             //判断是否需要 向用户解释，为什么要申请该权限
-            if(ActivityCompat.shouldShowRequestPermissionRationale(this,
+            if(ActivityCompat.shouldShowRequestPermissionRationale((Activity) mContext,
                     Manifest.permission.READ_CONTACTS)) {
-                Toast.makeText(this, "shouldShowRequestPermissionRationale", Toast.LENGTH_SHORT).show();
+              //  Toast.makeText(mContext, "shouldShowRequestPermissionRationale", Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -332,5 +338,12 @@ public class BleScanActivity extends Activity implements View.OnClickListener, A
     static class ViewHolder {
         TextView deviceName;
         TextView deviceAddress;
+    }
+
+    @Override
+    public void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        scanLeDevice(false);
+        mLeDeviceListAdapter.clear();
     }
 }
