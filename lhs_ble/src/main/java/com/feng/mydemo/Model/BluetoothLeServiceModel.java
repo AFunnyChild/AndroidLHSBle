@@ -352,10 +352,11 @@ public class BluetoothLeServiceModel extends Service {
     }
     public static final String EXTRAS_DEVICE_NAME = "DEVICE_NAME";
     public static final String EXTRAS_DEVICE_ADDRESS = "DEVICE_ADDRESS";
+    public static BluetoothLeServiceModel  bluetoothLeServiceModel;
     @Override
     public void onStart(Intent intent, int startId) {
         super.onStart(intent, startId);
-
+        bluetoothLeServiceModel=this;
         mDeviceAddress = intent.getStringExtra(EXTRAS_DEVICE_ADDRESS);
         mDeviceName = intent.getStringExtra(EXTRAS_DEVICE_NAME);
         if (!initialize()) {
@@ -399,7 +400,7 @@ public class BluetoothLeServiceModel extends Service {
     private final String LIST_NAME = "NAME";
     private final String LIST_UUID = "UUID";
     private BluetoothGattCharacteristic mNotifyCharacteristic;
-    private BluetoothGattCharacteristic mWriteCharacteristic;
+    private static BluetoothGattCharacteristic mWriteCharacteristic;
 
     public void displayGattServices(List<BluetoothGattService> gattServices) {
         if (gattServices == null) return;
@@ -454,13 +455,16 @@ public class BluetoothLeServiceModel extends Service {
 
 
     }
-      public  void  writeInt(int value){
+      public static   void  writeInt(int value){
         if (mWriteCharacteristic==null){
             return;
         }
         byte[]  writeByte=new byte[1];
         writeByte[0]=(byte)value;
         mWriteCharacteristic.setValue(writeByte);
-        writeCharacteristic(mWriteCharacteristic);
+        if (bluetoothLeServiceModel!=null){
+            bluetoothLeServiceModel.writeCharacteristic(mWriteCharacteristic);
+        }
+
       }
 }
