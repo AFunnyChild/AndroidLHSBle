@@ -63,7 +63,8 @@ public class BluetoothLeServiceModel extends Service {
             if (newState == BluetoothProfile.STATE_CONNECTED) {
                 intentAction = ACTION_GATT_CONNECTED;
                 mConnectionState = STATE_CONNECTED;
-                broadcastUpdate(intentAction);
+                onConnectStateChange(1);
+               broadcastUpdate(intentAction);
                 Log.i(TAG, "Connected to GATT server.");
                 // Attempts to discover services after successful connection.
                 Log.i(TAG, "Attempting to start service discovery:" +
@@ -72,6 +73,7 @@ public class BluetoothLeServiceModel extends Service {
             } else if (newState == BluetoothProfile.STATE_DISCONNECTED) {
                 intentAction = ACTION_GATT_DISCONNECTED;
                 mConnectionState = STATE_DISCONNECTED;
+                onConnectStateChange(0);
                 Log.i(TAG, "Disconnected from GATT server.");
                 broadcastUpdate(intentAction);
             }
@@ -157,10 +159,12 @@ public class BluetoothLeServiceModel extends Service {
 
 //            final int heartRate = characteristic.getIntValue(format, 1);
           //  Log.d(TAG, bytes2HexString(characteristic.getValue()));
-            intent.putExtra(EXTRA_DATA,characteristic.getValue());
+            byte[] bytes = characteristic.getValue();
+            receviedData(bytes,bytes.length);
+        //    intent.putExtra(EXTRA_DATA,characteristic.getValue());
           //  Toast.makeText(this, "heartRate:" + heartRate, Toast.LENGTH_SHORT).show();
         }
-        sendBroadcast(intent);
+      //  sendBroadcast(intent);
     }
 
     public class LocalBinder extends Binder {
@@ -467,4 +471,6 @@ public class BluetoothLeServiceModel extends Service {
         }
 
       }
+    public static native void   receviedData(byte[] data,int len);
+    public static native void   onConnectStateChange(int state);
 }

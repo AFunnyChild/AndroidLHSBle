@@ -37,14 +37,14 @@ public class BleReceiver extends BroadcastReceiver{
         final String action = intent.getAction();
 
         if (BluetoothLeServiceModel.ACTION_GATT_CONNECTED.equals(action)) {
-            onConnectStateChange(1);
+           // onConnectStateChange(1);
             is_connect=true;
             if (mActivity!=null)
            mActivity.setConnected(true);
 //            mActivity.updateConnectionState(R.string.connected);
 //            mActivity.invalidateOptionsMenu();
         } else if (BluetoothLeServiceModel.ACTION_GATT_DISCONNECTED.equals(action)) {
-            onConnectStateChange(0);
+          //  onConnectStateChange(0);
             is_connect=false;
             if (mActivity!=null)
            mActivity.setConnected(false);
@@ -58,14 +58,14 @@ public class BleReceiver extends BroadcastReceiver{
         } else if (BluetoothLeServiceModel.ACTION_DATA_AVAILABLE.equals(action)) {
           //  Log.d("BleReceiver", action);
           //  Toast.makeText(context, intent.getStringExtra(BluetoothLeServiceModel.EXTRA_DATA), Toast.LENGTH_SHORT).show();
-          byte[] bytearr=  intent.getByteArrayExtra(BluetoothLeServiceModel.EXTRA_DATA);
-
-               receviedData(bytearr,bytearr.length);
+//          byte[] bytearr=  intent.getByteArrayExtra(BluetoothLeServiceModel.EXTRA_DATA);
+//
+//               receviedData(bytearr,bytearr.length);
 
 
         }
     }
 
-    public static native void   receviedData(byte[] data,int len);
-    public static native void   onConnectStateChange(int state);
+//    public static native void   receviedData(byte[] data,int len);
+//    public static native void   onConnectStateChange(int state);
 }
