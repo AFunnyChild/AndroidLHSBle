@@ -112,6 +112,11 @@ public class BleScanActivity extends Dialog implements View.OnClickListener, Ada
 
             return;
         }
+        if (!mBluetoothAdapter.isEnabled()) {
+            //若没打开则打开蓝牙
+            mBluetoothAdapter.enable();
+
+        }
         // 初始化蓝牙列表adapter
         mLeDeviceListAdapter = new LeDeviceListAdapter();
         mListView.setAdapter(mLeDeviceListAdapter);
@@ -214,8 +219,8 @@ public class BleScanActivity extends Dialog implements View.OnClickListener, Ada
         final BluetoothDevice device = mLeDeviceListAdapter.getDevice(position);
         if (device == null) return;
         final Intent intent = new Intent(mContext, BluetoothLeServiceModel.class);
-        intent.putExtra(DeviceControlActivity.EXTRAS_DEVICE_NAME, device.getName());
-        intent.putExtra(DeviceControlActivity.EXTRAS_DEVICE_ADDRESS, device.getAddress());
+        intent.putExtra(BluetoothLeServiceModel.EXTRAS_DEVICE_NAME, device.getName());
+        intent.putExtra(BluetoothLeServiceModel.EXTRAS_DEVICE_ADDRESS, device.getAddress());
          mContext.startService(intent);
          BleScanActivity.this.dismiss();
         if (mScanning) {
