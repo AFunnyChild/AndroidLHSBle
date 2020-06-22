@@ -74,8 +74,12 @@ public class BleScanActivity extends Dialog implements View.OnClickListener, Ada
 
        Window window = getWindow();
        WindowManager.LayoutParams params = window.getAttributes();
-       params .width = dm.widthPixels*2/3;
-       params .height =dm.heightPixels*2/3;
+
+      getWindow().setBackgroundDrawable(null);
+
+
+       params .width = dm.widthPixels*1/2;
+       params .height =dm.heightPixels*8/9;
        params.gravity = Gravity.CENTER;
        window.setAttributes(params);
 
