@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.speech.SpeechRecognizer;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -45,6 +46,7 @@ public class LHSBleMainActivity extends AppCompatActivity implements View.OnClic
     public static void onStartBlueTooth(int isStart) {
         BleScanActivity  bleScanActivity=new BleScanActivity(activity);
         bleScanActivity.show();
+
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
