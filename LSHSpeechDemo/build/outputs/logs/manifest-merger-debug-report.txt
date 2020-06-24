@@ -1,0 +1,91 @@
+-- Merging decision tree log ---
+manifest
+ADDED from C:\Users\Raytine\Desktop\desktop\AndroidLHSBle\LSHSpeechDemo\src\main\AndroidManifest.xml:2:1-36:12
+INJECTED from C:\Users\Raytine\Desktop\desktop\AndroidLHSBle\LSHSpeechDemo\src\main\AndroidManifest.xml:2:1-36:12
+INJECTED from C:\Users\Raytine\Desktop\desktop\AndroidLHSBle\LSHSpeechDemo\src\main\AndroidManifest.xml:2:1-36:12
+	package
+		ADDED from C:\Users\Raytine\Desktop\desktop\AndroidLHSBle\LSHSpeechDemo\src\main\AndroidManifest.xml:3:5-36
+		INJECTED from C:\Users\Raytine\Desktop\desktop\AndroidLHSBle\LSHSpeechDemo\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\Raytine\Desktop\desktop\AndroidLHSBle\LSHSpeechDemo\src\main\AndroidManifest.xml
+	xmlns:android
+		ADDED from C:\Users\Raytine\Desktop\desktop\AndroidLHSBle\LSHSpeechDemo\src\main\AndroidManifest.xml:2:11-69
+application
+ADDED from C:\Users\Raytine\Desktop\desktop\AndroidLHSBle\LSHSpeechDemo\src\main\AndroidManifest.xml:6:5-20:19
+	android:supportsRtl
+		ADDED from C:\Users\Raytine\Desktop\desktop\AndroidLHSBle\LSHSpeechDemo\src\main\AndroidManifest.xml:9:9-35
+	android:allowBackup
+		ADDED from C:\Users\Raytine\Desktop\desktop\AndroidLHSBle\LSHSpeechDemo\src\main\AndroidManifest.xml:7:9-35
+meta-data#IFLYTEK_APPKEY
+ADDED from C:\Users\Raytine\Desktop\desktop\AndroidLHSBle\LSHSpeechDemo\src\main\AndroidManifest.xml:12:9-14:42
+	android:value
+		ADDED from C:\Users\Raytine\Desktop\desktop\AndroidLHSBle\LSHSpeechDemo\src\main\AndroidManifest.xml:14:13-29
+	android:name
+		ADDED from C:\Users\Raytine\Desktop\desktop\AndroidLHSBle\LSHSpeechDemo\src\main\AndroidManifest.xml:13:13-42
+meta-data#IFLYTEK_CHANNEL
+ADDED from C:\Users\Raytine\Desktop\desktop\AndroidLHSBle\LSHSpeechDemo\src\main\AndroidManifest.xml:15:9-17:44
+	android:value
+		ADDED from C:\Users\Raytine\Desktop\desktop\AndroidLHSBle\LSHSpeechDemo\src\main\AndroidManifest.xml:17:13-41
+	android:name
+		ADDED from C:\Users\Raytine\Desktop\desktop\AndroidLHSBle\LSHSpeechDemo\src\main\AndroidManifest.xml:16:13-43
+uses-permission#android.permission.RECORD_AUDIO
+ADDED from C:\Users\Raytine\Desktop\desktop\AndroidLHSBle\LSHSpeechDemo\src\main\AndroidManifest.xml:22:5-71
+	android:name
+		ADDED from C:\Users\Raytine\Desktop\desktop\AndroidLHSBle\LSHSpeechDemo\src\main\AndroidManifest.xml:22:22-68
+uses-permission#android.permission.INTERNET
+ADDED from C:\Users\Raytine\Desktop\desktop\AndroidLHSBle\LSHSpeechDemo\src\main\AndroidManifest.xml:23:5-67
+	android:name
+		ADDED from C:\Users\Raytine\Desktop\desktop\AndroidLHSBle\LSHSpeechDemo\src\main\AndroidManifest.xml:23:22-64
+uses-permission#android.permission.ACCESS_NETWORK_STATE
+ADDED from C:\Users\Raytine\Desktop\desktop\AndroidLHSBle\LSHSpeechDemo\src\main\AndroidManifest.xml:24:5-79
+	android:name
+		ADDED from C:\Users\Raytine\Desktop\desktop\AndroidLHSBle\LSHSpeechDemo\src\main\AndroidManifest.xml:24:22-76
+uses-permission#android.permission.ACCESS_WIFI_STATE
+ADDED from C:\Users\Raytine\Desktop\desktop\AndroidLHSBle\LSHSpeechDemo\src\main\AndroidManifest.xml:25:5-76
+	android:name
+		ADDED from C:\Users\Raytine\Desktop\desktop\AndroidLHSBle\LSHSpeechDemo\src\main\AndroidManifest.xml:25:22-73
+uses-permission#android.permission.CHANGE_NETWORK_STATE
+ADDED from C:\Users\Raytine\Desktop\desktop\AndroidLHSBle\LSHSpeechDemo\src\main\AndroidManifest.xml:26:5-79
+	android:name
+		ADDED from C:\Users\Raytine\Desktop\desktop\AndroidLHSBle\LSHSpeechDemo\src\main\AndroidManifest.xml:26:22-76
+uses-permission#android.permission.READ_PHONE_STATE
+ADDED from C:\Users\Raytine\Desktop\desktop\AndroidLHSBle\LSHSpeechDemo\src\main\AndroidManifest.xml:27:5-75
+	android:name
+		ADDED from C:\Users\Raytine\Desktop\desktop\AndroidLHSBle\LSHSpeechDemo\src\main\AndroidManifest.xml:27:22-72
+uses-permission#android.permission.ACCESS_FINE_LOCATION
+ADDED from C:\Users\Raytine\Desktop\desktop\AndroidLHSBle\LSHSpeechDemo\src\main\AndroidManifest.xml:28:5-79
+	android:name
+		ADDED from C:\Users\Raytine\Desktop\desktop\AndroidLHSBle\LSHSpeechDemo\src\main\AndroidManifest.xml:28:22-76
+uses-permission#android.permission.READ_CONTACTS
+ADDED from C:\Users\Raytine\Desktop\desktop\AndroidLHSBle\LSHSpeechDemo\src\main\AndroidManifest.xml:29:5-72
+	android:name
+		ADDED from C:\Users\Raytine\Desktop\desktop\AndroidLHSBle\LSHSpeechDemo\src\main\AndroidManifest.xml:29:22-69
+uses-permission#android.permission.WRITE_EXTERNAL_STORAGE
+ADDED from C:\Users\Raytine\Desktop\desktop\AndroidLHSBle\LSHSpeechDemo\src\main\AndroidManifest.xml:30:5-81
+	android:name
+		ADDED from C:\Users\Raytine\Desktop\desktop\AndroidLHSBle\LSHSpeechDemo\src\main\AndroidManifest.xml:30:22-78
+uses-permission#android.permission.WRITE_SETTINGS
+ADDED from C:\Users\Raytine\Desktop\desktop\AndroidLHSBle\LSHSpeechDemo\src\main\AndroidManifest.xml:31:2-70
+	android:name
+		ADDED from C:\Users\Raytine\Desktop\desktop\AndroidLHSBle\LSHSpeechDemo\src\main\AndroidManifest.xml:31:19-67
+uses-permission#android.permission.READ_EXTERNAL_STORAGE
+ADDED from C:\Users\Raytine\Desktop\desktop\AndroidLHSBle\LSHSpeechDemo\src\main\AndroidManifest.xml:32:2-77
+	android:name
+		ADDED from C:\Users\Raytine\Desktop\desktop\AndroidLHSBle\LSHSpeechDemo\src\main\AndroidManifest.xml:32:19-74
+uses-permission#android.permission.ACCESS_COARSE_LOCATION
+ADDED from C:\Users\Raytine\Desktop\desktop\AndroidLHSBle\LSHSpeechDemo\src\main\AndroidManifest.xml:34:5-81
+	android:name
+		ADDED from C:\Users\Raytine\Desktop\desktop\AndroidLHSBle\LSHSpeechDemo\src\main\AndroidManifest.xml:34:22-78
+uses-sdk
+INJECTED from C:\Users\Raytine\Desktop\desktop\AndroidLHSBle\LSHSpeechDemo\src\main\AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from C:\Users\Raytine\Desktop\desktop\AndroidLHSBle\LSHSpeechDemo\src\main\AndroidManifest.xml
+INJECTED from C:\Users\Raytine\Desktop\desktop\AndroidLHSBle\LSHSpeechDemo\src\main\AndroidManifest.xml
+INJECTED from C:\Users\Raytine\Desktop\desktop\AndroidLHSBle\LSHSpeechDemo\src\main\AndroidManifest.xml
+INJECTED from C:\Users\Raytine\Desktop\desktop\AndroidLHSBle\LSHSpeechDemo\src\main\AndroidManifest.xml
+	android:targetSdkVersion
+		INJECTED from C:\Users\Raytine\Desktop\desktop\AndroidLHSBle\LSHSpeechDemo\src\main\AndroidManifest.xml
+		ADDED from C:\Users\Raytine\Desktop\desktop\AndroidLHSBle\LSHSpeechDemo\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\Raytine\Desktop\desktop\AndroidLHSBle\LSHSpeechDemo\src\main\AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from C:\Users\Raytine\Desktop\desktop\AndroidLHSBle\LSHSpeechDemo\src\main\AndroidManifest.xml
+		ADDED from C:\Users\Raytine\Desktop\desktop\AndroidLHSBle\LSHSpeechDemo\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\Raytine\Desktop\desktop\AndroidLHSBle\LSHSpeechDemo\src\main\AndroidManifest.xml
