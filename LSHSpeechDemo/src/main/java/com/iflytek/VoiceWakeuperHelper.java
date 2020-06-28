@@ -181,4 +181,10 @@ public class VoiceWakeuperHelper {
         Log.d( TAG, "resPath: "+resPath );
         return resPath;
     }
+    public   void startListening(){
+        mIvw.startListening(mWakeuperListener);
+    }
+    public   void stopListening(){
+        mIvw.stopListening();
+    }
 }
