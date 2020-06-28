@@ -5,14 +5,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.speech.SpeechRecognizer;
-import android.util.Log;
+
 import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 
 import com.feng.mydemo.activity.BleScanActivity;
+import com.iflytek.speech.setting.IatSettings;
 
 
 public class LHSBleMainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -40,6 +40,12 @@ public class LHSBleMainActivity extends AppCompatActivity implements View.OnClic
         //设置顶部,左边布局
         params.gravity= Gravity.TOP|Gravity.LEFT;
 
+        initWake();
+
+    }
+
+    private void initWake() {
+     //   mIvw = VoiceWakeuper.createWakeuper(this, null);
     }
 
 
@@ -71,5 +77,4 @@ public class LHSBleMainActivity extends AppCompatActivity implements View.OnClic
 
 
 
- //   public static native void   onSelectPhotoPath(String path);
 }

@@ -7,6 +7,8 @@ import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.PreferenceActivity;
 import android.view.Window;
 
+import com.iflytek.cloud.SpeechConstant;
+import com.iflytek.cloud.VoiceWakeuper;
 import com.iflytek.speech.util.SettingTextWatcher;
 import com.iflytek.voicedemo.R;
 
@@ -28,7 +30,7 @@ public class IatSettings extends PreferenceActivity implements OnPreferenceChang
 		
 		mVadbosPreference = (EditTextPreference)findPreference("iat_vadbos_preference");
 		mVadbosPreference.getEditText().addTextChangedListener(new SettingTextWatcher(IatSettings.this,mVadbosPreference,0,10000));
-		
+
 		mVadeosPreference = (EditTextPreference)findPreference("iat_vadeos_preference");
 		mVadeosPreference.getEditText().addTextChangedListener(new SettingTextWatcher(IatSettings.this,mVadeosPreference,0,10000));
 	}

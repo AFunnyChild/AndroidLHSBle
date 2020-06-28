@@ -3,24 +3,24 @@
 3    package="com.iflytek.voicedemo.test" >
 4
 5    <uses-sdk
-5-->C:\Users\Raytine\Desktop\desktop\AndroidLHSBle\LSHSpeechDemo\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger6850483611193528220.xml:5:5-74
+5-->C:\Users\Raytine\Desktop\desktop\AndroidLHSBle\LSHSpeechDemo\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger7549830144536113372.xml:5:5-74
 6        android:minSdkVersion="21"
-6-->C:\Users\Raytine\Desktop\desktop\AndroidLHSBle\LSHSpeechDemo\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger6850483611193528220.xml:5:15-41
+6-->C:\Users\Raytine\Desktop\desktop\AndroidLHSBle\LSHSpeechDemo\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger7549830144536113372.xml:5:15-41
 7        android:targetSdkVersion="28" />
-7-->C:\Users\Raytine\Desktop\desktop\AndroidLHSBle\LSHSpeechDemo\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger6850483611193528220.xml:5:42-71
+7-->C:\Users\Raytine\Desktop\desktop\AndroidLHSBle\LSHSpeechDemo\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger7549830144536113372.xml:5:42-71
 8
 9    <instrumentation
-9-->C:\Users\Raytine\Desktop\desktop\AndroidLHSBle\LSHSpeechDemo\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger6850483611193528220.xml:11:5-15:76
+9-->C:\Users\Raytine\Desktop\desktop\AndroidLHSBle\LSHSpeechDemo\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger7549830144536113372.xml:11:5-15:76
 10        android:name="android.test.InstrumentationTestRunner"
-10-->C:\Users\Raytine\Desktop\desktop\AndroidLHSBle\LSHSpeechDemo\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger6850483611193528220.xml:11:22-75
+10-->C:\Users\Raytine\Desktop\desktop\AndroidLHSBle\LSHSpeechDemo\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger7549830144536113372.xml:11:22-75
 11        android:functionalTest="false"
-11-->C:\Users\Raytine\Desktop\desktop\AndroidLHSBle\LSHSpeechDemo\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger6850483611193528220.xml:14:22-52
+11-->C:\Users\Raytine\Desktop\desktop\AndroidLHSBle\LSHSpeechDemo\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger7549830144536113372.xml:14:22-52
 12        android:handleProfiling="false"
-12-->C:\Users\Raytine\Desktop\desktop\AndroidLHSBle\LSHSpeechDemo\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger6850483611193528220.xml:13:22-53
+12-->C:\Users\Raytine\Desktop\desktop\AndroidLHSBle\LSHSpeechDemo\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger7549830144536113372.xml:13:22-53
 13        android:label="Tests for com.iflytek.voicedemo.test"
-13-->C:\Users\Raytine\Desktop\desktop\AndroidLHSBle\LSHSpeechDemo\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger6850483611193528220.xml:15:22-74
+13-->C:\Users\Raytine\Desktop\desktop\AndroidLHSBle\LSHSpeechDemo\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger7549830144536113372.xml:15:22-74
 14        android:targetPackage="com.iflytek.voicedemo.test" />
-14-->C:\Users\Raytine\Desktop\desktop\AndroidLHSBle\LSHSpeechDemo\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger6850483611193528220.xml:12:22-72
+14-->C:\Users\Raytine\Desktop\desktop\AndroidLHSBle\LSHSpeechDemo\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger7549830144536113372.xml:12:22-72
 15
 16    <uses-permission android:name="android.permission.RECORD_AUDIO" />
 16-->[__tested_artifact__::LSHSpeechDemo] C:\Users\Raytine\Desktop\desktop\AndroidLHSBle\LSHSpeechDemo\build\intermediates\library_manifest\debug\AndroidManifest.xml:9:5-71
@@ -63,18 +63,18 @@
 28-->[__tested_artifact__::LSHSpeechDemo] C:\Users\Raytine\Desktop\desktop\AndroidLHSBle\LSHSpeechDemo\build\intermediates\library_manifest\debug\AndroidManifest.xml:21:22-78
 29
 30    <application
-30-->C:\Users\Raytine\Desktop\desktop\AndroidLHSBle\LSHSpeechDemo\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger6850483611193528220.xml:7:5-9:19
+30-->C:\Users\Raytine\Desktop\desktop\AndroidLHSBle\LSHSpeechDemo\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger7549830144536113372.xml:7:5-9:19
 31        android:allowBackup="true"
 31-->[__tested_artifact__::LSHSpeechDemo] C:\Users\Raytine\Desktop\desktop\AndroidLHSBle\LSHSpeechDemo\build\intermediates\library_manifest\debug\AndroidManifest.xml:24:9-35
 32        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
 32-->[androidx.core:core:1.0.0] C:\Users\Raytine\.gradle\caches\transforms-2\files-2.1\ec609e8cee787e2dff3592c66b08a66a\core-1.0.0\AndroidManifest.xml:22:18-86
 33        android:debuggable="true"
-33-->C:\Users\Raytine\Desktop\desktop\AndroidLHSBle\LSHSpeechDemo\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger6850483611193528220.xml:7:18-43
+33-->C:\Users\Raytine\Desktop\desktop\AndroidLHSBle\LSHSpeechDemo\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger7549830144536113372.xml:7:18-43
 34        android:supportsRtl="true" >
 34-->[__tested_artifact__::LSHSpeechDemo] C:\Users\Raytine\Desktop\desktop\AndroidLHSBle\LSHSpeechDemo\build\intermediates\library_manifest\debug\AndroidManifest.xml:25:9-35
 35        <uses-library android:name="android.test.runner" />
-35-->C:\Users\Raytine\Desktop\desktop\AndroidLHSBle\LSHSpeechDemo\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger6850483611193528220.xml:8:9-60
-35-->C:\Users\Raytine\Desktop\desktop\AndroidLHSBle\LSHSpeechDemo\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger6850483611193528220.xml:8:23-57
+35-->C:\Users\Raytine\Desktop\desktop\AndroidLHSBle\LSHSpeechDemo\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger7549830144536113372.xml:8:9-60
+35-->C:\Users\Raytine\Desktop\desktop\AndroidLHSBle\LSHSpeechDemo\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger7549830144536113372.xml:8:23-57
 36        <!-- 移动统计分析 -->
 37        <meta-data
 37-->[__tested_artifact__::LSHSpeechDemo] C:\Users\Raytine\Desktop\desktop\AndroidLHSBle\LSHSpeechDemo\build\intermediates\library_manifest\debug\AndroidManifest.xml:28:9-30:52
