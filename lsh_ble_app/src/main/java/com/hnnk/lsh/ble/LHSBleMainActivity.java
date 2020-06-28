@@ -17,8 +17,7 @@ import android.view.WindowManager;
 import android.widget.FrameLayout;
 
 import com.feng.mydemo.activity.BleScanActivity;
-import com.iflytek.speech.VoiceWakeuperHelper;
-import com.iflytek.speech.setting.IatSettings;
+
 
 
 public class LHSBleMainActivity extends AppCompatActivity implements View.OnClickListener {
