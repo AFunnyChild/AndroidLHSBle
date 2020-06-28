@@ -14,7 +14,8 @@ import com.iflytek.cloud.VoiceWakeuper;
 import com.iflytek.cloud.WakeuperListener;
 import com.iflytek.cloud.WakeuperResult;
 import com.iflytek.cloud.util.ResourceUtil;
-import com.iflytek.mscv5plusdemo.R;
+import com.iflytek.voicedemo.R;
+
 
 import org.json.JSONException;
 import org.json.JSONObject;

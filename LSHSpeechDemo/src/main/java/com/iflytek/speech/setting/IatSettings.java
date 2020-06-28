@@ -8,7 +8,8 @@ import android.preference.PreferenceActivity;
 import android.view.Window;
 
 import com.iflytek.speech.util.SettingTextWatcher;
-import com.iflytek.mscv5plusdemo.R;
+import com.iflytek.voicedemo.R;
+
 
 /**
  * 听写设置界面
