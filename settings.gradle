@@ -1,2 +1,2 @@
-include ':lsh_ble_app', ':lhs_ble', ':mscV5PlusDemo'
+include ':lsh_ble_app', ':lhs_ble', ':LSHSpeechDemo'
 rootProject.name='AndroidLHSBle'
