@@ -1,17 +1,23 @@
 package com.hnnk.lsh.ble;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 
 import com.feng.mydemo.activity.BleScanActivity;
+import com.iflytek.speech.VoiceWakeuperHelper;
 import com.iflytek.speech.setting.IatSettings;
 
 
@@ -39,14 +45,60 @@ public class LHSBleMainActivity extends AppCompatActivity implements View.OnClic
                 (FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
         //设置顶部,左边布局
         params.gravity= Gravity.TOP|Gravity.LEFT;
+        requestPermissions();
 
         initWake();
 
     }
 
     private void initWake() {
-     //   mIvw = VoiceWakeuper.createWakeuper(this, null);
+//        VoiceWakeuperHelper voiceWakeuperHelper=new VoiceWakeuperHelper();
+//
+//        voiceWakeuperHelper.initWake(this, new VoiceWakeuperHelper.IReceivedEvent() {
+//            @Override
+//            public void onEvent(int event) {
+//                Log.d("MainActivity", "onEvent: "+event);
+//            }
+//        });
     }
+    private void requestPermissions(){
+//        mayRequestLocation();
+//        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//            if(!Settings.System.canWrite(this)){
+//                Intent intent = new Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS,
+//                        Uri.parse("package:" + getPackageName()));
+//                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                startActivityForResult(intent, 108);
+//            }else {
+//                //有了权限，你要做什么呢？具体的动作
+//            }
+//
+//        }
+
+
+        try {
+            if (Build.VERSION.SDK_INT >= 23) {
+                int permission = ActivityCompat.checkSelfPermission(this,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE);
+                if(permission!= PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(this,new String[]
+                            {Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                                    Manifest.permission.LOCATION_HARDWARE,Manifest.permission.READ_PHONE_STATE,
+                                    Manifest.permission.WRITE_SETTINGS,Manifest.permission.READ_EXTERNAL_STORAGE,
+                                    Manifest.permission.RECORD_AUDIO,Manifest.permission.READ_CONTACTS},0x0010);
+                }
+
+                if(permission != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(this,new String[] {
+                            Manifest.permission.ACCESS_COARSE_LOCATION,
+                            Manifest.permission.ACCESS_FINE_LOCATION},0x0010);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
 
     public static void onStartBlueTooth(int isStart) {
