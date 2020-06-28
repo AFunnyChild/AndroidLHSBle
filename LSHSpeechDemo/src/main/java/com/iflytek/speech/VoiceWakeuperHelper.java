@@ -190,6 +190,7 @@ public class VoiceWakeuperHelper {
         }
     };
     private String getResource() {
+
         final String resPath = ResourceUtil.generateResourcePath(mContext, ResourceUtil.RESOURCE_TYPE.assets, "ivw/"+mContext.getString(R.string.app_id)+".jet");
         Log.d( TAG, "resPath: "+resPath );
         return resPath;
