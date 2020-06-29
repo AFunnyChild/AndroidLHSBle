@@ -40,7 +40,7 @@ android {
 
 
 dependencies {
-    api files('libs/Msc.jar')
+    api files('voicelibs/Msc.jar')
     //  compile project(':MscLibSrc')
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 }

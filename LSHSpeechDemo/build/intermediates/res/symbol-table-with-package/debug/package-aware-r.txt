@@ -1,4 +1,4 @@
-com.iflytek.mscv5plusdemo
+com.iflytek.voicedemo
 array language_entries
 array language_values
 array punc_entries
@@ -92,9 +92,6 @@ drawable edittext_name
 drawable head
 drawable icon
 drawable layout_backgroud
-drawable leak_canary_icon
-drawable leak_canary_notification
-drawable leak_canary_toast_background
 drawable line_background
 drawable list_bg_color
 drawable login
@@ -132,7 +129,6 @@ id action_divider
 id action_image
 id action_text
 id actions
-id all
 id async
 id blocking
 id bottom
@@ -143,18 +139,10 @@ id btn_start
 id btn_stop
 id btn_wake
 id cancel_action
-id center
-id center_horizontal
-id center_vertical
 id chronometer
-id clip_horizontal
-id clip_vertical
 id edit_text
 id end
 id end_padder
-id fill
-id fill_horizontal
-id fill_vertical
 id forever
 id iat_cancel
 id iat_radioCloud
@@ -179,13 +167,6 @@ id isr_stop
 id isr_text
 id italic
 id ivw_net_mode
-id leak_canary_action
-id leak_canary_display_leak_failure
-id leak_canary_display_leak_list
-id leak_canary_row_connector
-id leak_canary_row_more
-id leak_canary_row_text
-id leak_canary_row_time
 id left
 id line1
 id line3
@@ -233,11 +214,6 @@ integer status_bar_notification_info_maxnum
 layout iatdemo
 layout isrdemo
 layout ivw_activity
-layout leak_canary_display_leak
-layout leak_canary_heap_dump_toast
-layout leak_canary_leak_row
-layout leak_canary_ref_row
-layout leak_canary_ref_top_row
 layout list_items
 layout main
 layout notification_action
@@ -263,29 +239,6 @@ string app_id
 string app_name
 string example_explain
 string example_explain_wake
-string leak_canary_analysis_failed
-string leak_canary_class_has_leaked
-string leak_canary_could_not_save_text
-string leak_canary_could_not_save_title
-string leak_canary_delete
-string leak_canary_delete_all
-string leak_canary_delete_all_leaks_title
-string leak_canary_display_activity_label
-string leak_canary_excluded_row
-string leak_canary_failure_report
-string leak_canary_leak_excluded
-string leak_canary_leak_list_title
-string leak_canary_no_leak_text
-string leak_canary_no_leak_title
-string leak_canary_notification_message
-string leak_canary_permission_not_granted
-string leak_canary_permission_notification_text
-string leak_canary_permission_notification_title
-string leak_canary_share_heap_dump
-string leak_canary_share_leak
-string leak_canary_share_with
-string leak_canary_storage_permission_activity_label
-string leak_canary_toast_heap_dump
 string oneshot_demo_hint
 string oneshot_resource_hint
 string pref_key_iat_show
@@ -320,14 +273,12 @@ style Widget_Compat_NotificationActionContainer
 style Widget_Compat_NotificationActionText
 style Widget_Support_CoordinatorLayout
 style dialog
-style leak_canary_LeakCanary_Base
-style leak_canary_Theme_Transparent
-styleable ColorStateListItem android_color android_alpha alpha
+styleable ColorStateListItem alpha android_alpha android_color
 styleable CoordinatorLayout keylines statusBarBackground
 styleable CoordinatorLayout_Layout android_layout_gravity layout_anchor layout_anchorGravity layout_behavior layout_dodgeInsetEdges layout_insetEdge layout_keyline
 styleable FontFamily fontProviderAuthority fontProviderCerts fontProviderFetchStrategy fontProviderFetchTimeout fontProviderPackage fontProviderQuery
-styleable FontFamilyFont android_font android_fontWeight android_fontStyle android_ttcIndex android_fontVariationSettings font fontStyle fontVariationSettings fontWeight ttcIndex
-styleable GradientColor android_startColor android_endColor android_type android_centerX android_centerY android_gradientRadius android_tileMode android_centerColor android_startX android_startY android_endX android_endY
+styleable FontFamilyFont android_font android_fontStyle android_fontVariationSettings android_fontWeight android_ttcIndex font fontStyle fontVariationSettings fontWeight ttcIndex
+styleable GradientColor android_centerColor android_centerX android_centerY android_endColor android_endX android_endY android_gradientRadius android_startColor android_startX android_startY android_tileMode android_type
 styleable GradientColorItem android_color android_offset
 xml iat_setting
 xml tts_setting
