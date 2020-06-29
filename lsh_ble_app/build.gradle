@@ -5,10 +5,8 @@ android {
     buildToolsVersion "28.0.3"
     defaultConfig {
         applicationId "com.hnnk.lsh.ble"
-        minSdkVersion 21
+        minSdkVersion 24
         targetSdkVersion 28
-        versionCode 1
-        versionName "1.0"
 
     }
     buildTypes {
@@ -24,11 +22,10 @@ android {
 }
 
 dependencies {
-    implementation  fileTree(dir: 'libs', include: ['*.jar'])
-    testImplementation  'junit:junit:4.12'
-    implementation 'androidx.appcompat:appcompat:1.0.0'
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation project(path: ':lhs_ble')
-    implementation project(path: ':LSHSpeechDemo')
+    compile project(path: ':LSHSpeechDemo')
 
 
 }

@@ -15,9 +15,10 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
 import com.feng.mydemo.activity.BleScanActivity;
-
+import com.iflytek.VoiceWakeuperHelper;
 
 
 public class LHSBleMainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -51,14 +52,20 @@ public class LHSBleMainActivity extends AppCompatActivity implements View.OnClic
     }
 
     private void initWake() {
-//        VoiceWakeuperHelper voiceWakeuperHelper=new VoiceWakeuperHelper();
-//
-//        voiceWakeuperHelper.initWake(this, new VoiceWakeuperHelper.IReceivedEvent() {
-//            @Override
-//            public void onEvent(int event) {
-//                Log.d("MainActivity", "onEvent: "+event);
-//            }
-//        });
+        VoiceWakeuperHelper mVoiceWakeuperHelper = new VoiceWakeuperHelper();
+        mVoiceWakeuperHelper.initWake(this, new VoiceWakeuperHelper.IReceivedEvent() {
+            @Override
+            public void onEvent(final int id) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(LHSBleMainActivity.this, id+"", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                //
+
+            }
+        });
     }
     private void requestPermissions(){
 //        mayRequestLocation();

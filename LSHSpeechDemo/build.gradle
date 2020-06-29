@@ -18,11 +18,11 @@ android {
         }
     }
 
-//    sourceSets {
-//        main {
-//            jniLibs.srcDirs = ['libs']
-//        }
-//    }
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['voicelibs']
+        }
+    }
     compileOptions {
         sourceCompatibility = 1.8
         targetCompatibility = 1.8
@@ -40,7 +40,7 @@ android {
 
 
 dependencies {
-    implementation files('libs/Msc.jar')
+    api files('libs/Msc.jar')
     //  compile project(':MscLibSrc')
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 }
