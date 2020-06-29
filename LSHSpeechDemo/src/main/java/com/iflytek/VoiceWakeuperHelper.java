@@ -36,6 +36,8 @@ public class VoiceWakeuperHelper {
     }
 
     public void initWake(Context mContext,IReceivedEvent event) {
+
+
      this.mContext=mContext;
      this.iReceivedEvent=event;
         // 初始化唤醒对象

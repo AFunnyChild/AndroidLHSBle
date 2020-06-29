@@ -2,6 +2,7 @@ package com.hnnk.lsh.ble;
 
 import android.app.Application;
 import android.content.Context;
+import android.util.Log;
 
 import com.iflytek.VoiceWakeuperHelper;
 import com.iflytek.cloud.SpeechUtility;
@@ -16,7 +17,7 @@ public class LoveApplication extends Application {
   //      VoiceWakeuperHelper
         super.onCreate();
 
-        SpeechUtility utility = SpeechUtility.getUtility();
+
 
     }
 
