@@ -29,8 +29,9 @@ android {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'androidx.appcompat:appcompat:1.1.0'
-    implementation project(path: ':lhs_ble')
+    implementation project(path: ':LSHBle')
     compile project(path: ':LSHSpeechDemo')
+    implementation project(path: ':LSHKeepAlive')
 
 
 }
