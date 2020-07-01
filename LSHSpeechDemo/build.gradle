@@ -18,11 +18,11 @@ android {
         }
     }
 
-//    sourceSets {
-//        main {
-//            jniLibs.srcDirs = ['voicelibs']
-//        }
-//    }
+    sourceSets {
+
+            main.jniLibs.srcDirs = ['voicelibs']
+
+    }
     compileOptions {
         sourceCompatibility = 1.8
         targetCompatibility = 1.8
@@ -37,8 +37,6 @@ android {
     }
 
 }
-
-
 dependencies {
     api files('voicelibs/Msc.jar')
     //  compile project(':MscLibSrc')

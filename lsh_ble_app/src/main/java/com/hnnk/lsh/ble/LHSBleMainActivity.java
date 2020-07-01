@@ -126,6 +126,7 @@ public class LHSBleMainActivity extends AppCompatActivity implements View.OnClic
     public void onClick(final View v) {
 //        select_photo();
 //        JniSelectPhoto();
+
         onStartBlueTooth(1);
     }
 

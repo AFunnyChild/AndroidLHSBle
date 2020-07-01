@@ -7,6 +7,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.iflytek.cloud.RequestListener;
+import com.iflytek.cloud.Setting;
 import com.iflytek.cloud.SpeechConstant;
 import com.iflytek.cloud.SpeechError;
 import com.iflytek.cloud.SpeechEvent;
@@ -123,6 +124,7 @@ public class VoiceWakeuperHelper {
         @Override
         public void onResult(WakeuperResult result) {
             Log.d(TAG, "onResult");
+
 //            if(!"1".equalsIgnoreCase(keep_alive)) {
 //                setRadioEnable(true);
 //            }
