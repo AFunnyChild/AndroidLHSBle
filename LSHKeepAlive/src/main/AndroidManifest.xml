@@ -126,6 +126,15 @@
             android:name=".account.SyncProvider"
             android:authorities="com.process.keepalive.daemon.guard.account.sync_provider" />
         <!-- Account End -->
+        <provider
+            android:name="com.process.keepalive.daemon.BuglyFileProvider"
+            android:authorities="${applicationId}.fileProvider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths"/>
+        </provider>
 
     </application>
 
