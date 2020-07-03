@@ -52,7 +52,7 @@ public class DeviceBootReceiver extends BroadcastReceiver {
     private void MainPageGo(Context context) {
         Class<?> activity_class=null;
         try {
-            activity_class   = Class.forName("net.leung.qtmouse.MainActivity");
+            activity_class   = Class.forName("net.leung.qtmouse1.MainActivity");
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
