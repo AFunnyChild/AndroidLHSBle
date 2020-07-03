@@ -38,7 +38,7 @@ public class LHSBleMainActivity extends AppCompatActivity implements View.OnClic
         setContentView(R.layout.activity_main);
         findViewById(R.id.btn_start).setOnClickListener(this);
         findViewById(R.id.btn_state).setOnClickListener(this);
-
+       EventBus.getDefault().register(this);
         activity=this;
      //   startActivity(new Intent(this, BleTestMainActivity.class));
 
@@ -138,6 +138,20 @@ public class LHSBleMainActivity extends AppCompatActivity implements View.OnClic
 
         onStartBlueTooth(1);
     }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMouseMove(MouseEvent event) {
+
+        switch (event.action) {
+            case JniEvent.ON_VOICE_PASTE:
+                break;
+                case JniEvent.ON_RESET_MOUSE:
+                break;
+            default:
+                break;
+        }
+    }
+
 
 
 }
