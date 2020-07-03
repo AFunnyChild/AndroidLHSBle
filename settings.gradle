@@ -1,2 +1,2 @@
-include ':lsh_ble_app', ':LSHBle', ':LSHSpeechDemo', ':LSHKeepAlive'
+include ':lsh_ble_app', ':LSHBle', ':LSHSpeechDemo', ':LSHKeepAlive', ':LSHHHNKSampleLove'
 rootProject.name='AndroidLHSBle'

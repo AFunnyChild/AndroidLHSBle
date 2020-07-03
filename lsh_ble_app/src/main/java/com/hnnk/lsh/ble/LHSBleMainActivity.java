@@ -14,11 +14,19 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.feng.mydemo.activity.BleScanActivity;
 import com.iflytek.VoiceWakeuperHelper;
+
+import net.leung.qtmouse.JniEvent;
+import net.leung.qtmouse.MouseEvent;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 
 public class LHSBleMainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -30,6 +38,7 @@ public class LHSBleMainActivity extends AppCompatActivity implements View.OnClic
         setContentView(R.layout.activity_main);
         findViewById(R.id.btn_start).setOnClickListener(this);
         findViewById(R.id.btn_state).setOnClickListener(this);
+
         activity=this;
      //   startActivity(new Intent(this, BleTestMainActivity.class));
 
@@ -129,11 +138,6 @@ public class LHSBleMainActivity extends AppCompatActivity implements View.OnClic
 
         onStartBlueTooth(1);
     }
-
-    public static void JniSelectPhoto() {
-
-    }
-
 
 
 }

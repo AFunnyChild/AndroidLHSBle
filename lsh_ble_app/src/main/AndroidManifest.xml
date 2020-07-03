@@ -3,7 +3,7 @@
     package="com.hnnk.lsh.ble">
 
     <application
-        android:name=".LoveApplication"
+        android:name="net.leung.qtmouse.LoveApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"

@@ -29,17 +29,11 @@ android {
         targetCompatibility = 1.8
     }
 }
-repositories{
-    flatDir{
-        dirs 'libs','../LSHKeepAlive/libs'
-    }
-}
+
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'androidx.appcompat:appcompat:1.1.0'
-    implementation project(path: ':LSHBle')
-    compile project(path: ':LSHSpeechDemo')
-    implementation project(path: ':LSHKeepAlive')
+    implementation project(path: ':LSHHHNKSampleLove')
 
 
 }

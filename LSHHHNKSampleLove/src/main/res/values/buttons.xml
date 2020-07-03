@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="icons">
+        <item>@drawable/ic_keyboard_arrow_up_white_24dp</item>
+        <item>@drawable/ic_keyboard_arrow_down_white_24dp</item>
+        <item>@drawable/ic_keyboard_arrow_left_white_24dp</item>
+        <item>@drawable/ic_keyboard_arrow_right_white_24dp</item>
+        <item>@drawable/ic_adjust_white_24dp</item>
+        <item>@drawable/ic_wrap_text_white_24dp</item>
+        <item>@drawable/ic_arrow_upward_white_24dp</item>
+        <item>@drawable/ic_arrow_downward_white_24dp</item>
+        <item>@drawable/ic_arrow_back_white_24dp</item>
+        <item>@drawable/ic_arrow_forward_white_24dp</item>
+        <item>@drawable/ic_unfold_more_white_24dp</item>
+        <item>@drawable/ic_unfold_less_white_24dp</item>
+        <item>@drawable/ic_menu_home_white</item>
+
+    </array>
+    <array name="colors">
+        <item>@android:color/holo_blue_light</item>
+        <item>@android:color/holo_blue_light</item>
+        <item>@android:color/holo_blue_light</item>
+        <item>@android:color/holo_blue_light</item>
+        <item>@android:color/holo_red_light</item>
+        <item>@android:color/holo_purple</item>
+        <item>@android:color/holo_orange_light</item>
+        <item>@android:color/holo_orange_light</item>
+        <item>@android:color/holo_orange_light</item>
+        <item>@android:color/holo_orange_light</item>
+        <item>@android:color/holo_green_dark</item>
+        <item>@android:color/holo_green_dark</item>
+        <item>@android:color/holo_green_dark</item>
+    </array>
+</resources>

@@ -10,7 +10,6 @@ import android.os.IBinder;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.tencent.bugly.Bugly;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -38,11 +37,13 @@ public final class DaemonEnv {
      */
     public static void initialize(@NonNull Context app, @NonNull Class<? extends AbsWorkService> serviceClass, @Nullable Integer wakeUpInterval) {
         sApp = app;
-        Bugly.init(app, "8e1eee2cd5", true);
         sServiceClass = serviceClass;
         if (wakeUpInterval != null) sWakeUpInterval = wakeUpInterval;
         sInitialized = true;
+
     }
+
+
 
     public static void startServiceMayBind(@NonNull final Class<? extends Service> serviceClass) {
         if (!sInitialized) return;
