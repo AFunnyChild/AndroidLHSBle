@@ -33,7 +33,7 @@ public class GifSizeFilter extends Filter {
     private int mMinHeight;
     private int mMaxSize;
 
-    GifSizeFilter(int minWidth, int minHeight, int maxSizeInBytes) {
+  public  GifSizeFilter(int minWidth, int minHeight, int maxSizeInBytes) {
         mMinWidth = minWidth;
         mMinHeight = minHeight;
         mMaxSize = maxSizeInBytes;
