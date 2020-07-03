@@ -2,13 +2,11 @@ package com.hnnk.lsh.ble;
 
 import android.app.Application;
 import android.content.Context;
-import android.util.Log;
 
-import com.iflytek.VoiceWakeuperHelper;
 import com.iflytek.cloud.Setting;
 import com.iflytek.cloud.SpeechUtility;
-import com.process.keepalive.daemon.DemoService;
-import com.process.keepalive.daemon.guard.DaemonEnv;
+import com.tencent.bugly.Bugly;
+import com.tencent.bugly.beta.Beta;
 
 
 public class LoveApplication extends Application {
@@ -16,14 +14,15 @@ public class LoveApplication extends Application {
 
     @Override
     public void onCreate() {
-        DaemonEnv.initialize(this, DemoService.class, DaemonEnv.DEFAULT_WAKE_UP_INTERVAL);
-        DemoService.sShouldStopService = false;
+    //    DaemonEnv.initialize(this, DemoService.class, DaemonEnv.DEFAULT_WAKE_UP_INTERVAL);
+       // DemoService.sShouldStopService = false;
+        Bugly.init(getApplicationContext(), "8e1eee2cd5", true);
 
         SpeechUtility.createUtility(LoveApplication.this, "appid=" + "5ef16797");
         Setting.setLogLevel(Setting.LOG_LEVEL.none);
         super.onCreate();
 
-
+      //  Beta.checkUpgrade();
 
     }
 

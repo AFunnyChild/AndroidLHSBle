@@ -1,6 +1,7 @@
 apply plugin: 'com.android.library'
 
 android {
+
     compileSdkVersion 28
     defaultConfig {
 
@@ -17,7 +18,11 @@ android {
         }
     }
 }
-
+repositories{
+    flatDir{
+        dirs 'libs'
+    }
+}
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'androidx.appcompat:appcompat:1.0.0'
@@ -27,6 +32,8 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
-    api 'com.tencent.bugly:crashreport_upgrade:latest.release'//其中latest.release指代最新版本号，也可以指定明确的版本号，例如1.2.0
-    api 'com.tencent.bugly:nativecrashreport:latest.release' //其中latest.release指代最新版本号，也可以指定明确的版本号，例如2.2.0
+//    api 'com.tencent.bugly:crashreport_upgrade:latest.release'
+    api 'com.tencent.bugly:nativecrashreport:latest.release'
+    api (name:'bugly_crashreport_upgrade-1.4.2', ext:'aar')
+
 }
