@@ -34,7 +34,7 @@ public class LoveApplication extends Application {
         ScreenManager.getInstance().register(this);
         Beta.smallIconId = getResources().getIdentifier("ic_launcher", "id", getPackageName());
         Bugly.init(getApplicationContext(), "5720563905", true);
-        
+
         Log.d("Application", "upgradeInfo: "+(Beta.getInstance().toString()));
          UpgradeInfo upgradeInfo = Beta.getUpgradeInfo();
 
