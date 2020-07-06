@@ -38,7 +38,7 @@ public class LHSBleMainActivity extends AppCompatActivity implements View.OnClic
         setContentView(R.layout.activity_main);
         findViewById(R.id.btn_start).setOnClickListener(this);
         findViewById(R.id.btn_state).setOnClickListener(this);
-        
+
        EventBus.getDefault().register(this);
         activity=this;
      //   startActivity(new Intent(this, BleTestMainActivity.class));

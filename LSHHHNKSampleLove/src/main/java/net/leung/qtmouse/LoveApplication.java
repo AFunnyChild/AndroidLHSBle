@@ -32,10 +32,11 @@ public class LoveApplication extends Application {
         super.onCreate();
         mApplication=this;
         ScreenManager.getInstance().register(this);
-        Beta.smallIconId = R.drawable.ic_launcher;
+       ;
+        Beta.smallIconId = getResources().getIdentifier("ic_launcher", "id", getPackageName());
         Bugly.init(this, "8e1eee2cd5", true);
 
-        //  Beta.checkAppUpgrade();
+         Beta.checkAppUpgrade();
 
 
         UpgradeInfo upgradeInfo = Beta.getUpgradeInfo();
