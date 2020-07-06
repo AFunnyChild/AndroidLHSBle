@@ -34,9 +34,9 @@ public class LoveApplication extends Application {
         ScreenManager.getInstance().register(this);
         Beta.smallIconId = getResources().getIdentifier("ic_launcher", "id", getPackageName());
         Bugly.init(getApplicationContext(), "5720563905", true);
-
-
-        UpgradeInfo upgradeInfo = Beta.getUpgradeInfo();
+        
+        Log.d("Application", "upgradeInfo: "+(Beta.getInstance().toString()));
+         UpgradeInfo upgradeInfo = Beta.getUpgradeInfo();
 
         //String title, int upgradeType, String newFeature, long publishTime, int buildNo, int versioncode, String versionName, String downloadUrl, long fileSize, String fileMd5, String bannerUrl, int dialogStyle, DownloadListener listener, Runnable upgradeRunnable, Runnable cancelRunnable, boolean isManual
 
