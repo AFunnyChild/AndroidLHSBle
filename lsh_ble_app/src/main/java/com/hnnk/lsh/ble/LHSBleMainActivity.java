@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import com.feng.mydemo.activity.BleScanActivity;
 import com.iflytek.VoiceWakeuperHelper;
+import com.tencent.bugly.beta.Beta;
 
 import net.leung.qtmouse.JniEvent;
 import net.leung.qtmouse.MouseEvent;
@@ -139,8 +140,8 @@ public class LHSBleMainActivity extends AppCompatActivity implements View.OnClic
     public void onClick(final View v) {
 //        select_photo();
 //        JniSelectPhoto();
-
-        onStartBlueTooth(1);
+        Beta.checkUpgrade();
+        //onStartBlueTooth(1);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
