@@ -7,6 +7,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.ClipboardManager;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -49,8 +50,6 @@ public class LHSBleMainActivity extends AppCompatActivity implements View.OnClic
 //        Intent dialogIntent = new Intent(getBaseContext(), BleScanActivity.class);
 //        dialogIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 //        getApplication().startActivity(dialogIntent);
-
-
         getWindow().setFlags( WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN );
 

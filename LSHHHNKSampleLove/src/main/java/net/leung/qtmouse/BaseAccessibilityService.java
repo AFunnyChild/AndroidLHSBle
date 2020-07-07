@@ -171,6 +171,7 @@ public class BaseAccessibilityService extends AccessibilityService {
         public void onCompleted(GestureDescription gestureDescription) {
             super.onCompleted(gestureDescription);
             Log.d(TAG, name + " onCompleted");
+
             FloatWindowManager.getInstance().getFloatView().ignoreTouch(false);
         }
 

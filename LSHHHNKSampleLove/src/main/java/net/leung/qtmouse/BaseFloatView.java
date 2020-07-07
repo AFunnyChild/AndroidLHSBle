@@ -1,6 +1,7 @@
 package net.leung.qtmouse;
 
 import android.content.Context;
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 
@@ -40,6 +41,9 @@ class BaseFloatView extends FrameLayout {
      * @param ignore
      */
     public void ignoreTouch(boolean ignore) {
+        if(this.getVisibility()!= View.VISIBLE){
+            return;
+        }
         if (ignore) layoutParams.flags |= WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE;
         else layoutParams.flags &= ~WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE;
 
