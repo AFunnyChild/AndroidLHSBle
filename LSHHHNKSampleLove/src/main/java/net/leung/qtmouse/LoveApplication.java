@@ -1,5 +1,6 @@
 package net.leung.qtmouse;
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.Application;
 import android.content.Context;
 import android.util.Log;
@@ -10,12 +11,15 @@ import com.process.keepalive.daemon.DemoService;
 import com.process.keepalive.daemon.guard.DaemonEnv;
 import com.process.keepalive.daemon.guard.pixel.ScreenManager;
 import com.tencent.bugly.Bugly;
+
 import com.tencent.bugly.beta.Beta;
 import com.tencent.bugly.beta.UpgradeInfo;
+import com.tencent.bugly.crashreport.CrashReport;
 
 import net.leung.qtmouse.tools.Screen;
 
-import java.util.Locale;
+import java.util.ArrayList;
+
 
 public class LoveApplication extends Application {
    Activity mActivity;
@@ -25,19 +29,25 @@ public class LoveApplication extends Application {
         DaemonEnv.initialize(getApplicationContext(), DemoService.class, DaemonEnv.DEFAULT_WAKE_UP_INTERVAL);
         DemoService.sShouldStopService = false;
         DaemonEnv.startServiceMayBind(DemoService.class);
-        DaemonEnv.startServiceMayBind(MouseAccessibilityService.class);
-
+        Class<MouseAccessibilityService> mouseAccessibilityServiceClass=new Class<>();
+        if(isRunning(this,"net.leung.qtmouse.MouseAccessibilityService")==true){
+            DaemonEnv.startServiceMayBind(MouseAccessibilityService.class);
+        }
+        Log.d("Application", "service name: "+mouseAccessibilityServiceClass.getName());
         SpeechUtility.createUtility(LoveApplication.this, "appid=" + "5ef16797");
         Setting.setLogLevel(Setting.LOG_LEVEL.none);
         super.onCreate();
         mApplication=this;
         ScreenManager.getInstance().register(this);
+        Beta.enableHotfix=false;
         Beta.smallIconId = getResources().getIdentifier("ic_launcher", "id", getPackageName());
-        Bugly.init(getApplicationContext(), "5720563905", true);
-        Beta.getInstance().init(getApplicationContext(),true);
-        Log.d("Application", "upgradeInfo: "+(Beta.getInstance().toString()));
-         UpgradeInfo upgradeInfo = Beta.getUpgradeInfo();
+        CrashReport.UserStrategy strategy = new CrashReport.UserStrategy(getApplicationContext());
+        Bugly.init(getApplicationContext(), "5a7644633a", true,strategy);
 
+
+        Log.d("Application", "upgradeInfo: "+(Bugly.getAppChannel()));
+        Log.d("Application", "init_Info: "+(Beta.getInstance().id+"-"+  Beta.getInstance().moduleName+"-"+  Beta.getInstance().version+"-"+  Beta.getInstance().versionKey));
+         UpgradeInfo upgradeInfo = Beta.getUpgradeInfo();
         //String title, int upgradeType, String newFeature, long publishTime, int buildNo, int versioncode, String versionName, String downloadUrl, long fileSize, String fileMd5, String bannerUrl, int dialogStyle, DownloadListener listener, Runnable upgradeRunnable, Runnable cancelRunnable, boolean isManual
 
         StringBuilder info = new StringBuilder();
@@ -91,6 +101,20 @@ public static LoveApplication getInstance() {
     return mApplication;
 
 }
+    public  boolean isRunning(Context c,String serviceName)
+    {
+        ActivityManager myAM=(ActivityManager)c.getSystemService(Context.ACTIVITY_SERVICE);
 
+        ArrayList<ActivityManager.RunningServiceInfo> runningServices = (ArrayList<ActivityManager.RunningServiceInfo>) myAM.getRunningServices(100);
+        //获取最多40个当前正在运行的服务，放进ArrList里,以现在手机的处理能力，要是超过40个服务，估计已经卡死，所以不用考虑超过40个该怎么办
+        for(int i = 0 ; i<runningServices.size();i++)//循环枚举对比
+        {
+            if(runningServices.get(i).service.getClassName().toString().equals(serviceName))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
 
 }

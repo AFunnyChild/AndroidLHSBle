@@ -25,7 +25,7 @@
         <activity android:name="com.tencent.bugly.beta.ui.BetaActivity" android:configChanges="keyboardHidden|orientation|screenSize|locale" android:theme="@android:style/Theme.Translucent" android:label="-- %%INSERT_APP_NAME%% --">
             <meta-data android:name="android.app.lib_name" android:value="-- %%INSERT_APP_LIB_NAME%% --"/>
         </activity>
-        <provider android:name="net.leung.qtmouse.BuglyFileProvider" android:authorities="${applicationId}.fileProvider" android:exported="false" android:grantUriPermissions="true">
+        <provider android:name="net.leung.qtmouse.BuglyFileProvider" android:authorities="net.leung.qtmouse.fileProvider" android:exported="false" android:grantUriPermissions="true">
             <meta-data android:name="android.support.FILE_PROVIDER_PATHS" android:resource="@xml/provider_paths"/>
         </provider>
     </application>
