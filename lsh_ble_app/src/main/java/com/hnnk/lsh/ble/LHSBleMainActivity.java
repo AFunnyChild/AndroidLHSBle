@@ -145,9 +145,9 @@ public class LHSBleMainActivity extends AppCompatActivity implements View.OnClic
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onMouseMove(MouseEvent event) {
+    public void onMouseMove(JniEvent event) {
 
-        switch (event.action) {
+        switch (event.eventType) {
             case JniEvent.ON_VOICE_PASTE:
                 break;
                 case JniEvent.ON_RESET_MOUSE:
