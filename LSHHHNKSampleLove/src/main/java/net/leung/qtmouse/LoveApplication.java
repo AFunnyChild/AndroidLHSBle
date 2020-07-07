@@ -29,11 +29,11 @@ public class LoveApplication extends Application {
         DaemonEnv.initialize(getApplicationContext(), DemoService.class, DaemonEnv.DEFAULT_WAKE_UP_INTERVAL);
         DemoService.sShouldStopService = false;
         DaemonEnv.startServiceMayBind(DemoService.class);
-        Class<MouseAccessibilityService> mouseAccessibilityServiceClass=new Class<>();
+
         if(isRunning(this,"net.leung.qtmouse.MouseAccessibilityService")==true){
             DaemonEnv.startServiceMayBind(MouseAccessibilityService.class);
         }
-        Log.d("Application", "service name: "+mouseAccessibilityServiceClass.getName());
+        Log.d("Application", "service name: "+this.getPackageName());
         SpeechUtility.createUtility(LoveApplication.this, "appid=" + "5ef16797");
         Setting.setLogLevel(Setting.LOG_LEVEL.none);
         super.onCreate();
