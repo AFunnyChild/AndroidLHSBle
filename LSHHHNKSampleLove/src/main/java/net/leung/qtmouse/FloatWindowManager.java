@@ -244,22 +244,26 @@ public class FloatWindowManager {
     }
 
     private void showConfirmDialog(Context context, String message, final OnConfirmResult result) {
-        if (dialog != null && dialog.isShowing()) {
-            dialog.dismiss();
+        if (dialog ==null) {
+            dialog = new AlertDialog.Builder(LoveApplication.getInstance().getMainActivity()).setCancelable(false).setTitle("")
+                    .setMessage(message)
+                    .setPositiveButton("现在去开启",
+                            (dialog, which) -> {
+                                result.confirmResult(true);
+                                dialog.dismiss();
+                                dialog=null;
+                            }).setNegativeButton("暂不开启",
+                            (dialog, which) -> {
+                                result.confirmResult(false);
+                                dialog.dismiss();
+                                dialog=null;
+                            }).create();
         }
 
-        dialog = new AlertDialog.Builder(LoveApplication.getInstance().getMainActivity()).setCancelable(false).setTitle("")
-                .setMessage(message)
-                .setPositiveButton("现在去开启",
-                        (dialog, which) -> {
-                            result.confirmResult(true);
-                            dialog.dismiss();
-                        }).setNegativeButton("暂不开启",
-                        (dialog, which) -> {
-                            result.confirmResult(false);
-                            dialog.dismiss();
-                        }).create();
-        dialog.show();
+        if (dialog.isShowing()==false){
+            dialog.show();
+        }
+
     }
 
     private interface OnConfirmResult {
