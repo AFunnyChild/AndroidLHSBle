@@ -11,7 +11,7 @@ class BaseFloatView extends FrameLayout {
 
     protected WindowManager.LayoutParams layoutParams;
     private WindowManager windowManager = null;
-    private boolean isShowing = false;
+    public boolean isShowing = false;
 
     public BaseFloatView(@NonNull Context context) {
         super(context);
@@ -23,6 +23,7 @@ class BaseFloatView extends FrameLayout {
         if (isShowing == this.isShowing) return;
 
         if (isShowing) {
+
             getWindowManager().addView(this, layoutParams);
         } else {
             getWindowManager().removeViewImmediate(this);
@@ -52,7 +53,7 @@ class BaseFloatView extends FrameLayout {
 
     protected WindowManager getWindowManager() {
         if (windowManager == null) {
-            windowManager = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
+            windowManager = (WindowManager) getContext().getApplicationContext().getSystemService(Context.WINDOW_SERVICE);
         }
 
         return windowManager;

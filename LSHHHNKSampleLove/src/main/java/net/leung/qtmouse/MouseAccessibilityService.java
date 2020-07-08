@@ -21,6 +21,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import android.os.Bundle;
 import android.os.Handler;
 
+import com.android.sidebar.views.SideBarContent;
 import com.feng.mydemo.activity.BleScanActivity;
 import com.process.keepalive.daemon.MainActivity;
 
@@ -133,6 +134,7 @@ public class MouseAccessibilityService extends BaseAccessibilityService {
     @Override
     protected void onServiceConnected() {
         super.onServiceConnected();
+
     }
 
     @Override
@@ -151,8 +153,9 @@ public class MouseAccessibilityService extends BaseAccessibilityService {
                LoveApplication.getInstance().initService(this);
       activity = this;
         EventBus.getDefault().register(this);
-//      FloatWindowManager floatWinMgr = FloatWindowManager.getInstance();
-//     floatWinMgr.showWindow(this,true);
+      FloatWindowManager.getInstance().applyOrShowFloatWindowResume(LoveApplication.getInstance());
+
+
         Log.d(TAG, "onCreate");
     }
 
@@ -315,7 +318,7 @@ public class MouseAccessibilityService extends BaseAccessibilityService {
     /**
      * scroll from down to up
      */
-    private void performScrollBackward() {
+    public void performScrollBackward() {
         if (Build.VERSION.SDK_INT < 24) {
             doActionUnderMouse(nodeInfo -> {
                 performScrollBackward(nodeInfo);
@@ -339,7 +342,7 @@ public class MouseAccessibilityService extends BaseAccessibilityService {
     /**
      * scroll from up to down
      */
-    private void performScrollForward() {
+    public void performScrollForward() {
         if (Build.VERSION.SDK_INT < 24) {
             doActionUnderMouse(nodeInfo -> {
                 performScrollForward(nodeInfo);

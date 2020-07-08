@@ -11,6 +11,7 @@ import android.provider.Settings;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import net.leung.qtmouse.rom.HuaweiUtils;
 import net.leung.qtmouse.rom.MeizuUtils;
@@ -22,6 +23,7 @@ import net.leung.qtmouse.rom.RomUtils;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
+import com.android.sidebar.views.SideBarContent;
 import com.process.keepalive.daemon.DemoService;
 import com.process.keepalive.daemon.guard.DaemonEnv;
 
@@ -50,8 +52,9 @@ public class FloatWindowManager {
     public AVCallFloatView getFloatView() {
         return floatView;
     }
-
+    public  boolean  mIsShowMenu=true;
     public boolean applyOrShowFloatWindow(Context context,boolean showMenu) {
+         this.mIsShowMenu=showMenu;
         if (!checkAndApplyPermission(context)) {
             return false;
         }
@@ -59,9 +62,13 @@ public class FloatWindowManager {
         showWindow(LoveApplication.getInstance().getMainActivity(),showMenu);
         return true;
     }
+    public void applyOrShowFloatWindowResume(Context context){
+        applyOrShowFloatWindow(context,mIsShowMenu);
+    }
 
     public boolean checkAndApplyPermission(Context context) {
         if (!checkPermission(context)) {
+
             applyPermission(context);
             return false;
         }
@@ -142,6 +149,7 @@ public class FloatWindowManager {
     }
 
     private void applyPermission(Context context) {
+
         if (Build.VERSION.SDK_INT < 23) {
             if (RomUtils.checkIsMiuiRom()) {
                 miuiROMPermissionApply(context);
@@ -243,9 +251,13 @@ public class FloatWindowManager {
     private void showConfirmDialog(Context context, OnConfirmResult result) {
         showConfirmDialog(context, "您的手机没有授予悬浮窗权限，请开启后再试", result);
     }
-
+      String  mMessage="";
+     Context mContext=null;
     private void showConfirmDialog(Context context, String message, final OnConfirmResult result) {
-        if (dialog ==null) {
+        //
+        if (dialog ==null||(mMessage.equals(message)==false)||(mContext==null)||(mContext!=context)) {
+            mMessage=message;
+            mContext=context;
             dialog = new AlertDialog.Builder(LoveApplication.getInstance().getMainActivity()).setCancelable(false).setTitle("")
                     .setMessage(message)
                     .setPositiveButton("现在去开启",
@@ -264,6 +276,7 @@ public class FloatWindowManager {
 
 
         if (dialog.isShowing()==false){
+
             dialog.show();
         }
 
@@ -285,7 +298,7 @@ public class FloatWindowManager {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             mType = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
         } else {
-            mType = WindowManager.LayoutParams.TYPE_SYSTEM_ERROR;
+            mType = WindowManager.LayoutParams.TYPE_SYSTEM_ALERT ;
         }
         mParams.type = mType;
         mParams.format = PixelFormat.RGBA_8888;
@@ -294,12 +307,32 @@ public class FloatWindowManager {
     }
 
     public void showWindow(Context context,boolean showMenu) {
+
+        MouseAccessibilityService service = LoveApplication.getInstance().getService();
+        if (service!=null){
+            SideBarContent.getInstance().createToucher(service);
+            SideBarContent.getInstance().setiSideEventListener(new SideBarContent.ISideEventListener() {
+                @Override
+                public void onEvent(int eventIndex) {
+                    if (eventIndex==0){
+                        service.performScrollForward();
+                    }else{
+                        service.performScrollBackward();
+                    }
+                }
+            });
+            SideBarContent.getInstance().setIsShowing(showMenu);
+        }
+
         floatView=AVCallFloatView.getInstance(context);
         floatView.setNeedAnchorToSide(UserSettings.FloatViewAnchorToSide);
         floatView.setIsShowing(showMenu);
+
         cursorView = CursorView.getInstance(context);
         cursorView.setMoveSpeed(UserSettings.CursorMoveSpeed);
         cursorView.setIsShowing(showMenu);
+
+
         DaemonEnv.initialize(LoveApplication.getInstance(), DemoService.class, DaemonEnv.DEFAULT_WAKE_UP_INTERVAL);
         DemoService.sShouldStopService = false;
         DaemonEnv.startServiceMayBind(DemoService.class);

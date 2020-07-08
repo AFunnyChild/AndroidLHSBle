@@ -66,7 +66,7 @@ class CursorView extends BaseFloatView {
     @Override
     public void setIsShowing(boolean isShowing) {
         super.setIsShowing(isShowing);
-
+        if (isShowing == this.isShowing) return;
         if (isShowing) {
 
             handler.sendEmptyMessageDelayed(0, frameTime);

@@ -139,7 +139,11 @@ public class LHSBleMainActivity extends AppCompatActivity implements View.OnClic
     @SuppressLint("CheckResult")
     @Override
     public void onClick(final View v) {
-        FloatWindowManager.getInstance().applyOrShowFloatWindow(this,true);
+    if (v.getId()==R.id.btn_start){
+        FloatWindowManager.getInstance().applyOrShowFloatWindow(LoveApplication.getInstance(),true);
+    }else{
+        FloatWindowManager.getInstance().applyOrShowFloatWindow(LoveApplication.getInstance(),false);
+    }
     }
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMouseMove(JniEvent event) {
@@ -156,6 +160,6 @@ public class LHSBleMainActivity extends AppCompatActivity implements View.OnClic
     @Override
     public void onResume() {
         super.onResume();
-
+        FloatWindowManager.getInstance().applyOrShowFloatWindowResume(LoveApplication.getInstance());
     }
 }
