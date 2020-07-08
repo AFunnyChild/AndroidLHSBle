@@ -67,7 +67,6 @@ public class FloatWindowManager {
 
         //检查辅助权限
         final String serviceStr = context.getPackageName() + "/." + MouseAccessibilityService.class.getSimpleName();
-
         if (!PermissionUtil.isAccessibilityServiceEnable(context)) {
             showConfirmDialog(context, "您的手机没有授予辅助服务（" + context.getString(R.string.app_name) + "）权限，请开启后再试", confirm -> {
                 if (confirm) {
@@ -288,26 +287,16 @@ public class FloatWindowManager {
     }
 
     public void showWindow(Context context,boolean showMenu) {
-        if (!isWindowDismiss) {
-            Log.e(TAG, "view is already added here");
-            return;
-        }
-
-    if(showMenu){
-        floatView = new AVCallFloatView(context);
+        floatView=AVCallFloatView.getInstance(context);
         floatView.setNeedAnchorToSide(UserSettings.FloatViewAnchorToSide);
-        floatView.setIsShowing(true);
-    }
-        isWindowDismiss = false;
-
-        cursorView = new CursorView(context);
+        floatView.setIsShowing(showMenu);
+        cursorView = CursorView.getInstance(context);
         cursorView.setMoveSpeed(UserSettings.CursorMoveSpeed);
-        cursorView.setIsShowing(true);
-
+        cursorView.setIsShowing(showMenu);
         DaemonEnv.initialize(LoveApplication.getInstance(), DemoService.class, DaemonEnv.DEFAULT_WAKE_UP_INTERVAL);
-       DemoService.sShouldStopService = false;
-       DaemonEnv.startServiceMayBind(DemoService.class);
-       DaemonEnv.startServiceMayBind(MouseAccessibilityService.class);
+        DemoService.sShouldStopService = false;
+        DaemonEnv.startServiceMayBind(DemoService.class);
+        DaemonEnv.startServiceMayBind(MouseAccessibilityService.class);
     }
 
     public void dismissWindow() {

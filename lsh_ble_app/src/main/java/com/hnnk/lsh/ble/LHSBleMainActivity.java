@@ -26,6 +26,7 @@ import com.iflytek.VoiceWakeuperHelper;
 
 
 import net.leung.qtmouse.JniEvent;
+
 import net.leung.qtmouse.MouseEvent;
 
 import org.greenrobot.eventbus.EventBus;
@@ -156,6 +157,9 @@ public class LHSBleMainActivity extends AppCompatActivity implements View.OnClic
         }
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
 
-
+    }
 }

@@ -173,7 +173,7 @@ public class MouseAccessibilityService extends BaseAccessibilityService {
         Screen.update(newConfig.orientation);
 
         //更新光标位置
-        CursorView cursorView = CursorView.instance;
+        CursorView cursorView = CursorView.getInstance(this);
         if (cursorView != null) cursorView.updatePosition();
     }
 
@@ -182,7 +182,7 @@ public class MouseAccessibilityService extends BaseAccessibilityService {
     }
 
     private void doActionUnderMouse(ActionHandler handler) {
-        CursorView cursorView = CursorView.instance;
+        CursorView cursorView = CursorView.getInstance(this);
 
         if (handler == null || cursorView == null) return;
 
@@ -205,8 +205,7 @@ public class MouseAccessibilityService extends BaseAccessibilityService {
     }
 
     private void click() {
-        CursorView cursorView = CursorView.instance;
-
+        CursorView cursorView = CursorView.getInstance();
         if (Build.VERSION.SDK_INT >= 24 && cursorView != null) {
             final LayoutParams cursorLayout = cursorView.layoutParams;
             performGestureClick(
@@ -231,7 +230,7 @@ public class MouseAccessibilityService extends BaseAccessibilityService {
     }
 
     private void longClick() {
-        CursorView cursorView = CursorView.instance;
+        CursorView cursorView = CursorView.getInstance();
 
         if (Build.VERSION.SDK_INT >= 24 && cursorView != null) {
             final LayoutParams cursorLayout = cursorView.layoutParams;
@@ -321,8 +320,8 @@ public class MouseAccessibilityService extends BaseAccessibilityService {
             doActionUnderMouse(nodeInfo -> {
                 performScrollBackward(nodeInfo);
             });
-        } else if (CursorView.instance != null) {
-            final LayoutParams cursorLayout = CursorView.instance.layoutParams;
+        } else if (CursorView.getInstance() != null) {
+            final LayoutParams cursorLayout = CursorView.getInstance().layoutParams;
 
             if (SCROLL_START_WITH_CURSOR) {
                 startPoint.set(cursorLayout.x, cursorLayout.y);
@@ -345,8 +344,8 @@ public class MouseAccessibilityService extends BaseAccessibilityService {
             doActionUnderMouse(nodeInfo -> {
                 performScrollForward(nodeInfo);
             });
-        } else if (CursorView.instance != null) {
-            final LayoutParams cursorLayout = CursorView.instance.layoutParams;
+        } else if (CursorView.getInstance() != null) {
+            final LayoutParams cursorLayout = CursorView.getInstance().layoutParams;
 
             if (SCROLL_START_WITH_CURSOR) {
                 startPoint.set(cursorLayout.x, cursorLayout.y);
@@ -365,8 +364,8 @@ public class MouseAccessibilityService extends BaseAccessibilityService {
      * 模拟左划
      */
     private void performScrollLeft() {
-        if (Build.VERSION.SDK_INT >= 24 && CursorView.instance != null) {
-            final LayoutParams cursorLayout = CursorView.instance.layoutParams;
+        if (Build.VERSION.SDK_INT >= 24 && CursorView.getInstance() != null) {
+            final LayoutParams cursorLayout = CursorView.getInstance().layoutParams;
 
             if (SCROLL_START_WITH_CURSOR) {
                 startPoint.set(cursorLayout.x, cursorLayout.y);
@@ -388,8 +387,8 @@ public class MouseAccessibilityService extends BaseAccessibilityService {
      * 模拟右划
      */
     private void performScrollRight() {
-        if (Build.VERSION.SDK_INT >= 24 && CursorView.instance != null) {
-            final LayoutParams cursorLayout = CursorView.instance.layoutParams;
+        if (Build.VERSION.SDK_INT >= 24 && CursorView.getInstance() != null) {
+            final LayoutParams cursorLayout = CursorView.getInstance().layoutParams;
 
             if (SCROLL_START_WITH_CURSOR) {
                 startPoint.set(cursorLayout.x, cursorLayout.y);
@@ -539,34 +538,24 @@ public static void onStartClicked(int showMenu) {
 
     Handler handler = new Handler(LoveApplication.getInstance().getMainLooper());
     handler.post(new Runnable() {
-
         @Override
         public void run() {
-
-
             FloatWindowManager floatWinMgr = FloatWindowManager.getInstance();
-
             if (!serviceRunning) {
                 serviceRunning = floatWinMgr.applyOrShowFloatWindow(LoveApplication.getInstance().getMainActivity(),showMenu==1?true:false);
             } else {
-                floatWinMgr.dismissWindow();
-               // EventBus.getDefault().post(new StopServiceEvent());
                 serviceRunning = false;
             }
-
-            //onServiceStateChanged(serviceRunning);
         }
     });
 }
 public static void onStartBlueTooth(int isStart) {
     Handler handler = new Handler(LoveApplication.getInstance().getMainLooper());
     handler.post(new Runnable() {
-
         @Override
         public void run() {
             BleScanActivity  bleScanActivity=new BleScanActivity(LoveApplication.getInstance().getMainActivity());
                  bleScanActivity.showBleWindow();
-            //onServiceStateChanged(serviceRunning);
         }
     });
 }
@@ -591,12 +580,10 @@ public static void sendMouseLocationEvent(int action, int x,int y) {
 }
 /**
  * 供C++设置悬浮球吸边效果开关
- *
  * @param open true吸附false反之
  */
 public static void setFloatViewAnchorToSide(int open) {
     UserSettings.FloatViewAnchorToSide = open != 0;
-
     AVCallFloatView floatView = FloatWindowManager.getInstance().getFloatView();
     if (floatView != null)
         floatView.setNeedAnchorToSide(UserSettings.FloatViewAnchorToSide );
@@ -610,8 +597,8 @@ public static void setFloatViewAnchorToSide(int open) {
 public static void setCursorMoveSpeed(int speed) {
     UserSettings.CursorMoveSpeed = speed;
 
-    if (CursorView.instance != null)
-        CursorView.instance.setMoveSpeed(UserSettings.CursorMoveSpeed);
+    if (CursorView.getInstance() != null)
+        CursorView.getInstance().setMoveSpeed(UserSettings.CursorMoveSpeed);
 }
 
 /**
@@ -621,8 +608,8 @@ public static void setCursorMoveSpeed(int speed) {
  * @param y
  */
 public static void setCursorPosition(int x, int y) {
-    if (CursorView.instance != null)
-        CursorView.instance.setPosition(x, y);
+    if (CursorView.getInstance() != null)
+        CursorView.getInstance().setPosition(x, y);
  //EventBus.getDefault().post(new MouseEvent(0));
 }
 

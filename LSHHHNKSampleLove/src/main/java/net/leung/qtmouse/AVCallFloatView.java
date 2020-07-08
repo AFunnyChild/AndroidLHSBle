@@ -52,7 +52,19 @@ import java.util.List;
  * 悬浮球
  */
 public class AVCallFloatView extends BaseFloatView implements View.OnTouchListener, View.OnClickListener {
-    private static final String TAG = "AVCallFloatView";
+
+    private volatile static AVCallFloatView mAVCallFloatView= null;
+    public static AVCallFloatView getInstance(Context context) {
+        if (mAVCallFloatView == null) {
+            synchronized (AVCallFloatView.class) {
+                mAVCallFloatView=new AVCallFloatView(context);
+            }
+        }
+        return mAVCallFloatView;
+    }
+
+
+        private static final String TAG = "AVCallFloatView";
 
     /**
      * 记录手指按下时在小悬浮窗的View上的横坐标的值

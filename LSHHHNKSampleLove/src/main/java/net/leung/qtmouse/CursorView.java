@@ -17,8 +17,20 @@ import androidx.core.math.MathUtils;
 
 class CursorView extends BaseFloatView {
 
-    public static CursorView instance;
 
+
+    private volatile static CursorView mCursorView= null;
+    public static CursorView getInstance(Context context) {
+        if (mCursorView == null) {
+            synchronized (CursorView.class) {
+                mCursorView=new CursorView(context);
+            }
+        }
+        return mCursorView;
+    }
+    public  static CursorView getInstance(){
+        return  mCursorView;
+    }
     /**
      * 横向移动方向：-1为向左，1为向右，0不动
      */
@@ -56,7 +68,7 @@ class CursorView extends BaseFloatView {
         super.setIsShowing(isShowing);
 
         if (isShowing) {
-            instance = this;
+
             handler.sendEmptyMessageDelayed(0, frameTime);
             EventBus.getDefault().register(this);
         } else {
