@@ -174,7 +174,7 @@ public class SideBarContent implements View.OnClickListener {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             mParams.type = WindowManager.LayoutParams.TYPE_APPLICATION_PANEL;
         } else {
-            mParams.type = WindowManager.LayoutParams.TYPE_SYSTEM_ERROR;
+            mParams.type = WindowManager.LayoutParams.TYPE_TOAST;
         }
         // set bg transparent
         mParams.format = PixelFormat.RGBA_8888;

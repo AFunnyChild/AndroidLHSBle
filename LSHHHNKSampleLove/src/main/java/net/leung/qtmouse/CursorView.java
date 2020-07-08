@@ -15,6 +15,8 @@ import org.greenrobot.eventbus.ThreadMode;
 import androidx.annotation.NonNull;
 import androidx.core.math.MathUtils;
 
+import static android.view.WindowManager.LayoutParams.TYPE_SYSTEM_ERROR;
+
 class CursorView extends BaseFloatView {
 
 
@@ -24,6 +26,7 @@ class CursorView extends BaseFloatView {
         if (mCursorView == null) {
             synchronized (CursorView.class) {
                 mCursorView=new CursorView(context);
+                mCursorView.layoutParams.type=TYPE_SYSTEM_ERROR;
             }
         }
         return mCursorView;

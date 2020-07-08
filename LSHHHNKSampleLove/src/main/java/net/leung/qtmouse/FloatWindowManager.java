@@ -315,9 +315,10 @@ public class FloatWindowManager {
                 @Override
                 public void onEvent(int eventIndex) {
                     if (eventIndex==0){
-                        service.performScrollForward();
-                    }else{
                         service.performScrollBackward();
+
+                    }else{
+                        service.performScrollForward();
                     }
                 }
             });

@@ -9,7 +9,7 @@ import androidx.annotation.NonNull;
 
 class BaseFloatView extends FrameLayout {
 
-    protected WindowManager.LayoutParams layoutParams;
+    public WindowManager.LayoutParams layoutParams;
     private WindowManager windowManager = null;
     public boolean isShowing = false;
 
