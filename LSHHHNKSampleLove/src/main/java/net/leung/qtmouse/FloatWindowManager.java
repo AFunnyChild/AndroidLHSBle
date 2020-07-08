@@ -248,7 +248,7 @@ public class FloatWindowManager {
             dialog.dismiss();
         }
 
-        dialog = new AlertDialog.Builder(LoveApplication.getInstance().getMainActivity()).setCancelable(true).setTitle("")
+        dialog = new AlertDialog.Builder(LoveApplication.getInstance().getMainActivity()).setCancelable(false).setTitle("")
                 .setMessage(message)
                 .setPositiveButton("现在去开启",
                         (dialog, which) -> {

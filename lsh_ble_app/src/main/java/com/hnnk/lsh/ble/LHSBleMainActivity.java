@@ -25,8 +25,11 @@ import com.feng.mydemo.activity.BleScanActivity;
 import com.iflytek.VoiceWakeuperHelper;
 
 
+import net.leung.qtmouse.FloatWindowManager;
 import net.leung.qtmouse.JniEvent;
 
+import net.leung.qtmouse.LoveApplication;
+import net.leung.qtmouse.MouseAccessibilityService;
 import net.leung.qtmouse.MouseEvent;
 
 import org.greenrobot.eventbus.EventBus;
@@ -43,7 +46,7 @@ public class LHSBleMainActivity extends AppCompatActivity implements View.OnClic
         setContentView(R.layout.activity_main);
         findViewById(R.id.btn_start).setOnClickListener(this);
         findViewById(R.id.btn_state).setOnClickListener(this);
-
+        LoveApplication.getInstance().initActivity(this);
        EventBus.getDefault().register(this);
         activity=this;
      //   startActivity(new Intent(this, BleTestMainActivity.class));
@@ -133,20 +136,13 @@ public class LHSBleMainActivity extends AppCompatActivity implements View.OnClic
 
         }
     }
-
-    // <editor-fold defaultstate="collapsed" desc="onClick">
     @SuppressLint("CheckResult")
     @Override
     public void onClick(final View v) {
-//        select_photo();
-//        JniSelectPhoto();
-
-        //onStartBlueTooth(1);
+        FloatWindowManager.getInstance().applyOrShowFloatWindow(this,true);
     }
-
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMouseMove(JniEvent event) {
-
         switch (event.eventType) {
             case JniEvent.ON_VOICE_PASTE:
                 break;
