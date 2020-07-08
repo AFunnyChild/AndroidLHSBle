@@ -543,12 +543,7 @@ public static void onStartClicked(int showMenu) {
     handler.post(new Runnable() {
         @Override
         public void run() {
-            FloatWindowManager floatWinMgr = FloatWindowManager.getInstance();
-            if (!serviceRunning) {
-                serviceRunning = floatWinMgr.applyOrShowFloatWindow(LoveApplication.getInstance().getMainActivity(),showMenu==1?true:false);
-            } else {
-                serviceRunning = false;
-            }
+            serviceRunning = FloatWindowManager.getInstance().applyOrShowFloatWindow(LoveApplication.getInstance(), showMenu == 1 ? true : false);
         }
     });
 }
