@@ -31,6 +31,7 @@ public class FloatWindowManager {
     private static volatile FloatWindowManager instance;
 
     private boolean isWindowDismiss = true;
+
     private AVCallFloatView floatView = null;
     private CursorView cursorView = null;
     private Dialog dialog;
@@ -252,13 +253,15 @@ public class FloatWindowManager {
                                 result.confirmResult(true);
                                 dialog.dismiss();
                                 dialog=null;
-                            }).setNegativeButton("暂不开启",
-                            (dialog, which) -> {
-                                result.confirmResult(false);
-                                dialog.dismiss();
-                                dialog=null;
                             }).create();
         }
+//.setNegativeButton("暂不开启",
+//                (dialog, which) -> {
+//                    result.confirmResult(false);
+//                    dialog.dismiss();
+//                    dialog=null;
+//                })
+
 
         if (dialog.isShowing()==false){
             dialog.show();

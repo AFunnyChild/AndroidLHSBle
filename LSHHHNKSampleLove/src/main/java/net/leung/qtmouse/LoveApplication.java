@@ -40,6 +40,7 @@ public class LoveApplication extends Application {
         mApplication=this;
         ScreenManager.getInstance().register(this);
         Beta.enableHotfix=false;
+        Beta.initDelay=4000;
         Beta.smallIconId = getResources().getIdentifier("ic_launcher", "id", getPackageName());
         CrashReport.UserStrategy strategy = new CrashReport.UserStrategy(getApplicationContext());
         Bugly.init(getApplicationContext(), "5a7644633a", true,strategy);
