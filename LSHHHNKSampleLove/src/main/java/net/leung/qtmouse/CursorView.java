@@ -26,7 +26,7 @@ class CursorView extends BaseFloatView {
         if (mCursorView == null) {
             synchronized (CursorView.class) {
                 mCursorView=new CursorView(context);
-                mCursorView.layoutParams.type=TYPE_SYSTEM_ERROR;
+
             }
         }
         return mCursorView;

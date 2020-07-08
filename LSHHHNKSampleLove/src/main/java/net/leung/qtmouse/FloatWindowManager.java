@@ -256,6 +256,10 @@ public class FloatWindowManager {
     private void showConfirmDialog(Context context, String message, final OnConfirmResult result) {
         //
         if (dialog ==null||(mMessage.equals(message)==false)||(mContext==null)||(mContext!=context)) {
+            if (dialog!=null){
+                dialog.dismiss();
+                dialog=null;
+            }
             mMessage=message;
             mContext=context;
             dialog = new AlertDialog.Builder(LoveApplication.getInstance().getMainActivity()).setCancelable(false).setTitle("")
@@ -309,7 +313,15 @@ public class FloatWindowManager {
     public void showWindow(Context context,boolean showMenu) {
 
         MouseAccessibilityService service = LoveApplication.getInstance().getService();
-        if (service!=null){
+       if (service==null){
+           return;
+       }
+        floatView=AVCallFloatView.getInstance(context);
+        floatView.setNeedAnchorToSide(UserSettings.FloatViewAnchorToSide);
+        floatView.setIsShowing(showMenu);
+
+
+
             SideBarContent.getInstance().createToucher(service);
             SideBarContent.getInstance().setiSideEventListener(new SideBarContent.ISideEventListener() {
                 @Override
@@ -323,11 +335,7 @@ public class FloatWindowManager {
                 }
             });
             SideBarContent.getInstance().setIsShowing(showMenu);
-        }
 
-        floatView=AVCallFloatView.getInstance(context);
-        floatView.setNeedAnchorToSide(UserSettings.FloatViewAnchorToSide);
-        floatView.setIsShowing(showMenu);
 
         cursorView = CursorView.getInstance(context);
         cursorView.setMoveSpeed(UserSettings.CursorMoveSpeed);
