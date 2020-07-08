@@ -327,12 +327,12 @@ public class MouseAccessibilityService extends BaseAccessibilityService {
             final LayoutParams cursorLayout = CursorView.getInstance().layoutParams;
 
             if (SCROLL_START_WITH_CURSOR) {
-                startPoint.set(cursorLayout.x, cursorLayout.y);
-                endPoint.set(cursorLayout.x, Screen.y(cursorLayout.y + UP_DOWN_SCROLL_DISTANCE));
+                startPoint.set(cursorLayout.x-150, cursorLayout.y);
+                endPoint.set(cursorLayout.x-150, Screen.y(cursorLayout.y + UP_DOWN_SCROLL_DISTANCE));
             } else {
                 int centerY = Screen.getHeight() / 2;
-                startPoint.set(cursorLayout.x, centerY - scrollUpDownDistance);
-                endPoint.set(cursorLayout.x, centerY + scrollUpDownDistance);
+                startPoint.set(cursorLayout.x-150, centerY - scrollUpDownDistance);
+                endPoint.set(cursorLayout.x-150, centerY + scrollUpDownDistance);
             }
 
             performGestureMove(startPoint, endPoint, UP_DOWN_SCROLL_DURATION, performScrollBackwardCB);
@@ -351,12 +351,12 @@ public class MouseAccessibilityService extends BaseAccessibilityService {
             final LayoutParams cursorLayout = CursorView.getInstance().layoutParams;
 
             if (SCROLL_START_WITH_CURSOR) {
-                startPoint.set(cursorLayout.x, cursorLayout.y);
-                endPoint.set(cursorLayout.x, Screen.y(cursorLayout.y - UP_DOWN_SCROLL_DISTANCE));
+                startPoint.set(cursorLayout.x-150, cursorLayout.y);
+                endPoint.set(cursorLayout.x-150, Screen.y(cursorLayout.y - UP_DOWN_SCROLL_DISTANCE));
             } else {
                 int centerY = Screen.getHeight() / 2;
-                startPoint.set(cursorLayout.x, centerY + scrollUpDownDistance);
-                endPoint.set(cursorLayout.x, centerY - scrollUpDownDistance);
+                startPoint.set(cursorLayout.x-150, centerY + scrollUpDownDistance);
+                endPoint.set(cursorLayout.x-150, centerY - scrollUpDownDistance);
             }
 
             performGestureMove(startPoint, endPoint, UP_DOWN_SCROLL_DURATION, performScrollForwardCB);
