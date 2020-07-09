@@ -59,7 +59,7 @@ public class FloatWindowManager {
             return false;
         }
 
-        showWindow(LoveApplication.getInstance().getMainActivity(),showMenu);
+        showWindow(context,showMenu);
         return true;
     }
     public void applyOrShowFloatWindowResume(Context context){

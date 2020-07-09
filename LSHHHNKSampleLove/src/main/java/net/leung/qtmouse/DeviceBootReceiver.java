@@ -4,8 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-
-
+import android.util.Log;
 
 
 import com.process.keepalive.daemon.DemoService;
@@ -24,10 +23,7 @@ public class DeviceBootReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         if (intent.getAction().equals(ACTION_BOOT)) {
 
-            DaemonEnv.initialize(context.getApplicationContext(), DemoService.class, DaemonEnv.DEFAULT_WAKE_UP_INTERVAL);
-           DemoService.sShouldStopService = false;
-           DaemonEnv.startServiceMayBind(DemoService.class);
-           DaemonEnv.startServiceMayBind(MouseAccessibilityService.class);
+
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 if(MouseAccessibilityService.isAccessibilityServiceEnable(context)) {
@@ -46,6 +42,13 @@ public class DeviceBootReceiver extends BroadcastReceiver {
                     MainPageGo(context);
                 }
             }
+            DaemonEnv.initialize(context.getApplicationContext(), DemoService.class, DaemonEnv.DEFAULT_WAKE_UP_INTERVAL);
+            DemoService.sShouldStopService = false;
+            DaemonEnv.startServiceMayBind(DemoService.class);
+            DaemonEnv.startServiceMayBind(MouseAccessibilityService.class);
+            if (LoveApplication.getInstance().getMainActivity()==null){
+                MainPageGo(context);
+            }
         }
     }
 
@@ -54,11 +57,15 @@ public class DeviceBootReceiver extends BroadcastReceiver {
         try {
             activity_class   = Class.forName("net.leung.qtmouse.MainActivity");
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
+            Log.d("Application", "MainPageGo: "+e.getMessage());
         }
-        Intent launch = new Intent(context, activity_class);
-        launch.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(launch);
+        if (activity_class!=null){
+            Intent launch = new Intent(context, activity_class);
+            launch.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(launch);
+        }
+
     }
 
 }

@@ -153,7 +153,7 @@ public class MouseAccessibilityService extends BaseAccessibilityService {
                LoveApplication.getInstance().initService(this);
       activity = this;
         EventBus.getDefault().register(this);
-      FloatWindowManager.getInstance().applyOrShowFloatWindowResume(LoveApplication.getInstance());
+      FloatWindowManager.getInstance().applyOrShowFloatWindowResume(this);
 
 
         Log.d(TAG, "onCreate");
