@@ -490,7 +490,7 @@ String  voice_text="";
                if (focus_input!=null){
                    focus1=focus_input;
                }
-               if (event.voice!=null){
+               if (event.voice!=null&&(event.action==MouseEvent.VOICE)){
                    voice_text=event.voice;
                    fillText(focus1,voice_text);
                   // MainActivityJni.VoicePaste();

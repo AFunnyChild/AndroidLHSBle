@@ -42,13 +42,13 @@ class BaseFloatView extends FrameLayout {
      * @param ignore
      */
     public void ignoreTouch(boolean ignore) {
-        if(this.getVisibility()!= View.VISIBLE){
-            return;
-        }
-        if (ignore) layoutParams.flags |= WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE;
-        else layoutParams.flags &= ~WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE;
-
-        getWindowManager().updateViewLayout(this, layoutParams);
+//        if(this.getVisibility()!= View.VISIBLE){
+//            return;
+//        }
+//        if (ignore) layoutParams.flags |= WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE;
+//        else layoutParams.flags &= ~WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE;
+//
+//        getWindowManager().updateViewLayout(this, layoutParams);
     }
 
     protected WindowManager getWindowManager() {

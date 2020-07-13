@@ -18,7 +18,9 @@ public class MouseEvent {
             ZOOM_OUT = 11,//缩小
             LONG_CLICK = 12,//长按
             HOME = 12,//HOME
-            LOCATION = 14;//HOME
+            LOCATION = 14,
+            VOICE=15;
+
 
     public  int action=0;
     public  boolean cancel=false;

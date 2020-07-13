@@ -147,7 +147,7 @@ public class AVCallFloatView extends BaseFloatView implements View.OnTouchListen
 
             if (id==5){
             //  MainActivity.ResetMouse();
-              EventBus.getDefault().post(new JniEvent(JniEvent.ON_RESET_MOUSE));
+                   EventBus.getDefault().post(new JniEvent(JniEvent.ON_RESET_MOUSE));
              }
 
             }
@@ -498,7 +498,7 @@ public class AVCallFloatView extends BaseFloatView implements View.OnTouchListen
         if (islast){
             new Handler().postDelayed(new Runnable(){
                 public void run() {
-                    EventBus.getDefault().post(new MouseEvent(-1, resultBuffer.toString()));
+                    EventBus.getDefault().post(new MouseEvent(MouseEvent.VOICE, resultBuffer.toString()));
                     mVoiceWakeuperHelper.startListening();
                 }
             }, 1000);

@@ -52,7 +52,7 @@ public class FloatWindowManager {
     public AVCallFloatView getFloatView() {
         return floatView;
     }
-    public  boolean  mIsShowMenu=true;
+    public  boolean  mIsShowMenu=false;
     public boolean applyOrShowFloatWindow(Context context,boolean showMenu) {
          this.mIsShowMenu=showMenu;
         if (!checkAndApplyPermission(context)) {
