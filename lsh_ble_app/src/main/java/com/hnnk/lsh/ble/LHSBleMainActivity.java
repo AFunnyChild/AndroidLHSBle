@@ -160,6 +160,7 @@ public class LHSBleMainActivity extends AppCompatActivity implements View.OnClic
     @Override
     public void onResume() {
         super.onResume();
+
         FloatWindowManager.getInstance().applyOrShowFloatWindowResume(LoveApplication.getInstance());
     }
 }

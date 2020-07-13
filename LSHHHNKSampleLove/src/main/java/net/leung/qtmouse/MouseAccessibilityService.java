@@ -498,7 +498,12 @@ String  voice_text="";
                }
         switch (event.action) {
             case MouseEvent.CLICK:
-                click();
+                if (AVCallFloatView.getInstance(LoveApplication.getInstance()).mCb_twe!=null){
+                    if (AVCallFloatView.getInstance(LoveApplication.getInstance()).mCb_twe.isChecked()==false){
+                        click();
+                    }
+                }
+
                 break;
             case MouseEvent.RETURN:
                 performBackClick();

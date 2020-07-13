@@ -164,6 +164,7 @@ class CursorView extends BaseFloatView {
                  // 直接移除，定时器停止
                      layoutParams.x = msg.arg1;
                      layoutParams.y = msg.arg2;
+                        AVCallFloatView.getInstance(mCursorView.getContext()).updateViewPosition(msg.arg1,msg.arg2);
                      updatePosition();
                  break;
                 default:

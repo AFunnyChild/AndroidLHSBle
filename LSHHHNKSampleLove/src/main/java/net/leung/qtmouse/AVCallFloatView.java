@@ -14,6 +14,8 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Interpolator;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -54,6 +56,9 @@ import java.util.List;
 public class AVCallFloatView extends BaseFloatView implements View.OnTouchListener, View.OnClickListener {
 
     private volatile static AVCallFloatView mAVCallFloatView= null;
+    public CheckBox mCb_one;
+    public CheckBox mCb_twe;
+
     public static AVCallFloatView getInstance(Context context) {
         if (mAVCallFloatView == null) {
             synchronized (AVCallFloatView.class) {
@@ -95,7 +100,7 @@ public class AVCallFloatView extends BaseFloatView implements View.OnTouchListen
      */
     private float yDownInScreen;
 
-    private boolean needAnchorToSide = true;
+    private boolean needAnchorToSide = false;
 
     private boolean isAnchoring = false;
     private View menuButton;
@@ -195,7 +200,7 @@ public class AVCallFloatView extends BaseFloatView implements View.OnTouchListen
         }
     };
 
-
+   boolean  mCbOneCheck=true;
     private void initView() {
         LayoutInflater inflater = LayoutInflater.from(getContext());
         View floatView = inflater.inflate(R.layout.view_accessibility_view, null);
@@ -210,11 +215,18 @@ public class AVCallFloatView extends BaseFloatView implements View.OnTouchListen
         // 使用UI听写功能，请根据sdk文件目录下的notice.txt,放置布局文件和图片资源
         mIatDialog = new RecognizerDialog(LoveApplication.getInstance(), mInitListener);
         menuButton = findViewById(R.id.rl_accessibility);
-        findViewById(R.id.cb_twe);
+        mCb_twe=  findViewById(R.id.cb_twe);
 
         menuButton.setOnTouchListener(this);
         findViewById(R.id.cb_four).setOnTouchListener(this);
         findViewById(R.id.cb_three).setOnClickListener(this);
+        mCb_one = findViewById(R.id.cb_one);
+        mCb_one.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                  mCbOneCheck=b;
+            }
+        });
         layoutParams.x = Screen.getWidth() - dp2px(getContext(), 100);
         layoutParams.y = Screen.getHeight() - dp2px(getContext(), 171);
         new Thread(new Runnable() {
@@ -406,7 +418,20 @@ public class AVCallFloatView extends BaseFloatView implements View.OnTouchListen
         Log.e(TAG, "x  " + layoutParams.x + "   y  " + layoutParams.y);
         getWindowManager().updateViewLayout(this, layoutParams);
     }
+    public void updateViewPosition(int x,int y) {
+        //增加移动误差\
+        if ((mCb_one!=null)&&(mCb_one.isChecked()==false)){
+            xInScreen=x;
+            yInScreen=y;
+            xInView=xInScreen+mCb_one.getX();
+            yInScreen=yInScreen+mCb_one.getY();
+            layoutParams.x = (int) (xInScreen - xInView);
+            layoutParams.y = (int) (yInScreen - yInView);
+            Log.e(TAG, "x  " + layoutParams.x + "   y  " + layoutParams.y);
+            getWindowManager().updateViewLayout(this, layoutParams);
+        }
 
+    }
     /**
      * 参数设置
      *
