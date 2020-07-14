@@ -22,6 +22,8 @@ import java.util.List;
 
 import androidx.annotation.Nullable;
 
+import org.greenrobot.eventbus.EventBus;
+
 public class BaseAccessibilityService extends AccessibilityService {
 
     private static String TAG = BaseAccessibilityService.class.getName();
@@ -214,7 +216,9 @@ public class BaseAccessibilityService extends AccessibilityService {
 /**
  * 模拟主页操作
  */
+
 public void performHomeClick() {
+
     performGlobalAction( GLOBAL_ACTION_HOME);
 }
     /**

@@ -17,7 +17,7 @@ import androidx.core.math.MathUtils;
 
 import static android.view.WindowManager.LayoutParams.TYPE_SYSTEM_ERROR;
 
-class CursorView extends BaseFloatView {
+public class CursorView extends BaseFloatView {
 
 
 
@@ -74,6 +74,7 @@ class CursorView extends BaseFloatView {
 
             handler.sendEmptyMessageDelayed(0, frameTime);
             EventBus.getDefault().register(this);
+
         } else {
             EventBus.getDefault().unregister(this);
         }
@@ -165,12 +166,16 @@ class CursorView extends BaseFloatView {
                      layoutParams.x = msg.arg1;
                      layoutParams.y = msg.arg2;
                         AVCallFloatView.getInstance(mCursorView.getContext()).updateViewPosition(msg.arg1,msg.arg2);
-                     updatePosition();
+                  //   updatePosition();
                  break;
                 default:
                     break;
             }
         }
     };
-
+    public void  updatePosition(int x ,int y){
+          layoutParams.x=x;
+          layoutParams.y=y;
+        updatePosition();
+    }
 }

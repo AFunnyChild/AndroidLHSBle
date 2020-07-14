@@ -35,7 +35,7 @@ public class FloatWindowManager {
     private boolean isWindowDismiss = true;
 
     private AVCallFloatView floatView = null;
-    private CursorView cursorView = null;
+    public CursorView cursorView = null;
     private Dialog dialog;
 
     public static FloatWindowManager getInstance() {

@@ -25,6 +25,7 @@ import com.feng.mydemo.activity.BleScanActivity;
 import com.iflytek.VoiceWakeuperHelper;
 
 
+import net.leung.qtmouse.CursorView;
 import net.leung.qtmouse.FloatWindowManager;
 import net.leung.qtmouse.JniEvent;
 
@@ -136,13 +137,30 @@ public class LHSBleMainActivity extends AppCompatActivity implements View.OnClic
 
         }
     }
+    int i=0;
     @SuppressLint("CheckResult")
     @Override
     public void onClick(final View v) {
     if (v.getId()==R.id.btn_start){
         FloatWindowManager.getInstance().applyOrShowFloatWindow(LoveApplication.getInstance(),true);
     }else{
-        FloatWindowManager.getInstance().applyOrShowFloatWindow(LoveApplication.getInstance(),false);
+     //   FloatWindowManager.getInstance().applyOrShowFloatWindow(LoveApplication.getInstance(),false);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    while (true){
+
+                        Thread.sleep(100);//延时1s
+                        i+=2;
+                        FloatWindowManager.getInstance().cursorView.setPosition(10*i,10*i);
+                    }
+                    //do something
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
     }
     }
     @Subscribe(threadMode = ThreadMode.MAIN)

@@ -219,6 +219,7 @@ public class AVCallFloatView extends BaseFloatView implements View.OnTouchListen
 
         menuButton.setOnTouchListener(this);
         findViewById(R.id.cb_four).setOnTouchListener(this);
+        findViewById(R.id.cb_one).setOnTouchListener(this);
         findViewById(R.id.cb_three).setOnClickListener(this);
         mCb_one = findViewById(R.id.cb_one);
         mCb_one.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -269,6 +270,7 @@ public class AVCallFloatView extends BaseFloatView implements View.OnTouchListen
                 yInScreen = event.getRawY();
                 // 手指移动的时候更新小悬浮窗的位置
                 updateViewPosition();
+
                 break;
             case MotionEvent.ACTION_UP:
                 if (Math.abs(xDownInScreen - xInScreen) <= ViewConfiguration.get(getContext()).getScaledTouchSlop()
@@ -416,20 +418,25 @@ public class AVCallFloatView extends BaseFloatView implements View.OnTouchListen
 
         layoutParams.x = (int) (xInScreen - xInView);
         layoutParams.y = (int) (yInScreen - yInView);
-        Log.e(TAG, "x  " + layoutParams.x + "   y  " + layoutParams.y);
+        Log.e(TAG, "xInScreen  " +xInScreen+"xInView-" +xInView+"-"+ layoutParams.x + "   y  " + layoutParams.y);
         getWindowManager().updateViewLayout(this, layoutParams);
     }
+    int[] location = new  int[2] ;
     public void updateViewPosition(int x,int y) {
         //增加移动误差\
         if ((mCb_one!=null)&&(mCb_one.isChecked()==false)){
             xInScreen=x;
             yInScreen=y;
-            xInView=xInScreen+mCb_one.getX();
-            yInScreen=yInScreen+mCb_one.getY();
             layoutParams.x = (int) (xInScreen - xInView);
             layoutParams.y = (int) (yInScreen - yInView);
-            Log.e(TAG, "x  " + layoutParams.x + "   y  " + layoutParams.y);
+
             getWindowManager().updateViewLayout(this, layoutParams);
+            Log.e(TAG, "xInScreen  " +xInScreen+"xInView-" +xInView+"-"+ layoutParams.x + "   y  " + layoutParams.y);
+
+            mCb_one.getLocationOnScreen(location);//获取在整个屏幕内的绝对坐标
+            CursorView.getInstance().updatePosition(location[0],location[1]);
+        }else{
+            CursorView.getInstance().updatePosition();
         }
 
     }
