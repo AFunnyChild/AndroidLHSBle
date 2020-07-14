@@ -442,8 +442,8 @@ public class AVCallFloatView extends BaseFloatView implements View.OnTouchListen
     }
       public boolean isMouseInView(int x ,int y){
         getLocationOnScreen(location);
-        if (x-location[0]>0&&x-location[0]<getWidth()){
-            if (y-location[1]>0&&y-location[1]<getHeight()){
+        if (x>location[0]&&x-location[0]<getWidth()){
+            if (y>location[1]&&y-location[1]<getHeight()){
             return true;
             }
         }

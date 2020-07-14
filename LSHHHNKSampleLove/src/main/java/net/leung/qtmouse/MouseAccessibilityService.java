@@ -28,7 +28,7 @@ import com.process.keepalive.daemon.MainActivity;
 import android.content.Context;
 import android.content.ClipData;
 import android.content.ClipboardManager;
-
+import android.widget.Toast;
 
 
 public class MouseAccessibilityService extends BaseAccessibilityService {
@@ -501,11 +501,19 @@ String  voice_text="";
             case MouseEvent.CLICK:
                 if (AVCallFloatView.getInstance(LoveApplication.getInstance()).mCb_twe!=null){
 
+                    if (AVCallFloatView.getInstance(LoveApplication.getInstance()).mCb_one.isChecked()==false){
+                        AVCallFloatView.getInstance(LoveApplication.getInstance()).mCb_one.setChecked(true);
+                        EventBus.getDefault().post(new JniEvent(JniEvent.ON_RESET_MOUSE));
+                        break;
+                    }
+
                     CursorView cursorView = CursorView.getInstance();
                     cursorView.getLocationOnScreen(mLocation);//获取在整个屏幕内的绝对坐标
                     if (AVCallFloatView.getInstance(LoveApplication.getInstance()).isMouseInView(mLocation[0]+10,mLocation[1]+10)){
-                         click();
+
+                        click();
                     }else{
+
                         if (AVCallFloatView.getInstance(LoveApplication.getInstance()).mCb_twe.isChecked()==true){
                             click();
                         }
