@@ -275,10 +275,11 @@ public class AVCallFloatView extends BaseFloatView implements View.OnTouchListen
                         && Math.abs(yDownInScreen - yInScreen) <= ViewConfiguration.get(getContext()).getScaledTouchSlop()) {
                     // 点击效果
                     v.performClick();
-                } else if (isNeedAnchorToSide()) {
-                    //吸附效果
-                    anchorToSide();
-                }
+              }
+//                else if (isNeedAnchorToSide()) {
+//                    //吸附效果
+//                    anchorToSide();
+//                }
                 break;
             default:
                 break;

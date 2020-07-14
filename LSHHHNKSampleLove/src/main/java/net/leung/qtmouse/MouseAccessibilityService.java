@@ -499,7 +499,7 @@ String  voice_text="";
         switch (event.action) {
             case MouseEvent.CLICK:
                 if (AVCallFloatView.getInstance(LoveApplication.getInstance()).mCb_twe!=null){
-                    if (AVCallFloatView.getInstance(LoveApplication.getInstance()).mCb_twe.isChecked()==false){
+                    if (AVCallFloatView.getInstance(LoveApplication.getInstance()).mCb_twe.isChecked()==true){
                         click();
                     }
                 }
