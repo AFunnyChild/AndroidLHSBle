@@ -206,14 +206,15 @@ public class MouseAccessibilityService extends BaseAccessibilityService {
 
         nodeInfo.recycle();
     }
-
+    int[] mLocation = new  int[2] ;
     private void click() {
         CursorView cursorView = CursorView.getInstance();
+
         if (Build.VERSION.SDK_INT >= 24 && cursorView != null) {
             final LayoutParams cursorLayout = cursorView.layoutParams;
             performGestureClick(
-                    cursorLayout.x+10,
-                    cursorLayout.y+10,
+                    mLocation[0]+10,
+                    mLocation[1]+10,
                     new GestureMoveCallback("performGestureClick") {
                         @Override
                         public void onCancelled(GestureDescription gestureDescription) {
@@ -499,9 +500,17 @@ String  voice_text="";
         switch (event.action) {
             case MouseEvent.CLICK:
                 if (AVCallFloatView.getInstance(LoveApplication.getInstance()).mCb_twe!=null){
-                    if (AVCallFloatView.getInstance(LoveApplication.getInstance()).mCb_twe.isChecked()==true){
-                        click();
+
+                    CursorView cursorView = CursorView.getInstance();
+                    cursorView.getLocationOnScreen(mLocation);//获取在整个屏幕内的绝对坐标
+                    if (AVCallFloatView.getInstance(LoveApplication.getInstance()).isMouseInView(mLocation[0]+10,mLocation[1]+10)){
+                         click();
+                    }else{
+                        if (AVCallFloatView.getInstance(LoveApplication.getInstance()).mCb_twe.isChecked()==true){
+                            click();
+                        }
                     }
+
                 }
 
                 break;
