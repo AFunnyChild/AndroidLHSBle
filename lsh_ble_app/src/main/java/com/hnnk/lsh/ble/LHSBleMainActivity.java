@@ -144,23 +144,8 @@ public class LHSBleMainActivity extends AppCompatActivity implements View.OnClic
     if (v.getId()==R.id.btn_start){
         FloatWindowManager.getInstance().applyOrShowFloatWindow(LoveApplication.getInstance(),true);
     }else{
-     //   FloatWindowManager.getInstance().applyOrShowFloatWindow(LoveApplication.getInstance(),false);
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    while (true){
+        FloatWindowManager.getInstance().applyOrShowFloatWindow(LoveApplication.getInstance(),false);
 
-                        Thread.sleep(100);//延时1s
-                        i+=2;
-                        FloatWindowManager.getInstance().cursorView.setPosition(10*i,10*i);
-                    }
-                    //do something
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        }).start();
     }
     }
     @Subscribe(threadMode = ThreadMode.MAIN)

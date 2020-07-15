@@ -19,6 +19,7 @@ public class SinglePixelActivity extends Activity {
 
     public static void launch(Context context) {
         Intent intent = new Intent(context, SinglePixelActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
     }
 

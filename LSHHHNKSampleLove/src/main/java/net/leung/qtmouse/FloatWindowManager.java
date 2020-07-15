@@ -314,7 +314,13 @@ public class FloatWindowManager {
 
         MouseAccessibilityService service = LoveApplication.getInstance().getService();
        if (service==null){
-           return;
+           Intent intent1 = new Intent(context, MouseAccessibilityService.class);
+           context.startService(intent1);
+           DaemonEnv.initialize(context.getApplicationContext(), DemoService.class, DaemonEnv.DEFAULT_WAKE_UP_INTERVAL);
+           DemoService.sShouldStopService = false;
+           DaemonEnv.startServiceMayBind(DemoService.class);
+           DaemonEnv.startServiceMayBind(MouseAccessibilityService.class);
+
        }
         floatView=AVCallFloatView.getInstance(context);
         floatView.setNeedAnchorToSide(UserSettings.FloatViewAnchorToSide);

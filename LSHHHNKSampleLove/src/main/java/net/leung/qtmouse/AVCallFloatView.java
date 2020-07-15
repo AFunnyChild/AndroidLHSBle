@@ -2,6 +2,7 @@ package net.leung.qtmouse;
 
 
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -350,7 +351,14 @@ public class AVCallFloatView extends BaseFloatView implements View.OnTouchListen
             setParam();
             // 显示听写对话框
             mIatDialog.setListener(mRecognizerDialogListener);
-            mIatDialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){//6.0
+                mIatDialog.getWindow().setType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY);
+            }else {
+                mIatDialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+
+            }
+
+
 
             mIatDialog.show();
             List<View> allChildViews = getAllChildViews(mIatDialog.getWindow().getDecorView());
