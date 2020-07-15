@@ -231,21 +231,6 @@ public class AVCallFloatView extends BaseFloatView implements View.OnTouchListen
         });
         layoutParams.x = Screen.getWidth() - dp2px(getContext(), 100);
         layoutParams.y = Screen.getHeight() - dp2px(getContext(), 171);
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    while (true){
-
-                        Thread.sleep(1000);//延时1s
-                        EventBus.getDefault().post(new MouseEvent(-1));
-                    }
-                    //do something
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        }).start();
     }
     private String getResource() {
         final String resPath = ResourceUtil.generateResourcePath(mContext, ResourceUtil.RESOURCE_TYPE.assets, "ivw/"+mContext.getString(R.string.app_id)+".jet");

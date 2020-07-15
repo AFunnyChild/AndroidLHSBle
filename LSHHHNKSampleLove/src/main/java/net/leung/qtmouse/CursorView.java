@@ -70,14 +70,12 @@ public class CursorView extends BaseFloatView {
     public void setIsShowing(boolean isShowing) {
         super.setIsShowing(isShowing);
         if (isShowing == this.isShowing) return;
-        if (isShowing) {
-
-            handler.sendEmptyMessageDelayed(0, frameTime);
-            EventBus.getDefault().register(this);
-
-        } else {
-            EventBus.getDefault().unregister(this);
-        }
+//        if (isShowing) {
+//            EventBus.getDefault().register(this);
+//
+//        } else {
+//            EventBus.getDefault().unregister(this);
+//        }
     }
 
     /**
@@ -104,25 +102,25 @@ public class CursorView extends BaseFloatView {
         handler.sendMessage(msg);
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onMouseMove(MouseEvent event) {
-        switch (event.action) {
-            case MouseEvent.MOVE_LEFT:
-                xDir = event.cancel ? 0 : -1;
-                break;
-            case MouseEvent.MOVE_RIGHT:
-                xDir = event.cancel ? 0 : 1;
-                break;
-            case MouseEvent.MOVE_UP:
-                yDir = event.cancel ? 0 : -1;
-                break;
-            case MouseEvent.MOVE_DOWN:
-                yDir = event.cancel ? 0 : 1;
-                break;
-            default:
-                break;
-        }
-    }
+//    @Subscribe(threadMode = ThreadMode.MAIN)
+//    public void onMouseMove(MouseEvent event) {
+//        switch (event.action) {
+//            case MouseEvent.MOVE_LEFT:
+//                xDir = event.cancel ? 0 : -1;
+//                break;
+//            case MouseEvent.MOVE_RIGHT:
+//                xDir = event.cancel ? 0 : 1;
+//                break;
+//            case MouseEvent.MOVE_UP:
+//                yDir = event.cancel ? 0 : -1;
+//                break;
+//            case MouseEvent.MOVE_DOWN:
+//                yDir = event.cancel ? 0 : 1;
+//                break;
+//            default:
+//                break;
+//        }
+//    }
 
     public void updatePosition() {
         final int screenWidth = Screen.getWidth() - getWidth() / 4;
@@ -144,14 +142,14 @@ public class CursorView extends BaseFloatView {
             switch (msg.what) {
                 case 0:
                     // 移除所有的msg.what为0等消息，保证只有一个循环消息队列再跑
-                    handler.removeMessages(0);
-
-                    // app的功能逻辑处理
-                    if (xDir != 0 || yDir != 0) {
-                        layoutParams.x += moveSpeed * xDir;
-                        layoutParams.y += moveSpeed * yDir;
-                        updatePosition();
-                    }
+//                    handler.removeMessages(0);
+//
+//                    // app的功能逻辑处理
+//                    if (xDir != 0 || yDir != 0) {
+//                        layoutParams.x += moveSpeed * xDir;
+//                        layoutParams.y += moveSpeed * yDir;
+//                        updatePosition();
+//                    }
 
                     // 再次发出msg，循环更新
                  //   handler.sendEmptyMessageDelayed(0, frameTime);
@@ -159,7 +157,7 @@ public class CursorView extends BaseFloatView {
 
                 case 1:
                     // 直接移除，定时器停止
-                    handler.removeMessages(0);
+                  //  handler.removeMessages(0);
                     break;
                     case 2:
                  // 直接移除，定时器停止
