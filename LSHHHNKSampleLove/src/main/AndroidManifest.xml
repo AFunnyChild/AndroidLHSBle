@@ -2,7 +2,7 @@
     package="net.leung.qtmouse" >
 
 
-    <application>
+    <application >
 
 
         <receiver android:name="net.leung.qtmouse.DeviceBootReceiver">
