@@ -3,6 +3,11 @@ import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Build;
+import android.os.PowerManager;
+import android.provider.Settings;
 import android.util.Log;
 
 import com.iflytek.cloud.Setting;
@@ -19,6 +24,8 @@ import com.tencent.bugly.crashreport.CrashReport;
 import net.leung.qtmouse.tools.Screen;
 
 import java.util.ArrayList;
+
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
 
 public class LoveApplication extends Application {
@@ -71,8 +78,28 @@ public class LoveApplication extends Application {
 
             //  Beta.showUpgradeDialog(upgradeInfo.title,upgradeInfo.upgradeType,upgradeInfo.newFeature,upgradeInfo.publishTime,1,upgradeInfo.versionCode,upgradeInfo.versionName,upgradeInfo.apkUrl,upgradeInfo.fileSize,upgradeInfo.apkMd5,upgradeInfo.imageUrl,0,null,null,null,true);
         }
+        ignoreBatteryOptimization(this);
     }
 
+    /**
+     * 忽略电池优化
+     */
+    private void ignoreBatteryOptimization(Context activity) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
+            PowerManager powerManager = (PowerManager) getSystemService(POWER_SERVICE);
+
+            boolean hasIgnored = powerManager.isIgnoringBatteryOptimizations(activity.getPackageName());
+            //  判断当前APP是否有加入电池优化的白名单，如果没有，弹出加入电池优化的白名单的设置对话框。
+            if (!hasIgnored) {
+                Intent intent = new Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
+                intent.setData(Uri.parse("package:" + activity.getPackageName()));
+                intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+            }
+        }
+
+    }
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);

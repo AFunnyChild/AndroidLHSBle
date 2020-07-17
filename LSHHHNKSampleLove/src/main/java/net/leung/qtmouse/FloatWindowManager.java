@@ -55,6 +55,10 @@ public class FloatWindowManager {
     public  boolean  mIsShowMenu=false;
     public boolean applyOrShowFloatWindow(Context context,boolean showMenu) {
          this.mIsShowMenu=showMenu;
+        if (dialog!=null){
+            dialog.dismiss();
+            dialog=null;
+        }
         if (!checkAndApplyPermission(context)) {
             return false;
         }
