@@ -321,7 +321,7 @@ public class FloatWindowManager {
            DaemonEnv.initialize(context.getApplicationContext(), DemoService.class, DaemonEnv.DEFAULT_WAKE_UP_INTERVAL);
            DemoService.sShouldStopService = false;
            DaemonEnv.startServiceMayBind(DemoService.class);
-           DaemonEnv.startServiceMayBind(MouseAccessibilityService.class);
+          // DaemonEnv.startServiceMayBind(MouseAccessibilityService.class);
 
        }
 
@@ -341,7 +341,7 @@ public class FloatWindowManager {
         DaemonEnv.initialize(LoveApplication.getInstance(), DemoService.class, DaemonEnv.DEFAULT_WAKE_UP_INTERVAL);
         DemoService.sShouldStopService = false;
         DaemonEnv.startServiceMayBind(DemoService.class);
-        DaemonEnv.startServiceMayBind(MouseAccessibilityService.class);
+     //   DaemonEnv.startServiceMayBind(MouseAccessibilityService.class);
     }
 
     public void dismissWindow() {

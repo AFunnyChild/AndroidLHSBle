@@ -45,7 +45,7 @@ public class DeviceBootReceiver extends BroadcastReceiver {
             DaemonEnv.initialize(context.getApplicationContext(), DemoService.class, DaemonEnv.DEFAULT_WAKE_UP_INTERVAL);
             DemoService.sShouldStopService = false;
             DaemonEnv.startServiceMayBind(DemoService.class);
-            DaemonEnv.startServiceMayBind(MouseAccessibilityService.class);
+         //   DaemonEnv.startServiceMayBind(MouseAccessibilityService.class);
             if (LoveApplication.getInstance().getMainActivity()==null){
                 MainPageGo(context);
             }

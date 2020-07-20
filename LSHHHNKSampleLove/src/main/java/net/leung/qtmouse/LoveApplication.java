@@ -38,7 +38,7 @@ public class LoveApplication extends Application {
         DaemonEnv.startServiceMayBind(DemoService.class);
 
         if(isRunning(this,"net.leung.qtmouse.MouseAccessibilityService")==true){
-            DaemonEnv.startServiceMayBind(MouseAccessibilityService.class);
+          //  DaemonEnv.startServiceMayBind(MouseAccessibilityService.class);
         }
         Log.d("Application", "service name: "+this.getPackageName());
         SpeechUtility.createUtility(LoveApplication.this, "appid=" + "5ef16797");
