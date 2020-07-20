@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.PixelFormat;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 
@@ -17,6 +18,8 @@ import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import androidx.appcompat.widget.AppCompatCheckedTextView;
+
 import com.android.sidebar.R;
 import com.android.sidebar.utils.PermissionUtil;
 
@@ -27,6 +30,8 @@ import com.android.sidebar.utils.PermissionUtil;
  */
 public class SideBarContent implements View.OnClickListener {
     private volatile static SideBarContent mSideBarContent= null;
+    public AppCompatCheckedTextView tvLock;
+
     public static SideBarContent getInstance() {
         if (mSideBarContent == null) {
             synchronized (SideBarContent.class) {
@@ -67,13 +72,15 @@ public class SideBarContent implements View.OnClickListener {
         LayoutInflater inflater = LayoutInflater.from(context);
         mContentView = (LinearLayout) inflater.inflate(R.layout.layout_content, null);
         // init click
-        mContentView.findViewById(R.id.tv_brightness).setOnClickListener(this);
+        mContentView.findViewById(R.id.tv_voice).setOnClickListener(this);
         mContentView.findViewById(R.id.tv_back).setOnClickListener(this);
         mContentView.findViewById(R.id.tv_home).setOnClickListener(this);
         mContentView.findViewById(R.id.tv_upward).setOnClickListener(this);
         mContentView.findViewById(R.id.tv_down).setOnClickListener(this);
         mContentView.findViewById(R.id.tv_volume).setOnClickListener(this);
         mContentView.findViewById(R.id.tv_backstage).setOnClickListener(this);
+        tvLock = mContentView.findViewById(R.id.tv_lock);
+        tvLock.setOnClickListener(this);
         LinearLayout root = mContentView.findViewById(R.id.root);
         if(left) {
             root.setPadding(15,0,0,0);
@@ -88,8 +95,10 @@ public class SideBarContent implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         int id = v.getId();
-        if (id == R.id.tv_brightness) {
-            brightnessPermissionCheck();
+        if (id == R.id.tv_voice) {
+            if(iSideEventListener!=null){
+                iSideEventListener.onEvent(2);
+            }
         } else if (id == R.id.tv_back) {
             mSideBarService.performGlobalAction(AccessibilityService.GLOBAL_ACTION_BACK);
         } else if (id == R.id.tv_home) {
@@ -106,9 +115,30 @@ public class SideBarContent implements View.OnClickListener {
             brightnessOrVolume(1);
         } else if (id == R.id.tv_backstage) {
             mSideBarService.performGlobalAction(AccessibilityService.GLOBAL_ACTION_RECENTS);
+        } else if (id == R.id.tv_lock) {
+             tvLock.setChecked(!tvLock.isChecked());
+            Drawable drawTop= null;
+              if (tvLock.isChecked()){
+
+                  drawTop=  mContext.getResources().getDrawable(R.drawable.ic_lock_outline_);
+              }else{
+                  drawTop=  mContext.getResources().getDrawable(R.drawable.ic_lock_open_);
+              }
+            drawTop.setBounds(0, 0, drawTop.getMinimumWidth(),drawTop.getMinimumHeight());
+            tvLock.setCompoundDrawables(null,drawTop,null,null);
+
         }
     }
-
+    int[] location = new  int[2] ;
+    public boolean isMouseInView(int x ,int y){
+        tvLock.getLocationOnScreen(location);
+        if (x>location[0]&&x-location[0]<tvLock.getWidth()){
+            if (y>location[1]&&y-location[1]<tvLock.getHeight()){
+                return true;
+            }
+        }
+        return false;
+    }
     private void brightnessOrVolume(int tag) {
         if(mTagTemp == tag) {
             if(null != mSeekBarView) {

@@ -54,7 +54,7 @@ import java.util.List;
 /**
  * 悬浮球
  */
-public class AVCallFloatView extends BaseFloatView implements View.OnTouchListener, View.OnClickListener {
+public class AVCallFloatView  {
 
     private volatile static AVCallFloatView mAVCallFloatView= null;
     public CheckBox mCb_one;
@@ -70,41 +70,8 @@ public class AVCallFloatView extends BaseFloatView implements View.OnTouchListen
     }
 
 
-        private static final String TAG = "AVCallFloatView";
+    private static final String TAG = "AVCallFloatView";
 
-    /**
-     * 记录手指按下时在小悬浮窗的View上的横坐标的值
-     */
-    private float xInView;
-
-    /**
-     * 记录手指按下时在小悬浮窗的View上的纵坐标的值
-     */
-    private float yInView;
-    /**
-     * 记录当前手指位置在屏幕上的横坐标值
-     */
-    private float xInScreen;
-
-    /**
-     * 记录当前手指位置在屏幕上的纵坐标值
-     */
-    private float yInScreen;
-
-    /**
-     * 记录手指按下时在屏幕上的横坐标的值
-     */
-    private float xDownInScreen;
-
-    /**
-     * 记录手指按下时在屏幕上的纵坐标的值
-     */
-    private float yDownInScreen;
-
-    private boolean needAnchorToSide = false;
-
-    private boolean isAnchoring = false;
-    private View menuButton;
 
 
     // 语音听写对象
@@ -125,7 +92,7 @@ public class AVCallFloatView extends BaseFloatView implements View.OnTouchListen
     private final VoiceWakeuperHelper mVoiceWakeuperHelper;
 
     public AVCallFloatView(Context context) {
-        super(context);
+
         this.mContext=context;
         initView();
 
@@ -133,7 +100,7 @@ public class AVCallFloatView extends BaseFloatView implements View.OnTouchListen
         mVoiceWakeuperHelper.initWake(mContext, new VoiceWakeuperHelper.IReceivedEvent() {
             @Override
             public void onEvent(int id) {
-               // Toast.makeText(mContext, event+"", Toast.LENGTH_SHORT).show();
+                // Toast.makeText(mContext, event+"", Toast.LENGTH_SHORT).show();
 
                 if (id==0){
                     EventBus.getDefault().post(new MouseEvent(7));
@@ -151,10 +118,10 @@ public class AVCallFloatView extends BaseFloatView implements View.OnTouchListen
                     EventBus.getDefault().post(new MouseEvent(4));
                 }
 
-            if (id==5){
-            //  MainActivity.ResetMouse();
-                   EventBus.getDefault().post(new JniEvent(JniEvent.ON_RESET_MOUSE));
-             }
+                if (id==5){
+                    //  MainActivity.ResetMouse();
+                    EventBus.getDefault().post(new JniEvent(JniEvent.ON_RESET_MOUSE));
+                }
 
             }
         });
@@ -201,247 +168,63 @@ public class AVCallFloatView extends BaseFloatView implements View.OnTouchListen
         }
     };
 
-   boolean  mCbOneCheck=true;
+    boolean  mCbOneCheck=true;
     private void initView() {
-        LayoutInflater inflater = LayoutInflater.from(getContext());
-        View floatView = inflater.inflate(R.layout.view_accessibility_view, null);
 
-        addView(floatView);
 
         // 初始化识别无UI识别对象
         // 使用SpeechRecognizer对象，可根据回调消息自定义界面；
-        mIat = SpeechRecognizer.createRecognizer(getContext(), mInitListener);
+        mIat = SpeechRecognizer.createRecognizer(mContext, mInitListener);
 
         // 初始化听写Dialog，如果只使用有UI听写功能，无需创建SpeechRecognizer
         // 使用UI听写功能，请根据sdk文件目录下的notice.txt,放置布局文件和图片资源
         mIatDialog = new RecognizerDialog(LoveApplication.getInstance(), mInitListener);
-        menuButton = findViewById(R.id.rl_accessibility);
-        mCb_twe=  findViewById(R.id.cb_twe);
 
-        menuButton.setOnTouchListener(this);
-        findViewById(R.id.cb_four).setOnTouchListener(this);
-        findViewById(R.id.cb_one).setOnTouchListener(this);
-        findViewById(R.id.cb_three).setOnClickListener(this);
-        mCb_one = findViewById(R.id.cb_one);
-        mCb_one.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                  mCbOneCheck=b;
-            }
-        });
-        layoutParams.x = Screen.getWidth() - dp2px(getContext(), 100);
-        layoutParams.y = Screen.getHeight() - dp2px(getContext(), 171);
-    }
+
+
+
+
+
+}
     private String getResource() {
         final String resPath = ResourceUtil.generateResourcePath(mContext, ResourceUtil.RESOURCE_TYPE.assets, "ivw/"+mContext.getString(R.string.app_id)+".jet");
         Log.d( TAG, "resPath: "+resPath );
         return resPath;
     }
-    @Override
-    public boolean onTouch(View v, MotionEvent event) {
-        if (isAnchoring) {
-            return true;
-        }
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                xInView = event.getX() + v.getX();
-                yInView = event.getY() + v.getY();
-                xDownInScreen = event.getRawX();
-                yDownInScreen = event.getRawY();
-                xInScreen = event.getRawX();
-                yInScreen = event.getRawY();
-                break;
-            case MotionEvent.ACTION_MOVE:
-                xInScreen = event.getRawX();
-                yInScreen = event.getRawY();
-                // 手指移动的时候更新小悬浮窗的位置
-                updateViewPosition();
 
-                break;
-            case MotionEvent.ACTION_UP:
-                if (Math.abs(xDownInScreen - xInScreen) <= ViewConfiguration.get(getContext()).getScaledTouchSlop()
-                        && Math.abs(yDownInScreen - yInScreen) <= ViewConfiguration.get(getContext()).getScaledTouchSlop()) {
-                    // 点击效果
-                    v.performClick();
-              }
-//                else if (isNeedAnchorToSide()) {
-//                    //吸附效果
-//                    anchorToSide();
-//                }
-                break;
-            default:
-                break;
-        }
-        return true;
-    }
 
-    private void anchorToSide() {
-        isAnchoring = true;
-        final int screenWidth = Screen.getWidth();
-        final int screenHeight = Screen.getHeight();
-        int middleX = layoutParams.x + getWidth() / 2;
 
-        int animTime = 0;
-        int xDistance = 0;
-        int yDistance = 0;
 
-        int dp_25 = dp2px(5);
+    public void openVoice() {
+        mVoiceWakeuperHelper.stopListening();
+        mIatResults.clear();
+        // 设置参数
+        setParam();
+        // 显示听写对话框
+        mIatDialog.setListener(mRecognizerDialogListener);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){//6.0
+            mIatDialog.getWindow().setType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY);
+        }else {
+            mIatDialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
 
-        //left
-        if (middleX <= screenWidth / 2) {
-            xDistance = dp_25 - layoutParams.x;
-        }
-        //right
-        else {
-            xDistance = screenWidth - layoutParams.x - getWidth() - dp_25;
         }
 
-        //1
-        if (layoutParams.y < dp_25) {
-            yDistance = dp_25 - layoutParams.y;
-        }
-        //2
-        else if (layoutParams.y + getHeight() + dp_25 >= screenHeight) {
-            yDistance = screenHeight - dp_25 - layoutParams.y - getHeight();
-        }
-        Log.e(TAG, "xDistance  " + xDistance + "   yDistance" + yDistance);
 
-        animTime = Math.abs(xDistance) > Math.abs(yDistance) ? (int) (((float) xDistance / (float) screenWidth) * 600f)
-                : (int) (((float) yDistance / (float) screenHeight) * 900f);
-        this.post(new AnchorAnimRunnable(Math.abs(animTime), xDistance, yDistance, System.currentTimeMillis()));
-    }
-
-    public int dp2px(float dp) {
-        final float scale = getContext().getResources().getDisplayMetrics().density;
-        return (int) (dp * scale + 0.5f);
-    }
-
-    /**
-     * 悬浮球是否需要靠边停靠
-     */
-    public boolean isNeedAnchorToSide() {
-        return needAnchorToSide;
-    }
-
-    public void setNeedAnchorToSide(boolean needAnchorToSide) {
-        this.needAnchorToSide = needAnchorToSide;
-    }
-
-    @Override
-    public void onClick(View view) {
-        if (R.id.cb_three==view.getId()){
-            mVoiceWakeuperHelper.stopListening();
-            mIatResults.clear();
-            // 设置参数
-            setParam();
-            // 显示听写对话框
-            mIatDialog.setListener(mRecognizerDialogListener);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){//6.0
-                mIatDialog.getWindow().setType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY);
-            }else {
-                mIatDialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
-
-            }
-
-
-
-            mIatDialog.show();
-            List<View> allChildViews = getAllChildViews(mIatDialog.getWindow().getDecorView());
-            for (View allChildView : allChildViews) {
-                if (allChildView instanceof TextView){
-                    if (((TextView) allChildView).getText().toString().contains("识别")){
-                        ((TextView) allChildView).setText("");
-                        allChildView.setClickable(false);
-                    }
+        mIatDialog.show();
+        List<View> allChildViews = getAllChildViews(mIatDialog.getWindow().getDecorView());
+        for (View allChildView : allChildViews) {
+            if (allChildView instanceof TextView){
+                if (((TextView) allChildView).getText().toString().contains("识别")){
+                    ((TextView) allChildView).setText("");
+                    allChildView.setClickable(false);
                 }
             }
-
         }
     }
 
-    private class AnchorAnimRunnable implements Runnable {
 
-        private int animTime;
-        private long currentStartTime;
-        private Interpolator interpolator;
-        private int xDistance;
-        private int yDistance;
-        private int startX;
-        private int startY;
 
-        public AnchorAnimRunnable(int animTime, int xDistance, int yDistance, long currentStartTime) {
-            this.animTime = animTime;
-            this.currentStartTime = currentStartTime;
-            interpolator = new AccelerateDecelerateInterpolator();
-            this.xDistance = xDistance;
-            this.yDistance = yDistance;
-            startX = layoutParams.x;
-            startY = layoutParams.y;
-        }
 
-        @Override
-        public void run() {
-            if (System.currentTimeMillis() >= currentStartTime + animTime) {
-                if (layoutParams.x != (startX + xDistance) || layoutParams.y != (startY + yDistance)) {
-                    layoutParams.x = startX + xDistance;
-                    layoutParams.y = startY + yDistance;
-                    getWindowManager().updateViewLayout(AVCallFloatView.this, layoutParams);
-                }
-                isAnchoring = false;
-                return;
-            }
-            float delta = interpolator.getInterpolation((System.currentTimeMillis() - currentStartTime) / (float) animTime);
-            int xMoveDistance = (int) (xDistance * delta);
-            int yMoveDistance = (int) (yDistance * delta);
-            Log.e(TAG, "delta:  " + delta + "  xMoveDistance  " + xMoveDistance + "   yMoveDistance  " + yMoveDistance);
-            layoutParams.x = startX + xMoveDistance;
-            layoutParams.y = startY + yMoveDistance;
-
-            if (!getIsShowing()) {
-                return;
-            }
-
-            getWindowManager().updateViewLayout(AVCallFloatView.this, layoutParams);
-            AVCallFloatView.this.postDelayed(this, 16);
-        }
-    }
-
-    private void updateViewPosition() {
-        //增加移动误差\
-
-        layoutParams.x = (int) (xInScreen - xInView);
-        layoutParams.y = (int) (yInScreen - yInView);
-        Log.e(TAG, "xInScreen  " +xInScreen+"xInView-" +xInView+"-"+ layoutParams.x + "   y  " + layoutParams.y);
-        getWindowManager().updateViewLayout(this, layoutParams);
-    }
-    int[] location = new  int[2] ;
-    public void updateViewPosition(int x,int y) {
-        //增加移动误差\
-        if ((mCb_one!=null)&&(mCb_one.isChecked()==false)){
-            xInScreen=x;
-            yInScreen=y;
-            layoutParams.x = (int) (xInScreen - xInView);
-            layoutParams.y = (int) (yInScreen - yInView);
-
-            getWindowManager().updateViewLayout(this, layoutParams);
-            Log.e(TAG, "xInScreen  " +xInScreen+"xInView-" +xInView+"-"+ layoutParams.x + "   y  " + layoutParams.y);
-
-            mCb_one.getLocationOnScreen(location);//获取在整个屏幕内的绝对坐标
-            CursorView.getInstance().updatePosition(location[0],location[1]);
-        }else{
-            CursorView.getInstance().updatePosition();
-        }
-
-    }
-      public boolean isMouseInView(int x ,int y){
-        getLocationOnScreen(location);
-        if (x>location[0]&&x-location[0]<getWidth()){
-            if (y>location[1]&&y-location[1]<getHeight()){
-            return true;
-            }
-        }
-        return false;
-      }
     /**
      * 参数设置
      *
@@ -487,7 +270,7 @@ public class AVCallFloatView extends BaseFloatView implements View.OnTouchListen
         public void onInit(int code) {
             Log.d(TAG, "SpeechRecognizer init() code = " + code);
             if (code != ErrorCode.SUCCESS) {
-                Toast.makeText(getContext(), "语音初始化失败", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, "语音初始化失败", Toast.LENGTH_SHORT).show();
             }
         }
     };
@@ -505,7 +288,7 @@ public class AVCallFloatView extends BaseFloatView implements View.OnTouchListen
          * 识别回调错误.
          */
         public void onError(SpeechError error) {
-            Toast.makeText(getContext(), error.getPlainDescription(true), Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext, error.getPlainDescription(true), Toast.LENGTH_SHORT).show();
 
         }
 

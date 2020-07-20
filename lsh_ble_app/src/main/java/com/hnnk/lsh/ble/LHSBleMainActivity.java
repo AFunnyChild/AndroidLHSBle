@@ -13,6 +13,7 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 
+import android.provider.Settings;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -26,6 +27,7 @@ import com.iflytek.VoiceWakeuperHelper;
 import com.process.keepalive.daemon.MainActivity;
 
 
+import net.leung.qtmouse.AVCallFloatView;
 import net.leung.qtmouse.CursorView;
 import net.leung.qtmouse.FloatWindowManager;
 import net.leung.qtmouse.JniEvent;
@@ -145,8 +147,16 @@ public class LHSBleMainActivity extends AppCompatActivity implements View.OnClic
     if (v.getId()==R.id.btn_start){
         FloatWindowManager.getInstance().applyOrShowFloatWindow(LoveApplication.getInstance(),true);
     }else{
-        FloatWindowManager.getInstance().applyOrShowFloatWindow(LoveApplication.getInstance(),false);
-
+    //    FloatWindowManager.getInstance().applyOrShowFloatWindow(LoveApplication.getInstance(),false);
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (!Settings.canDrawOverlays(this)) {
+                Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivityForResult(intent, 1);
+            } else {
+                Toast.makeText(activity, "suce", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
     }
     @Subscribe(threadMode = ThreadMode.MAIN)

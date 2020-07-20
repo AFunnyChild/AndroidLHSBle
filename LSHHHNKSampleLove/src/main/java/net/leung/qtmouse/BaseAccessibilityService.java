@@ -165,7 +165,7 @@ public class BaseAccessibilityService extends AccessibilityService {
         }
 
         public GestureMoveCallback start() {
-            FloatWindowManager.getInstance().getFloatView().ignoreTouch(true);
+
             return this;
         }
 
@@ -174,14 +174,14 @@ public class BaseAccessibilityService extends AccessibilityService {
             super.onCompleted(gestureDescription);
             Log.d(TAG, name + " onCompleted");
 
-            FloatWindowManager.getInstance().getFloatView().ignoreTouch(false);
+
         }
 
         @Override
         public void onCancelled(GestureDescription gestureDescription) {
             super.onCancelled(gestureDescription);
             Log.d(TAG, name + " onCancelled");
-            FloatWindowManager.getInstance().getFloatView().ignoreTouch(false);
+
         }
     }
 

@@ -327,8 +327,7 @@ public class FloatWindowManager {
 
        }
         floatView=AVCallFloatView.getInstance(context);
-        floatView.setNeedAnchorToSide(UserSettings.FloatViewAnchorToSide);
-        floatView.setIsShowing(showMenu);
+
 
 
 
@@ -354,9 +353,7 @@ public class FloatWindowManager {
         }
 
         isWindowDismiss = true;
-        if(floatView != null){
-            floatView.setIsShowing(false);
-        }
+
         cursorView.setIsShowing(false);
     }
 }

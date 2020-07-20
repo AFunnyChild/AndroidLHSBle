@@ -162,8 +162,10 @@ public class MouseAccessibilityService extends BaseAccessibilityService {
                 if (eventIndex==0){
                    performScrollBackward();
 
-                }else{
+                }else  if(eventIndex==1){
                  performScrollForward();
+                }else  if(eventIndex==2){
+                 AVCallFloatView.getInstance(LoveApplication.getInstance()).openVoice();
                 }
             }
         });
@@ -511,22 +513,22 @@ String  voice_text="";
                }
         switch (event.action) {
             case MouseEvent.CLICK:
-                if (AVCallFloatView.getInstance(LoveApplication.getInstance()).mCb_twe!=null){
+                if (SideBarContent.getInstance().tvLock!=null){
 
-                    if (AVCallFloatView.getInstance(LoveApplication.getInstance()).mCb_one.isChecked()==false){
-                        AVCallFloatView.getInstance(LoveApplication.getInstance()).mCb_one.setChecked(true);
-                        EventBus.getDefault().post(new JniEvent(JniEvent.ON_RESET_MOUSE));
-                        break;
-                    }
+//                    if (AVCallFloatView.getInstance(LoveApplication.getInstance()).mCb_one.isChecked()==false){
+//                        AVCallFloatView.getInstance(LoveApplication.getInstance()).mCb_one.setChecked(true);
+//                        EventBus.getDefault().post(new JniEvent(JniEvent.ON_RESET_MOUSE));
+//                        break;
+//                    }
 
                     CursorView cursorView = CursorView.getInstance();
                     cursorView.getLocationOnScreen(mLocation);//获取在整个屏幕内的绝对坐标
-                    if (AVCallFloatView.getInstance(LoveApplication.getInstance()).isMouseInView(mLocation[0]+10,mLocation[1]+10)){
+                    if (SideBarContent.getInstance().isMouseInView(mLocation[0]+10,mLocation[1]+10)){
 
                         click();
                     }else{
 
-                        if (AVCallFloatView.getInstance(LoveApplication.getInstance()).mCb_twe.isChecked()==true){
+                        if (SideBarContent.getInstance().tvLock.isChecked()==false){
                             click();
                         }
                     }
@@ -610,16 +612,7 @@ EventBus.getDefault().post(new MouseEvent(4));
 public static void sendMouseLocationEvent(int action, int x,int y) {
     EventBus.getDefault().post(new MouseEvent(action, x,y));
 }
-/**
- * 供C++设置悬浮球吸边效果开关
- * @param open true吸附false反之
- */
-public static void setFloatViewAnchorToSide(int open) {
-    UserSettings.FloatViewAnchorToSide = open != 0;
-    AVCallFloatView floatView = FloatWindowManager.getInstance().getFloatView();
-    if (floatView != null)
-        floatView.setNeedAnchorToSide(UserSettings.FloatViewAnchorToSide );
-}
+
 
 /**
  * 供C++设置光标移动速度

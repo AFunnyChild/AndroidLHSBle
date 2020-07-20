@@ -54,14 +54,7 @@
                 android:text="@string/down" />
         </LinearLayout>
 
-        <LinearLayout style="@style/LayoutStyle">
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tv_brightness"
-                style="@style/ButtonStyle"
-                android:drawableTop="@drawable/ic_brightness_"
-                android:text="@string/brightness" />
-        </LinearLayout>
 
         <LinearLayout style="@style/LayoutStyle">
 
@@ -71,6 +64,23 @@
                 android:drawableTop="@drawable/ic_volume_"
                 android:text="@string/volume" />
         </LinearLayout>
+        <LinearLayout style="@style/LayoutStyle">
 
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_voice"
+                style="@style/ButtonStyle"
+                android:drawableTop="@drawable/ic_mic_black_"
+                android:text="@string/mic_voice" />
+        </LinearLayout>
+        <LinearLayout style="@style/LayoutStyle">
+
+            <androidx.appcompat.widget.AppCompatCheckedTextView
+                android:id="@+id/tv_lock"
+                android:checked="false"
+                style="@style/ButtonStyle"
+                android:drawableTop="@drawable/ic_lock_open_"
+                android:layout_gravity="center"
+                android:text="@string/click" />
+        </LinearLayout>
     </LinearLayout>
 </LinearLayout>
