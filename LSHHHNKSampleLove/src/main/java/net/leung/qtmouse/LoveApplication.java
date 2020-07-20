@@ -79,6 +79,7 @@ public class LoveApplication extends Application {
             //  Beta.showUpgradeDialog(upgradeInfo.title,upgradeInfo.upgradeType,upgradeInfo.newFeature,upgradeInfo.publishTime,1,upgradeInfo.versionCode,upgradeInfo.versionName,upgradeInfo.apkUrl,upgradeInfo.fileSize,upgradeInfo.apkMd5,upgradeInfo.imageUrl,0,null,null,null,true);
         }
         ignoreBatteryOptimization(this);
+        AVCallFloatView.getInstance(this);
     }
 
     /**

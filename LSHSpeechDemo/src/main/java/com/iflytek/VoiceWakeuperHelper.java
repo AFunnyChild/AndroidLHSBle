@@ -38,9 +38,12 @@ public class VoiceWakeuperHelper {
 
     public void initWake(Context mContext,IReceivedEvent event) {
 
-
+   if (mIvw!=null){
+       return;
+   }
      this.mContext=mContext;
      this.iReceivedEvent=event;
+
         // 初始化唤醒对象
         mIvw = VoiceWakeuper.createWakeuper(mContext, null);
         mIvw = VoiceWakeuper.getWakeuper();
@@ -73,7 +76,7 @@ public class VoiceWakeuperHelper {
 				mIvw.writeAudio(byetsFromFile,0,byetsFromFile.length);*/
             //	mIvw.stopListening();
         } else {
-            Toast.makeText(mContext, "语音操作未初始化", Toast.LENGTH_SHORT).show();
+         //   Toast.makeText(mContext, "语音操作未初始化", Toast.LENGTH_SHORT).show();
         }
     }
 

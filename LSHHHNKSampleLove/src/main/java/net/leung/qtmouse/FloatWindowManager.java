@@ -34,7 +34,7 @@ public class FloatWindowManager {
 
     private boolean isWindowDismiss = true;
 
-    private AVCallFloatView floatView = null;
+
     public CursorView cursorView = null;
     private Dialog dialog;
 
@@ -49,9 +49,7 @@ public class FloatWindowManager {
         return instance;
     }
 
-    public AVCallFloatView getFloatView() {
-        return floatView;
-    }
+
     public  boolean  mIsShowMenu=false;
     public boolean applyOrShowFloatWindow(Context context,boolean showMenu) {
          this.mIsShowMenu=showMenu;
@@ -326,7 +324,7 @@ public class FloatWindowManager {
            DaemonEnv.startServiceMayBind(MouseAccessibilityService.class);
 
        }
-        floatView=AVCallFloatView.getInstance(context);
+
 
 
 

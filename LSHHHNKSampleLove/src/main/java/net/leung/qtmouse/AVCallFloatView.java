@@ -168,7 +168,7 @@ public class AVCallFloatView  {
         }
     };
 
-    boolean  mCbOneCheck=true;
+
     private void initView() {
 
 

@@ -32,7 +32,7 @@ import android.widget.Toast;
 
 
 public class MouseAccessibilityService extends BaseAccessibilityService {
-    private static MouseAccessibilityService activity;
+
     private static boolean serviceRunning = false;
     /**
      * 设置滑动的起点是否从光标位置开始
@@ -151,7 +151,7 @@ public class MouseAccessibilityService extends BaseAccessibilityService {
     public void onCreate() {
         super.onCreate();
                LoveApplication.getInstance().initService(this);
-      activity = this;
+
         EventBus.getDefault().register(this);
       FloatWindowManager.getInstance().applyOrShowFloatWindowResume(this);
         SideBarContent.getInstance().createToucher(this);
@@ -490,10 +490,10 @@ public class MouseAccessibilityService extends BaseAccessibilityService {
         dispatchGesture(gestureDescription, new GestureMoveCallback("performZoomOut").start(), null);
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onStopService(StopServiceEvent event) {
-        stopSelf();
-    }
+//    @Subscribe(threadMode = ThreadMode.MAIN)
+//    public void onStopService(StopServiceEvent event) {
+//        stopSelf();
+//    }
 
 AccessibilityNodeInfo focus1;
 String  voice_text="";
@@ -620,10 +620,10 @@ public static void sendMouseLocationEvent(int action, int x,int y) {
  * @param speed 移动速度（单位：像素/秒）必须大于0
  */
 public static void setCursorMoveSpeed(int speed) {
-    UserSettings.CursorMoveSpeed = speed;
-
-    if (CursorView.getInstance() != null)
-        CursorView.getInstance().setMoveSpeed(UserSettings.CursorMoveSpeed);
+//    UserSettings.CursorMoveSpeed = speed;
+//
+//    if (CursorView.getInstance() != null)
+//        CursorView.getInstance().setMoveSpeed(UserSettings.CursorMoveSpeed);
 }
 
 /**
