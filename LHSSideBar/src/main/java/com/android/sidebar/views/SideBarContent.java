@@ -80,6 +80,7 @@ public class SideBarContent implements View.OnClickListener {
         }else {
             root.setPadding(0,0,15,0);
         }
+        mContentView.setVisibility(View.GONE);
         mWindowManager.addView(mContentView,params);
         return mContentView;
     }

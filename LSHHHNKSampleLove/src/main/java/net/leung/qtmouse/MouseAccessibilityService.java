@@ -154,7 +154,19 @@ public class MouseAccessibilityService extends BaseAccessibilityService {
       activity = this;
         EventBus.getDefault().register(this);
       FloatWindowManager.getInstance().applyOrShowFloatWindowResume(this);
+        SideBarContent.getInstance().createToucher(this);
 
+        SideBarContent.getInstance().setiSideEventListener(new SideBarContent.ISideEventListener() {
+            @Override
+            public void onEvent(int eventIndex) {
+                if (eventIndex==0){
+                   performScrollBackward();
+
+                }else{
+                 performScrollForward();
+                }
+            }
+        });
 
         Log.d(TAG, "onCreate");
     }

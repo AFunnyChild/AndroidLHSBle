@@ -332,18 +332,7 @@ public class FloatWindowManager {
 
 
 
-            SideBarContent.getInstance().createToucher(service);
-            SideBarContent.getInstance().setiSideEventListener(new SideBarContent.ISideEventListener() {
-                @Override
-                public void onEvent(int eventIndex) {
-                    if (eventIndex==0){
-                        service.performScrollBackward();
 
-                    }else{
-                        service.performScrollForward();
-                    }
-                }
-            });
             SideBarContent.getInstance().setIsShowing(showMenu);
 
 
