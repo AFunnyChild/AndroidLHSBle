@@ -314,15 +314,18 @@ public class FloatWindowManager {
     }
 
     public void showWindow(Context context,boolean showMenu) {
+        LoveApplication loveApplication = LoveApplication.getInstance();
+        if (loveApplication!=null){
+            MouseAccessibilityService service = loveApplication.getService();
+            if (service==null){
+                Intent intent1 = new Intent(context, MouseAccessibilityService.class);
+                context.startService(intent1);
 
-        MouseAccessibilityService service = LoveApplication.getInstance().getService();
-       if (service==null){
-           Intent intent1 = new Intent(context, MouseAccessibilityService.class);
-           context.startService(intent1);
 
 
+            }
+        }
 
-       }
 
 
 
