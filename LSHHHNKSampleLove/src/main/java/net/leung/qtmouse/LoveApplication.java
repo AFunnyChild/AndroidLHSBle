@@ -33,10 +33,10 @@ public class LoveApplication extends Application {
    MouseAccessibilityService mService;
     @Override
     public void onCreate() {
-        DaemonEnv.initialize(getApplicationContext(), DemoService.class, DaemonEnv.DEFAULT_WAKE_UP_INTERVAL);
-        DemoService.sShouldStopService = false;
-        DaemonEnv.startServiceMayBind(DemoService.class);
-
+//        DaemonEnv.initialize(getApplicationContext(), DemoService.class, DaemonEnv.DEFAULT_WAKE_UP_INTERVAL);
+//        DemoService.sShouldStopService = false;
+//        DaemonEnv.startServiceMayBind(DemoService.class);
+       // DaemonEnv.startServiceMayBind(MouseAccessibilityService.class);
         if(isRunning(this,"net.leung.qtmouse.MouseAccessibilityService")==true){
           //  DaemonEnv.startServiceMayBind(MouseAccessibilityService.class);
         }

@@ -7,9 +7,7 @@ import android.os.Build;
 import android.util.Log;
 
 
-import com.process.keepalive.daemon.DemoService;
-import com.process.keepalive.daemon.MainActivity;
-import com.process.keepalive.daemon.guard.DaemonEnv;
+
 /**
  * device boot receiver
  *
@@ -42,10 +40,7 @@ public class DeviceBootReceiver extends BroadcastReceiver {
                     MainPageGo(context);
                 }
             }
-            DaemonEnv.initialize(context.getApplicationContext(), DemoService.class, DaemonEnv.DEFAULT_WAKE_UP_INTERVAL);
-            DemoService.sShouldStopService = false;
-            DaemonEnv.startServiceMayBind(DemoService.class);
-         //   DaemonEnv.startServiceMayBind(MouseAccessibilityService.class);
+
             if (LoveApplication.getInstance().getMainActivity()==null){
                 MainPageGo(context);
             }

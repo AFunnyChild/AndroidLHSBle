@@ -24,8 +24,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 import com.android.sidebar.views.SideBarContent;
-import com.process.keepalive.daemon.DemoService;
-import com.process.keepalive.daemon.guard.DaemonEnv;
+
 
 public class FloatWindowManager {
     private static final String TAG = "FloatWindowManager";
@@ -318,10 +317,8 @@ public class FloatWindowManager {
        if (service==null){
            Intent intent1 = new Intent(context, MouseAccessibilityService.class);
            context.startService(intent1);
-           DaemonEnv.initialize(context.getApplicationContext(), DemoService.class, DaemonEnv.DEFAULT_WAKE_UP_INTERVAL);
-           DemoService.sShouldStopService = false;
-           DaemonEnv.startServiceMayBind(DemoService.class);
-          // DaemonEnv.startServiceMayBind(MouseAccessibilityService.class);
+
+
 
        }
 
@@ -338,10 +335,6 @@ public class FloatWindowManager {
         cursorView.setIsShowing(showMenu);
 
 
-        DaemonEnv.initialize(LoveApplication.getInstance(), DemoService.class, DaemonEnv.DEFAULT_WAKE_UP_INTERVAL);
-        DemoService.sShouldStopService = false;
-        DaemonEnv.startServiceMayBind(DemoService.class);
-     //   DaemonEnv.startServiceMayBind(MouseAccessibilityService.class);
     }
 
     public void dismissWindow() {
