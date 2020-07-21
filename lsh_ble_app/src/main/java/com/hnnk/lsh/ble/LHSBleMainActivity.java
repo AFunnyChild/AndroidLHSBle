@@ -47,6 +47,7 @@ public class LHSBleMainActivity extends AppCompatActivity implements View.OnClic
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags( WindowManager.LayoutParams.FLAG_FULLSCREEN, Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS );
         setContentView(R.layout.activity_main);
         findViewById(R.id.btn_start).setOnClickListener(this);
         findViewById(R.id.btn_state).setOnClickListener(this);
@@ -176,6 +177,6 @@ public class LHSBleMainActivity extends AppCompatActivity implements View.OnClic
     public void onResume() {
         super.onResume();
 
-        FloatWindowManager.getInstance().applyOrShowFloatWindowResume(LoveApplication.getInstance());
+        FloatWindowManager.getInstance().applyOrShowFloatWindowResume(this);
     }
 }

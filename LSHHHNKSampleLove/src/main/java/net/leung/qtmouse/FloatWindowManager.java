@@ -1,5 +1,6 @@
 package net.leung.qtmouse;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -262,8 +263,8 @@ public class FloatWindowManager {
                 dialog=null;
             }
             mMessage=message;
-            mContext=context;
-            dialog = new AlertDialog.Builder(LoveApplication.getInstance().getMainActivity()).setCancelable(false).setTitle("")
+            mContext= context;
+            dialog = new AlertDialog.Builder(mContext).setCancelable(false).setTitle("")
                     .setMessage(message)
                     .setPositiveButton("现在去开启",
                             (dialog, which) -> {
@@ -272,6 +273,7 @@ public class FloatWindowManager {
                                 dialog=null;
                             }).create();
         }
+
 //.setNegativeButton("暂不开启",
 //                (dialog, which) -> {
 //                    result.confirmResult(false);

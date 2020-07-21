@@ -101,7 +101,7 @@ public class AVCallFloatView  {
             @Override
             public void onEvent(int id) {
                 // Toast.makeText(mContext, event+"", Toast.LENGTH_SHORT).show();
-
+                Log.d(TAG, "Voice onEvent: " +id);
                 if (id==0){
                     EventBus.getDefault().post(new MouseEvent(7));
                 }
@@ -178,7 +178,7 @@ public class AVCallFloatView  {
 
         // 初始化听写Dialog，如果只使用有UI听写功能，无需创建SpeechRecognizer
         // 使用UI听写功能，请根据sdk文件目录下的notice.txt,放置布局文件和图片资源
-        mIatDialog = new RecognizerDialog(LoveApplication.getInstance(), mInitListener);
+        mIatDialog = new RecognizerDialog(mContext, mInitListener);
 
 
 
