@@ -150,7 +150,10 @@ public class MouseAccessibilityService extends BaseAccessibilityService {
     @Override
     public void onCreate() {
         super.onCreate();
-               LoveApplication.getInstance().initService(this);
+        LoveApplication application = LoveApplication.getInstance();
+        if (application!=null){
+            application.initService(this);
+        }
 
         EventBus.getDefault().register(this);
    //   FloatWindowManager.getInstance().applyOrShowFloatWindowResume(this);
@@ -165,7 +168,7 @@ public class MouseAccessibilityService extends BaseAccessibilityService {
                 }else  if(eventIndex==1){
                  performScrollForward();
                 }else  if(eventIndex==2){
-                 AVCallFloatView.getInstance(LoveApplication.getInstance()).openVoice();
+                 AVCallFloatView.getInstance(getApplicationContext()).openVoice();
                 }
             }
         });
