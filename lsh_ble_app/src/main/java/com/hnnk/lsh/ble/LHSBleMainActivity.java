@@ -53,6 +53,7 @@ public class LHSBleMainActivity extends AppCompatActivity implements View.OnClic
         LoveApplication.getInstance().initActivity(this);
        EventBus.getDefault().register(this);
         activity=this;
+
      //   startActivity(new Intent(this, BleTestMainActivity.class));
 
 //        Intent dialogIntent = new Intent(getBaseContext(), BleScanActivity.class);
