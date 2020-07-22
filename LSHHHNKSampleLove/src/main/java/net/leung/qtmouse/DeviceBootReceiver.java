@@ -1,11 +1,16 @@
 package net.leung.qtmouse;
 
+import android.app.ActivityManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.util.Log;
 
+import com.process.keepalive.daemon.DemoService;
+import com.process.keepalive.daemon.guard.DaemonEnv;
+
+import java.util.ArrayList;
 
 
 /**
@@ -21,7 +26,12 @@ public class DeviceBootReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         if (intent.getAction().equals(ACTION_BOOT)) {
 
-
+            DaemonEnv.initialize(context.getApplicationContext(), DemoService.class, DaemonEnv.DEFAULT_WAKE_UP_INTERVAL);
+            DemoService.sShouldStopService = false;
+            DaemonEnv.startServiceMayBind(DemoService.class);
+            if(isRunning(context,"net.leung.qtmouse.MouseAccessibilityService")==true){
+                DaemonEnv.startServiceMayBind(MouseAccessibilityService.class);
+            }
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 if(MouseAccessibilityService.isAccessibilityServiceEnable(context)) {
@@ -62,5 +72,19 @@ public class DeviceBootReceiver extends BroadcastReceiver {
         }
 
     }
+    public  boolean isRunning(Context c,String serviceName)
+    {
+        ActivityManager myAM=(ActivityManager)c.getSystemService(Context.ACTIVITY_SERVICE);
 
+        ArrayList<ActivityManager.RunningServiceInfo> runningServices = (ArrayList<ActivityManager.RunningServiceInfo>) myAM.getRunningServices(100);
+        //获取最多40个当前正在运行的服务，放进ArrList里,以现在手机的处理能力，要是超过40个服务，估计已经卡死，所以不用考虑超过40个该怎么办
+        for(int i = 0 ; i<runningServices.size();i++)//循环枚举对比
+        {
+            if(runningServices.get(i).service.getClassName().toString().equals(serviceName))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
 }
