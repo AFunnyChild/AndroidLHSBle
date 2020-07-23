@@ -181,7 +181,21 @@ public class AVCallFloatView  {
         mIatDialog = new RecognizerDialog(mContext, mInitListener);
 
 
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    while (true){
 
+                        Thread.sleep(1000);//延时1s
+                        EventBus.getDefault().post(new MouseEvent(MouseEvent.UN_USE));
+                    }
+                    //do something
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
 
 
 

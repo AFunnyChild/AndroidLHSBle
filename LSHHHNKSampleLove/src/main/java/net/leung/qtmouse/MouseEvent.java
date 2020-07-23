@@ -4,6 +4,7 @@ package net.leung.qtmouse;
 public class MouseEvent {
 
     public static final int
+            UN_USE=-1,
             MOVE_UP = 0,//上移
             MOVE_DOWN = 1,//下移
             MOVE_LEFT = 2,//左移

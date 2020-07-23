@@ -502,9 +502,10 @@ AccessibilityNodeInfo focus1;
 String  voice_text="";
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMouseMove(MouseEvent event) {
-        Log.d(TAG, "event:" + event.action);
+
 
         AccessibilityNodeInfo       focus_input = findFocus(AccessibilityNodeInfo.FOCUS_INPUT);
+      //  Log.d(TAG, "event:" + event.action+"focus_input="+(focus_input==null));
                if (focus_input!=null){
                    focus1=focus_input;
                }
@@ -652,8 +653,9 @@ private void fillText(AccessibilityNodeInfo nodeInfo, String reply) {
     if(nodeInfo==null){
         return;
     }
+    Log.e(TAG, "set text"+reply+"--"+nodeInfo);
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-        Log.e(TAG, "set text"+reply+"--"+nodeInfo);
+
 //            Bundle bundle = new Bundle();
 //            bundle.putCharSequence(AccessibilityNodeInfo.ACTION_ARGUMENT_SET_TEXT_CHARSEQUENCE,
 //                    nodeInfo.getText()+ reply);
