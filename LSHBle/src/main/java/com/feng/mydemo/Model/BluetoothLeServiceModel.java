@@ -471,6 +471,7 @@ public class BluetoothLeServiceModel extends Service {
         }
 
       }
+
     public static native void   receviedData(byte[] data,int len);
     public static native void   onConnectStateChange(int state);
 }
