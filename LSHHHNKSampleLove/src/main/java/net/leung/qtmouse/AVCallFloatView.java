@@ -89,18 +89,22 @@ public class AVCallFloatView  {
     private String threshStr = "门限值：";
     private String keep_alive = "1";
     private String ivwNetMode = "0";
-    private final VoiceWakeuperHelper mVoiceWakeuperHelper;
+    private  VoiceWakeuperHelper mVoiceWakeuperHelper;
 
     public AVCallFloatView(Context context) {
 
         this.mContext=context;
         initView();
 
+
+    }
+
+    public void initWake(Context context) {
         mVoiceWakeuperHelper = new VoiceWakeuperHelper();
-        mVoiceWakeuperHelper.initWake(mContext, new VoiceWakeuperHelper.IReceivedEvent() {
+        mVoiceWakeuperHelper.initWake(context, new VoiceWakeuperHelper.IReceivedEvent() {
             @Override
             public void onEvent(int id) {
-                // Toast.makeText(mContext, event+"", Toast.LENGTH_SHORT).show();
+                 Toast.makeText(mContext, id+"", Toast.LENGTH_SHORT).show();
                 Log.d(TAG, "Voice onEvent: " +id);
                 if (id==0){
                     EventBus.getDefault().post(new MouseEvent(7));

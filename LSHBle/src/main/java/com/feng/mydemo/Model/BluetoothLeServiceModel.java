@@ -36,7 +36,7 @@ import java.util.UUID;
  */
 public class BluetoothLeServiceModel extends Service {
 
-    private final static String TAG = BluetoothLeServiceModel.class.getSimpleName();
+
 
     private BluetoothManager mBluetoothManager;
     private BluetoothAdapter mBluetoothAdapter;
@@ -65,16 +65,13 @@ public class BluetoothLeServiceModel extends Service {
                 mConnectionState = STATE_CONNECTED;
                 onConnectStateChange(1);
                broadcastUpdate(intentAction);
-                Log.i(TAG, "Connected to GATT server.");
-                // Attempts to discover services after successful connection.
-                Log.i(TAG, "Attempting to start service discovery:" +
-                        mBluetoothGatt.discoverServices());
+
 
             } else if (newState == BluetoothProfile.STATE_DISCONNECTED) {
                 intentAction = ACTION_GATT_DISCONNECTED;
                 mConnectionState = STATE_DISCONNECTED;
                 onConnectStateChange(0);
-                Log.i(TAG, "Disconnected from GATT server.");
+
                 broadcastUpdate(intentAction);
             }
         }
@@ -198,14 +195,14 @@ public class BluetoothLeServiceModel extends Service {
         if (mBluetoothManager == null) {
             mBluetoothManager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
             if (mBluetoothManager == null) {
-                Log.e(TAG, "Unable to initialize BluetoothManager.");
+
                 return false;
             }
         }
 
         mBluetoothAdapter = mBluetoothManager.getAdapter();
         if (mBluetoothAdapter == null) {
-            Log.e(TAG, "Unable to obtain a BluetoothAdapter.");
+
             return false;
         }
 
@@ -230,7 +227,7 @@ public class BluetoothLeServiceModel extends Service {
         // 尝试连接设备
         if (mBluetoothDeviceAddress != null && address.equals(mBluetoothDeviceAddress)
                 && mBluetoothGatt != null) {
-            Log.d(TAG, "Trying to use an existing mBluetoothGatt for connection.");
+
             if (mBluetoothGatt.connect()) {
                 mConnectionState = STATE_CONNECTING;
                 return true;
@@ -286,7 +283,7 @@ public class BluetoothLeServiceModel extends Service {
      */
     public void readCharacteristic(BluetoothGattCharacteristic characteristic) {
         if (mBluetoothAdapter == null || mBluetoothGatt == null) {
-            Log.w(TAG, "BluetoothAdapter not initialized");
+
             return;
         }
         mBluetoothGatt.readCharacteristic(characteristic);
@@ -301,10 +298,10 @@ public class BluetoothLeServiceModel extends Service {
     public void setCharacteristicNotification(BluetoothGattCharacteristic characteristic,
                                               boolean enabled) {
         if (mBluetoothAdapter == null || mBluetoothGatt == null) {
-            Log.w(TAG, "BluetoothAdapter not initialized");
+
             return;
         }
-        Log.w(TAG, "BluetoothAdapter  initialized");
+
         mBluetoothGatt.setCharacteristicNotification(characteristic, enabled);
 
         // This is specific to Heart Rate Measurement.
@@ -330,12 +327,12 @@ public class BluetoothLeServiceModel extends Service {
 
     public BluetoothGattCharacteristic getBluetoothGattCharacteristic()
     {
-        Log.d(TAG, "getBluetoothGattCharacteristic: =="+(mBluetoothGatt==null));
+
         return this.mBluetoothGatt.getService(UUID.fromString(BleConstant.service)).getCharacteristic(UUID.fromString(BleConstant.Characteristic1a));
     }
     public BluetoothGattCharacteristic getWriteCharacteristic()
     {
-        Log.d(TAG, "getBluetoothGattCharacteristic: =="+(mBluetoothGatt==null));
+
         return this.mBluetoothGatt.getService(UUID.fromString(BleConstant.service)).getCharacteristic(UUID.fromString(BleConstant.WriteCharacteristic1a));
     }
 
@@ -360,28 +357,67 @@ public class BluetoothLeServiceModel extends Service {
     @Override
     public void onStart(Intent intent, int startId) {
         super.onStart(intent, startId);
-        bluetoothLeServiceModel=this;
-        mDeviceAddress = intent.getStringExtra(EXTRAS_DEVICE_ADDRESS);
-        mDeviceName = intent.getStringExtra(EXTRAS_DEVICE_NAME);
-        if (!initialize()) {
-            Toast.makeText(this, "UnSupport "+"Bluetooth", Toast.LENGTH_SHORT).show();
-        }
-        mBleReceiver = new BleReceiver();
-        // 成功启动初始化后自动连接到设备。
-        boolean connect = connect(mDeviceAddress);
-        if (connect==false){
-            Toast.makeText(this, "UnConnect to"+mDeviceName, Toast.LENGTH_SHORT).show();
-            return;
-        }
 
-        registerReceiver(mBleReceiver, makeGattUpdateIntentFilter());
  //       mSupportedGattServices = mBluetoothLeService.getSupportedGattServices();
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+          if (mBluetoothGatt==null){
+              bluetoothLeServiceModel=this;
+              if (intent==null){
+                  Log.d("Blue", "onStartCommand: false  intent null");
+                  return super.onStartCommand(intent, flags, startId);
+              }
+              mDeviceAddress = intent.getStringExtra(EXTRAS_DEVICE_ADDRESS);
+              mDeviceName = intent.getStringExtra(EXTRAS_DEVICE_NAME);
+              if (!initialize()) {
+                  Toast.makeText(this, "UnSupport "+"Bluetooth", Toast.LENGTH_SHORT).show();
+              }
+              mBleReceiver = new BleReceiver();
+              // 成功启动初始化后自动连接到设备。
+              boolean connect = connect(mDeviceAddress);
+              if (connect==false){
+                  Toast.makeText(this, "UnConnect to"+mDeviceName, Toast.LENGTH_SHORT).show();
+
+              }
+
+              registerReceiver(mBleReceiver, makeGattUpdateIntentFilter());
+          }else{
+               close();
+              bluetoothLeServiceModel=this;
+              if (intent==null){
+                  Log.d("Blue", "onStartCommand: false  intent null");
+                  return super.onStartCommand(intent, flags, startId);
+              }
+              mDeviceAddress = intent.getStringExtra(EXTRAS_DEVICE_ADDRESS);
+              mDeviceName = intent.getStringExtra(EXTRAS_DEVICE_NAME);
+              if (!initialize()) {
+                  Toast.makeText(this, "UnSupport "+"Bluetooth", Toast.LENGTH_SHORT).show();
+              }
+              // 成功启动初始化后自动连接到设备。
+              boolean connect = connect(mDeviceAddress);
+              if (connect==false){
+                  Toast.makeText(this, "UnConnect to"+mDeviceName, Toast.LENGTH_SHORT).show();
+
+              }
+
+          }
+
+        return super.onStartCommand(intent, flags, startId);
+
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.d(TAG, "onDestroy: service");
+
         unregisterReceiver(mBleReceiver);
         close();
     }
@@ -473,5 +509,5 @@ public class BluetoothLeServiceModel extends Service {
       }
 
     public static native void   receviedData(byte[] data,int len);
-    public static native void   onConnectStateChange(int state);
+    public static native   void   onConnectStateChange(int state);
 }

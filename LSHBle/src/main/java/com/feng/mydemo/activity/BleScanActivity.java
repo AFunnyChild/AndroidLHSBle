@@ -223,13 +223,11 @@ public class BleScanActivity extends Dialog implements View.OnClickListener, Ada
         final BluetoothDevice device = mLeDeviceListAdapter.getDevice(position);
         if (device == null) return;
 
-         Intent stopIntent = new Intent(mContext, BluetoothLeServiceModel.class);
 
-        mContext.stopService(stopIntent);
-        Intent startIntent = new Intent(mContext, BluetoothLeServiceModel.class);
+        Intent startIntent = new Intent(getContext(), BluetoothLeServiceModel.class);
         startIntent.putExtra(BluetoothLeServiceModel.EXTRAS_DEVICE_NAME, device.getName());
         startIntent.putExtra(BluetoothLeServiceModel.EXTRAS_DEVICE_ADDRESS, device.getAddress());
-         mContext.startService(startIntent);
+         getContext().startService(startIntent);
          BleScanActivity.this.dismiss();
         if (mScanning) {
             mBluetoothAdapter.stopLeScan(mLeScanCallback);
