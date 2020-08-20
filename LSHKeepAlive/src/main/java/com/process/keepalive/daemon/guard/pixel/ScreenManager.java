@@ -19,6 +19,7 @@ public class ScreenManager {
     }
 
     private ScreenManager() {
+
     }
 
     public void register(Context context) {

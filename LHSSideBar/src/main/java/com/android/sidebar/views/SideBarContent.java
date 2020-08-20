@@ -10,6 +10,9 @@ import android.net.Uri;
 import android.os.Build;
 
 
+import android.os.Handler;
+import android.os.SystemClock;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,9 +22,11 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.appcompat.widget.AppCompatCheckedTextView;
+import androidx.appcompat.widget.AppCompatTextView;
 
 import com.android.sidebar.R;
 import com.android.sidebar.utils.PermissionUtil;
+import com.android.sidebar.utils.SystemVolume;
 
 /**
  * Sidebar left & right
@@ -31,6 +36,7 @@ import com.android.sidebar.utils.PermissionUtil;
 public class SideBarContent implements View.OnClickListener {
     private volatile static SideBarContent mSideBarContent= null;
     public AppCompatCheckedTextView tvLock;
+    private AppCompatTextView mTvVolume;
 
     public static SideBarContent getInstance() {
         if (mSideBarContent == null) {
@@ -72,13 +78,14 @@ public class SideBarContent implements View.OnClickListener {
         LayoutInflater inflater = LayoutInflater.from(context);
         mContentView = (LinearLayout) inflater.inflate(R.layout.layout_content, null);
         // init click
-        mContentView.findViewById(R.id.tv_voice).setOnClickListener(this);
+        mContentView.findViewById(R.id.tv_left).setOnClickListener(this);
         mContentView.findViewById(R.id.tv_back).setOnClickListener(this);
         mContentView.findViewById(R.id.tv_home).setOnClickListener(this);
         mContentView.findViewById(R.id.tv_upward).setOnClickListener(this);
         mContentView.findViewById(R.id.tv_down).setOnClickListener(this);
-        mContentView.findViewById(R.id.tv_volume).setOnClickListener(this);
-        mContentView.findViewById(R.id.tv_backstage).setOnClickListener(this);
+        mTvVolume = mContentView.findViewById(R.id.tv_volume);
+        mTvVolume.setOnClickListener(this);
+        mContentView.findViewById(R.id.tv_right).setOnClickListener(this);
         tvLock = mContentView.findViewById(R.id.tv_lock);
         tvLock.setOnClickListener(this);
         LinearLayout root = mContentView.findViewById(R.id.root);
@@ -95,9 +102,9 @@ public class SideBarContent implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         int id = v.getId();
-        if (id == R.id.tv_voice) {
-            if(iSideEventListener!=null){
-                iSideEventListener.onEvent(2);
+        if (id == R.id.tv_left) {
+            if (iSideEventListener != null) {
+                iSideEventListener.onEvent(3);
             }
         } else if (id == R.id.tv_back) {
             mSideBarService.performGlobalAction(AccessibilityService.GLOBAL_ACTION_BACK);
@@ -112,9 +119,12 @@ public class SideBarContent implements View.OnClickListener {
                 iSideEventListener.onEvent(1);
             }
         } else if (id == R.id.tv_volume) {
-            brightnessOrVolume(1);
-        } else if (id == R.id.tv_backstage) {
-            mSideBarService.performGlobalAction(AccessibilityService.GLOBAL_ACTION_RECENTS);
+           // brightnessOrVolume(1);
+            adjustVolume();
+        } else if (id == R.id.tv_right) {
+            if (iSideEventListener != null) {
+                iSideEventListener.onEvent(2);
+            }
         } else if (id == R.id.tv_lock) {
              tvLock.setChecked(!tvLock.isChecked());
             Drawable drawTop= null;
@@ -127,6 +137,52 @@ public class SideBarContent implements View.OnClickListener {
             drawTop.setBounds(0, 0, drawTop.getMinimumWidth(),drawTop.getMinimumHeight());
             tvLock.setCompoundDrawables(null,drawTop,null,null);
 
+        }
+    }
+     Thread  mVolumeThread;
+     boolean mVolumeThreadRunning=false;
+    volatile int  mVolumeThreadWaitTime=0;
+    private void adjustVolume() {
+         if (mVolumeThreadRunning==false){
+              if (mVolumeThread!=null){
+                  mVolumeThread.interrupt();
+                  mVolumeThread=null;
+              }
+             mVolumeThreadRunning=true;
+             mVolumeThread=new Thread(){
+                 @Override
+                 public void run() {
+                     super.run();
+                     while (mVolumeThreadRunning){
+
+                        SystemClock.sleep(1000);
+                         mVolumeThreadWaitTime+=1000;
+                         //Log.d("mVolumeThreadRunning", "run: "+ mVolumeThreadRunning +"--"+mVolumeThreadWaitTime);
+                         if (mVolumeThreadWaitTime>=15000){
+                             mVolumeThreadRunning=false;
+                             handler.sendEmptyMessage(0);
+                         }
+                     }
+                 }
+             };
+             mVolumeThread.start();
+         }
+        mVolumeThreadWaitTime=0;
+        int volume = SystemVolume.get3Volume(mContext);
+
+        if (mTvVolume.getText().toString().trim().equals("音量")){
+            double volume_text=((volume)/15d)*100d;
+            mTvVolume.setText((int)volume_text+"%");
+        }else{
+            if (volume!=15){
+                SystemVolume.setVolume(mContext,volume+3);
+                double volume_text=((volume+3)/15d)*100d;
+                mTvVolume.setText((int)volume_text+"%");
+              //  Log.d("mVolumeThreadRunning", "run: volume"+volume+"--"+volume_text);
+            }else{
+                SystemVolume.setVolume(mContext,0);
+                mTvVolume.setText(0+"%");
+            }
         }
     }
     int[] location = new  int[2] ;
@@ -255,6 +311,11 @@ public class SideBarContent implements View.OnClickListener {
       void onEvent(int eventIndex);
 
 }
-
+    @SuppressLint("HandlerLeak")
+    private Handler handler = new Handler() {
+        public void handleMessage(android.os.Message msg) {
+    mTvVolume.setText("音量");
+        }
+    };
 
 }

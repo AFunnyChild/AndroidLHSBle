@@ -168,7 +168,9 @@ public class MouseAccessibilityService extends BaseAccessibilityService {
                 }else  if(eventIndex==1){
                  performScrollForward();
                 }else  if(eventIndex==2){
-                 AVCallFloatView.getInstance(getApplicationContext()).openVoice();
+                  performScrollLeft();
+                }else  if(eventIndex==3){
+                  performScrollRight();
                 }
             }
         });

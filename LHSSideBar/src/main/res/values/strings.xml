@@ -16,6 +16,9 @@
     <string name="backstage">后台</string>
     <string name="upward">向上</string>
     <string name="down">向下</string>
+    <string name="left">向左</string>
+    <string name="right">向右</string>
+    <string name="lock">锁定</string>
     <string name="setting_modify_toast">调节系统亮度需要开启如下权限~</string>
     <string name="permission_notice">所有权限都已打开</string>
 </resources>

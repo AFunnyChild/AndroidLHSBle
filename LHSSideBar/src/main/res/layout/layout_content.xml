@@ -27,14 +27,7 @@
                 android:text="@string/home" />
         </LinearLayout>
 
-        <LinearLayout style="@style/LayoutStyle">
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tv_backstage"
-                style="@style/ButtonStyle"
-                android:drawableTop="@drawable/ic_backstage_"
-                android:text="@string/backstage" />
-        </LinearLayout>
 
         <LinearLayout style="@style/LayoutStyle">
 
@@ -54,7 +47,22 @@
                 android:text="@string/down" />
         </LinearLayout>
 
+        <LinearLayout style="@style/LayoutStyle">
 
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_left"
+                style="@style/ButtonStyle"
+                android:drawableTop="@drawable/ic_left"
+                android:text="@string/left" />
+        </LinearLayout>
+        <LinearLayout style="@style/LayoutStyle">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_right"
+                style="@style/ButtonStyle"
+                android:drawableTop="@drawable/ic_right"
+                android:text="@string/right" />
+        </LinearLayout>
 
         <LinearLayout style="@style/LayoutStyle">
 
@@ -64,14 +72,7 @@
                 android:drawableTop="@drawable/ic_volume_"
                 android:text="@string/volume" />
         </LinearLayout>
-        <LinearLayout style="@style/LayoutStyle">
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tv_voice"
-                style="@style/ButtonStyle"
-                android:drawableTop="@drawable/ic_mic_black_"
-                android:text="@string/mic_voice" />
-        </LinearLayout>
         <LinearLayout style="@style/LayoutStyle">
 
             <androidx.appcompat.widget.AppCompatCheckedTextView
@@ -80,7 +81,8 @@
                 style="@style/ButtonStyle"
                 android:drawableTop="@drawable/ic_lock_open_"
                 android:layout_gravity="center"
-                android:text="@string/click" />
+                android:text="@string/lock" />
         </LinearLayout>
+
     </LinearLayout>
 </LinearLayout>

@@ -28,5 +28,19 @@ public class SystemVolume {
             audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
         }
         audioManager.setStreamVolume(AudioManager.STREAM_MUSIC,volumeValue,AudioManager.FLAG_PLAY_SOUND);
+
     }
+    public static int get3Volume(Context context) {
+        if(null == audioManager) {
+            audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+        }
+        int streamVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+        int resultVolume=streamVolume;
+        if (streamVolume%3!=0){
+            resultVolume=(streamVolume/3+1)*3;
+        }
+
+        return resultVolume;
+    }
+
 }
