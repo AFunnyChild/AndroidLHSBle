@@ -69,7 +69,7 @@ public class LHSBleMainActivity extends AppCompatActivity implements View.OnClic
         params.gravity= Gravity.TOP|Gravity.LEFT;
         requestPermissions();
 
-
+    //    initWake();
 
 
     }

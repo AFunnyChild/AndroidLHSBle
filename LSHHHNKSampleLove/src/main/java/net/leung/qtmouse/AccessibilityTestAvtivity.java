@@ -60,22 +60,7 @@ public class AccessibilityTestAvtivity extends AppCompatActivity implements View
 
     }
 
-    private void initWake() {
-        VoiceWakeuperHelper mVoiceWakeuperHelper = new VoiceWakeuperHelper();
-        mVoiceWakeuperHelper.initWake(this, new VoiceWakeuperHelper.IReceivedEvent() {
-            @Override
-            public void onEvent(final int id) {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(AccessibilityTestAvtivity.this, id+"", Toast.LENGTH_SHORT).show();
-                    }
-                });
-                //
 
-            }
-        });
-    }
     private void requestPermissions(){
 //        mayRequestLocation();
 //        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
