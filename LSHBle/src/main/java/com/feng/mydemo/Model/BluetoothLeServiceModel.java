@@ -65,7 +65,7 @@ public class BluetoothLeServiceModel extends Service {
                 mConnectionState = STATE_CONNECTED;
                 onConnectStateChange(1);
                broadcastUpdate(intentAction);
-
+                mBluetoothGatt.discoverServices();
 
             } else if (newState == BluetoothProfile.STATE_DISCONNECTED) {
                 intentAction = ACTION_GATT_DISCONNECTED;
