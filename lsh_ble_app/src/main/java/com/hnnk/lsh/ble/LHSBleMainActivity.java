@@ -54,12 +54,6 @@ public class LHSBleMainActivity extends AppCompatActivity implements View.OnClic
         LoveApplication.getInstance().initActivity(this);
        EventBus.getDefault().register(this);
         activity=this;
-
-     //   startActivity(new Intent(this, BleTestMainActivity.class));
-
-//        Intent dialogIntent = new Intent(getBaseContext(), BleScanActivity.class);
-//        dialogIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//        getApplication().startActivity(dialogIntent);
         getWindow().setFlags( WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN );
 
@@ -68,10 +62,6 @@ public class LHSBleMainActivity extends AppCompatActivity implements View.OnClic
         //设置顶部,左边布局
         params.gravity= Gravity.TOP|Gravity.LEFT;
         requestPermissions();
-
-    //    initWake();
-
-
     }
 
     private void initWake() {
@@ -147,7 +137,8 @@ public class LHSBleMainActivity extends AppCompatActivity implements View.OnClic
     @Override
     public void onClick(final View v) {
     if (v.getId()==R.id.btn_start){
-        FloatWindowManager.getInstance().applyOrShowFloatWindow(LoveApplication.getInstance(),true);
+//        AVCallFloatView.getInstance(this).initWake();
+       // FloatWindowManager.getInstance().applyOrShowFloatWindow(this,true);
     }else{
     //    FloatWindowManager.getInstance().applyOrShowFloatWindow(LoveApplication.getInstance(),false);
         BleScanActivity  bleScanActivity=new BleScanActivity(this);
@@ -170,6 +161,6 @@ public class LHSBleMainActivity extends AppCompatActivity implements View.OnClic
     public void onResume() {
         super.onResume();
 
-        FloatWindowManager.getInstance().applyOrShowFloatWindowResume(this);
+       // FloatWindowManager.getInstance().applyOrShowFloatWindowResume(this);
     }
 }

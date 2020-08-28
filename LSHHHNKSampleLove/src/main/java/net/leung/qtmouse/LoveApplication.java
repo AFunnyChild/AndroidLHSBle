@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
+import android.os.CountDownTimer;
 import android.os.PowerManager;
 import android.provider.Settings;
 import android.util.Log;
@@ -13,6 +14,7 @@ import android.util.Log;
 import com.iflytek.cloud.Setting;
 import com.iflytek.cloud.SpeechUtility;
 import com.process.keepalive.daemon.DemoService;
+import com.process.keepalive.daemon.MainActivity;
 import com.process.keepalive.daemon.guard.DaemonEnv;
 import com.process.keepalive.daemon.guard.pixel.ScreenManager;
 import com.tencent.bugly.Bugly;
@@ -79,7 +81,16 @@ public class LoveApplication extends Application {
         }
         ignoreBatteryOptimization(this);
         AVCallFloatView.getInstance(this);
-        AVCallFloatView.getInstance(this).initWake(this);
+        CountDownTimer timer = new CountDownTimer(5000, 1000) {
+            public void onTick(long millisUntilFinished) {
+
+            }
+
+            public void onFinish() {
+                AVCallFloatView.getInstance(LoveApplication.this).initWake(LoveApplication.this);
+            }
+        };
+        timer.start();
     }
 
     /**

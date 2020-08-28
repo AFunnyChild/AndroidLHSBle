@@ -94,13 +94,13 @@ public class AVCallFloatView  {
     public AVCallFloatView(Context context) {
 
         this.mContext=context;
-        initView();
+    //    initView();
 
 
     }
 
     public void initWake(Context context) {
-        mVoiceWakeuperHelper = new VoiceWakeuperHelper();
+        mVoiceWakeuperHelper =  VoiceWakeuperHelper.getInstance();
         mVoiceWakeuperHelper.initWake(context, new VoiceWakeuperHelper.IReceivedEvent() {
             @Override
             public void onEvent(int id) {
