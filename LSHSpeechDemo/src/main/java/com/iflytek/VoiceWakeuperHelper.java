@@ -23,6 +23,16 @@ import org.json.JSONObject;
 import org.json.JSONTokener;
 
 public class VoiceWakeuperHelper {
+    private volatile static VoiceWakeuperHelper mVoiceWakeuperHelper= null;
+    public static VoiceWakeuperHelper getInstance() {
+        if (mVoiceWakeuperHelper == null) {
+            synchronized (VoiceWakeuperHelper.class) {
+                mVoiceWakeuperHelper=new VoiceWakeuperHelper();
+            }
+        }
+        return mVoiceWakeuperHelper;
+    }
+
     public Context mContext;
     private int curThresh = 1450;
     private String threshStr = "门限值：";
@@ -76,7 +86,7 @@ public class VoiceWakeuperHelper {
 				mIvw.writeAudio(byetsFromFile,0,byetsFromFile.length);*/
             //	mIvw.stopListening();
         } else {
-         //   Toast.makeText(mContext, "语音操作未初始化", Toast.LENGTH_SHORT).show();
+       //    Toast.makeText(mContext, "语音操作未初始化", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -128,9 +138,7 @@ public class VoiceWakeuperHelper {
         public void onResult(WakeuperResult result) {
             Log.d(TAG, "onResult");
 
-//            if(!"1".equalsIgnoreCase(keep_alive)) {
-//                setRadioEnable(true);
-//            }
+
             try {
                 String text = result.getResultString();
                 JSONObject object;
