@@ -52,7 +52,7 @@ public class LHSBleMainActivity extends AppCompatActivity implements View.OnClic
         findViewById(R.id.btn_start).setOnClickListener(this);
         findViewById(R.id.btn_state).setOnClickListener(this);
         LoveApplication.getInstance().initActivity(this);
-       EventBus.getDefault().register(this);
+        EventBus.getDefault().register(this);
         activity=this;
         getWindow().setFlags( WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN );
@@ -93,8 +93,6 @@ public class LHSBleMainActivity extends AppCompatActivity implements View.OnClic
 //            }
 //
 //        }
-
-
         try {
             if (Build.VERSION.SDK_INT >= 23) {
                 int permission = ActivityCompat.checkSelfPermission(this,
@@ -160,7 +158,6 @@ public class LHSBleMainActivity extends AppCompatActivity implements View.OnClic
     @Override
     public void onResume() {
         super.onResume();
-
-       // FloatWindowManager.getInstance().applyOrShowFloatWindowResume(this);
+        FloatWindowManager.getInstance().applyOrShowFloatWindow(this,true);
     }
 }

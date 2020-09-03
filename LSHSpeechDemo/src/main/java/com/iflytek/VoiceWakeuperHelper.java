@@ -59,7 +59,6 @@ public class VoiceWakeuperHelper {
         mIvw = VoiceWakeuper.getWakeuper();
         if(mIvw != null) {
 
-
             // 清空参数
             mIvw.setParameter(SpeechConstant.PARAMS, null);
             // 唤醒门限值，根据资源携带的唤醒词个数按照“id:门限;id:门限”的格式传入

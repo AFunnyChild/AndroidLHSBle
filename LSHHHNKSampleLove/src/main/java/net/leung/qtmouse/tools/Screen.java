@@ -52,8 +52,8 @@ public final class Screen {
 
         Point size = new Point();
         windowManager.getDefaultDisplay().getSize(size);
-        width = size.x;
-        height = size.y;
+        width      = size.x;
+        height     = size.y;
     }
 
     /**

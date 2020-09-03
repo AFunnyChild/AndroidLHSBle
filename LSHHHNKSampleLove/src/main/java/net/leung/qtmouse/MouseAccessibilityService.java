@@ -43,7 +43,7 @@ public class MouseAccessibilityService extends BaseAccessibilityService {
         SCROLL_START_WITH_CURSOR = value != 0;
     }
 
-    private static boolean SCROLL_START_WITH_CURSOR = false;
+    private static boolean SCROLL_START_WITH_CURSOR = true;
 
     /**
      * 左右滑动一次的距离
@@ -212,7 +212,10 @@ public class MouseAccessibilityService extends BaseAccessibilityService {
 
         if (nodeInfo == null) return;
 
-        final LayoutParams cursorLayout = cursorView.layoutParams;
+      //  final LayoutParams cursorLayout = cursorView.layoutParams;
+       final LayoutParams cursorLayout = new LayoutParams();
+        cursorLayout.x=Screen.getWidth()/2;
+        cursorLayout.y=Screen.getHeight()/2;
         AccessibilityNodeInfo nearestNodeToMouse = findSmallestNodeAtPoint(
                 nodeInfo,
                 cursorLayout.x+10,
@@ -344,7 +347,10 @@ public class MouseAccessibilityService extends BaseAccessibilityService {
                 performScrollBackward(nodeInfo);
             });
         } else if (CursorView.getInstance() != null) {
-            final LayoutParams cursorLayout = CursorView.getInstance().layoutParams;
+            //  final LayoutParams cursorLayout = cursorView.layoutParams;
+            final LayoutParams cursorLayout = new LayoutParams();
+            cursorLayout.x=Screen.getWidth()/2;
+            cursorLayout.y=Screen.getHeight()/2;
 
             if (SCROLL_START_WITH_CURSOR) {
                 startPoint.set(cursorLayout.x-150, cursorLayout.y);
@@ -368,7 +374,10 @@ public class MouseAccessibilityService extends BaseAccessibilityService {
                 performScrollForward(nodeInfo);
             });
         } else if (CursorView.getInstance() != null) {
-            final LayoutParams cursorLayout = CursorView.getInstance().layoutParams;
+            //  final LayoutParams cursorLayout = cursorView.layoutParams;
+            final LayoutParams cursorLayout = new LayoutParams();
+            cursorLayout.x=Screen.getWidth()/2;
+            cursorLayout.y=Screen.getHeight()/2;
 
             if (SCROLL_START_WITH_CURSOR) {
                 startPoint.set(cursorLayout.x-150, cursorLayout.y);
@@ -387,9 +396,12 @@ public class MouseAccessibilityService extends BaseAccessibilityService {
      * 模拟左划
      */
     private void performScrollLeft() {
+        Log.d(TAG, "performScrollRight: left");
         if (Build.VERSION.SDK_INT >= 24 && CursorView.getInstance() != null) {
-            final LayoutParams cursorLayout = CursorView.getInstance().layoutParams;
-
+            //  final LayoutParams cursorLayout = cursorView.layoutParams;
+            final LayoutParams cursorLayout = new LayoutParams();
+            cursorLayout.x=Screen.getWidth()/2;
+            cursorLayout.y=Screen.getHeight()/2;
             if (SCROLL_START_WITH_CURSOR) {
                 startPoint.set(cursorLayout.x, cursorLayout.y);
                 endPoint.set(Screen.x(cursorLayout.x - LEFT_RIGHT_SCROLL_DISTANCE), cursorLayout.y);
@@ -397,7 +409,6 @@ public class MouseAccessibilityService extends BaseAccessibilityService {
                 startPoint.set(Screen.getWidth() - 40, cursorLayout.y);
                 endPoint.set(0, cursorLayout.y);
             }
-
             performGestureMove(startPoint, endPoint, LEFT_RIGHT_SCROLL_DURATION, performScrollLeftCB);
         } else if (Build.VERSION.SDK_INT >= 23) {
             doActionUnderMouse(nodeInfo -> {
@@ -410,8 +421,13 @@ public class MouseAccessibilityService extends BaseAccessibilityService {
      * 模拟右划
      */
     private void performScrollRight() {
+        Log.d(TAG, "performScrollRight: right");
         if (Build.VERSION.SDK_INT >= 24 && CursorView.getInstance() != null) {
-            final LayoutParams cursorLayout = CursorView.getInstance().layoutParams;
+            //  final LayoutParams cursorLayout = cursorView.layoutParams;\
+
+            final LayoutParams cursorLayout = new LayoutParams();
+            cursorLayout.x=Screen.getWidth()/2;
+            cursorLayout.y=Screen.getHeight()/2;
 
             if (SCROLL_START_WITH_CURSOR) {
                 startPoint.set(cursorLayout.x, cursorLayout.y);

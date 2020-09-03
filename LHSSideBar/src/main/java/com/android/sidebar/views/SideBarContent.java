@@ -127,9 +127,8 @@ public class SideBarContent implements View.OnClickListener {
             }
         } else if (id == R.id.tv_lock) {
              tvLock.setChecked(!tvLock.isChecked());
-            Drawable drawTop= null;
+             Drawable drawTop= null;
               if (tvLock.isChecked()){
-
                   drawTop=  mContext.getResources().getDrawable(R.drawable.ic_lock_outline_);
               }else{
                   drawTop=  mContext.getResources().getDrawable(R.drawable.ic_lock_open_);
@@ -215,7 +214,6 @@ public class SideBarContent implements View.OnClickListener {
             addSeekBarView(tag);
         }
     }
-
     private void addSeekBarView(int tag) {
         mSeekBarView = mControlBar.getView(mContext,mLeft,tag,this);
         mWindowManager.addView(mSeekBarView, mControlBar.mParams);
@@ -227,14 +225,9 @@ public class SideBarContent implements View.OnClickListener {
             mSeekBarView = null;
         }
     }
-
-
-
-
     private void brightnessPermissionCheck() {
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (!PermissionUtil.isSettingsCanWrite(mContext)) {
-
                 Intent intent = new Intent(android.provider.Settings.ACTION_MANAGE_WRITE_SETTINGS);
                 intent.setData(Uri.parse("package:" + mContext.getPackageName()));
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -292,7 +285,6 @@ public class SideBarContent implements View.OnClickListener {
         }
         if (isShowing) {
             mContentView.setVisibility(View.VISIBLE);
-
         } else {
             mContentView.setVisibility(View.GONE);
         }
@@ -314,7 +306,7 @@ public class SideBarContent implements View.OnClickListener {
     @SuppressLint("HandlerLeak")
     private Handler handler = new Handler() {
         public void handleMessage(android.os.Message msg) {
-    mTvVolume.setText("音量");
+        mTvVolume.setText("音量");
         }
     };
 
