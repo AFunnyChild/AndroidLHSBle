@@ -13,10 +13,7 @@ import android.util.Log;
 
 import com.iflytek.cloud.Setting;
 import com.iflytek.cloud.SpeechUtility;
-import com.process.keepalive.daemon.DemoService;
-import com.process.keepalive.daemon.MainActivity;
-import com.process.keepalive.daemon.guard.DaemonEnv;
-import com.process.keepalive.daemon.guard.pixel.ScreenManager;
+
 import com.tencent.bugly.Bugly;
 
 import com.tencent.bugly.beta.Beta;
@@ -36,15 +33,15 @@ public class LoveApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        ScreenManager.getInstance().register(this);
-        DaemonEnv.initialize(this, DemoService.class, DaemonEnv.DEFAULT_WAKE_UP_INTERVAL);
-        DemoService.sShouldStopService = false;
-        DaemonEnv.startServiceMayBind(DemoService.class);
-        if(isRunning(this,"net.leung.qtmouse.MouseAccessibilityService")==true){
-           DaemonEnv.startServiceMayBind(MouseAccessibilityService.class);
-        }
+//        ScreenManager.getInstance().register(this);
+//        DaemonEnv.initialize(this, DemoService.class, DaemonEnv.DEFAULT_WAKE_UP_INTERVAL);
+//        DemoService.sShouldStopService = false;
+//        DaemonEnv.startServiceMayBind(DemoService.class);
+//        if(isRunning(this,"net.leung.qtmouse.MouseAccessibilityService")==true){
+//           DaemonEnv.startServiceMayBind(MouseAccessibilityService.class);
+//        }
         Log.d("Application", "service name: "+this.getPackageName());
-        SpeechUtility.createUtility(LoveApplication.this, "appid=" + "5f4761b8");
+        SpeechUtility.createUtility(LoveApplication.this, "appid=" + "5f55cf51");
         Setting.setLogLevel(Setting.LOG_LEVEL.none);
         mApplication=this;
         Beta.enableHotfix=false;
@@ -76,16 +73,13 @@ public class LoveApplication extends Application {
             info.append("弹窗类型（1:建议 2:强制 3:手工）: ").append(upgradeInfo.upgradeType).append("\n");
             info.append("图片地址：").append(upgradeInfo.imageUrl);
             Log.d("Application", "upgradeInfo: "+(info.toString()));
-
-            //  Beta.showUpgradeDialog(upgradeInfo.title,upgradeInfo.upgradeType,upgradeInfo.newFeature,upgradeInfo.publishTime,1,upgradeInfo.versionCode,upgradeInfo.versionName,upgradeInfo.apkUrl,upgradeInfo.fileSize,upgradeInfo.apkMd5,upgradeInfo.imageUrl,0,null,null,null,true);
+            //Beta.showUpgradeDialog(upgradeInfo.title,upgradeInfo.upgradeType,upgradeInfo.newFeature,upgradeInfo.publishTime,1,upgradeInfo.versionCode,upgradeInfo.versionName,upgradeInfo.apkUrl,upgradeInfo.fileSize,upgradeInfo.apkMd5,upgradeInfo.imageUrl,0,null,null,null,true);
         }
         ignoreBatteryOptimization(this);
         AVCallFloatView.getInstance(this);
         CountDownTimer timer = new CountDownTimer(5000, 1000) {
             public void onTick(long millisUntilFinished) {
-
             }
-
             public void onFinish() {
                 AVCallFloatView.getInstance(LoveApplication.this).initWake(LoveApplication.this);
             }

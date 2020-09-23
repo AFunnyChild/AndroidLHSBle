@@ -34,9 +34,9 @@ public class AccessibilityTestAvtivity extends AppCompatActivity implements View
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setFlags( WindowManager.LayoutParams.FLAG_FULLSCREEN, Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS );
-        setContentView(R.layout.activity_accessibility_test);
+        //setContentView(R.layout.activity_accessibility_test);
         findViewById(R.id.btn_start).setOnClickListener(this);
-        findViewById(R.id.btn_state).setOnClickListener(this);
+       // findViewById(R.id.btn_state).setOnClickListener(this);
         LoveApplication.getInstance().initActivity(this);
 
         activity=this;

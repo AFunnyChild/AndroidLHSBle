@@ -23,7 +23,7 @@ import android.os.Handler;
 
 import com.android.sidebar.views.SideBarContent;
 import com.feng.mydemo.activity.BleScanActivity;
-import com.process.keepalive.daemon.MainActivity;
+
 
 import android.content.Context;
 import android.content.ClipData;

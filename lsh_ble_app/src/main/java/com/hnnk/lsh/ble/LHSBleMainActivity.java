@@ -24,7 +24,7 @@ import android.widget.Toast;
 
 import com.feng.mydemo.activity.BleScanActivity;
 import com.iflytek.VoiceWakeuperHelper;
-import com.process.keepalive.daemon.MainActivity;
+
 
 
 import net.leung.qtmouse.AVCallFloatView;

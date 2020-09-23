@@ -7,8 +7,6 @@ import android.content.Intent;
 import android.os.Build;
 import android.util.Log;
 
-import com.process.keepalive.daemon.DemoService;
-import com.process.keepalive.daemon.guard.DaemonEnv;
 
 import java.util.ArrayList;
 
@@ -26,12 +24,12 @@ public class DeviceBootReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         if (intent.getAction().equals(ACTION_BOOT)) {
 
-            DaemonEnv.initialize(context.getApplicationContext(), DemoService.class, DaemonEnv.DEFAULT_WAKE_UP_INTERVAL);
-            DemoService.sShouldStopService = false;
-            DaemonEnv.startServiceMayBind(DemoService.class);
-            if(isRunning(context,"net.leung.qtmouse.MouseAccessibilityService")==true){
-                DaemonEnv.startServiceMayBind(MouseAccessibilityService.class);
-            }
+//            DaemonEnv.initialize(context.getApplicationContext(), DemoService.class, DaemonEnv.DEFAULT_WAKE_UP_INTERVAL);
+//            DemoService.sShouldStopService = false;
+//            DaemonEnv.startServiceMayBind(DemoService.class);
+//            if(isRunning(context,"net.leung.qtmouse.MouseAccessibilityService")==true){
+//                DaemonEnv.startServiceMayBind(MouseAccessibilityService.class);
+//            }
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 if(MouseAccessibilityService.isAccessibilityServiceEnable(context)) {

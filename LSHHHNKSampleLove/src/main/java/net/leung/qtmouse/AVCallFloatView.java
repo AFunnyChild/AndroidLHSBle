@@ -35,7 +35,7 @@ import com.iflytek.cloud.WakeuperResult;
 import com.iflytek.cloud.ui.RecognizerDialog;
 import com.iflytek.cloud.ui.RecognizerDialogListener;
 import com.iflytek.cloud.util.ResourceUtil;
-import com.process.keepalive.daemon.MainActivity;
+
 
 
 import net.leung.qtmouse.tools.Screen;
