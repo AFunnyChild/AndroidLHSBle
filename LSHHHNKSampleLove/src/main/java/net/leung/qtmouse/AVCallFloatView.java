@@ -107,7 +107,8 @@ public class AVCallFloatView  {
                //  Toast.makeText(mContext, id+"", Toast.LENGTH_SHORT).show();
                 Log.d(TAG, "Voice onEvent: " +id);
                 if (id==0){
-                    EventBus.getDefault().post(new MouseEvent(7));
+                    EventBus.getDefault().post(new JniEvent(JniEvent.ON_RESET_MOUSE));
+                   // EventBus.getDefault().post(new MouseEvent(7));
                 }
                 if (id==1){
                     EventBus.getDefault().post(new MouseEvent(6));
