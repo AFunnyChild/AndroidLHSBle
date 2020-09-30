@@ -98,6 +98,7 @@ public class BleScanActivity extends Dialog implements View.OnClickListener, Ada
         mPbScan = findViewById(R.id.pb_scan);
         mBtnScan.setOnClickListener(this);
         mListView.setOnItemClickListener(this);
+        findViewById(R.id.ic_close).setOnClickListener(this);
         mHandler = new Handler();
 //        // 检查当前手机是否支持ble 蓝牙,如果不支持退出程序
 //        if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
@@ -213,9 +214,14 @@ public class BleScanActivity extends Dialog implements View.OnClickListener, Ada
 //            mLeDeviceListAdapter.clear();
 //            scanLeDevice(true);
 //        }
-//        if (item.getItemId()==R.id.menu_stop){
-//            scanLeDevice(false);
-//        }
+        if (v.getId()==R.id.ic_close){
+            scanLeDevice(false);
+            mBluetoothAdapter.stopLeScan(mLeScanCallback);
+            mScanning = false;
+            mLeDeviceListAdapter.clear();
+          this.cancel();
+          this.dismiss();
+        }
     }
 
     @Override
@@ -360,9 +366,9 @@ public class BleScanActivity extends Dialog implements View.OnClickListener, Ada
     public void onDetachedFromWindow() {
         super.onDetachedFromWindow();
 
-        scanLeDevice(false);
+   //     scanLeDevice(false);
 
-        mLeDeviceListAdapter.clear();
+        //mLeDeviceListAdapter.clear();
 
     }
 }
