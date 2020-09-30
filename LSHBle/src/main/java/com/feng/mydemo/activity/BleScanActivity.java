@@ -291,10 +291,14 @@ public class BleScanActivity extends Dialog implements View.OnClickListener, Ada
 
             BluetoothDevice device = mLeDevices.get(i);
             final String deviceName = device.getName();
-            if (deviceName != null && deviceName.length() > 0)
-                viewHolder.deviceName.setText(deviceName);
-            else
+            if (deviceName != null && deviceName.length() > 0){
+                String fitterName=deviceName.replace("H2000","脑机生命环").replace("HNNK_","脑机生命环");
+                viewHolder.deviceName.setText(fitterName);
+            }
+            else{
                 viewHolder.deviceName.setText(R.string.unknown_device);
+            }
+
             viewHolder.deviceAddress.setText(device.getAddress());
 
             return view;
