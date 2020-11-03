@@ -1,2 +1,3 @@
+include ':LSH_WebrtcCall'
 include ':lsh_ble_app', ':LSHBle', ':LSHSpeechDemo', ':LSHKeepAlive', ':LSHHHNKSampleLove', ':LHSSideBar'
 rootProject.name='AndroidLHSBle'

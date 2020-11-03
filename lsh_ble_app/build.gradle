@@ -5,7 +5,7 @@ android {
     buildToolsVersion "28.0.3"
     defaultConfig {
         applicationId "net.leung.qtmouse"
-        minSdkVersion 24
+        minSdkVersion 22
         targetSdkVersion 28
         versionName "1.00"
         ndk {
