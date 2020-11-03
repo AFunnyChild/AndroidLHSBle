@@ -88,7 +88,7 @@ public class CallTestActivity extends Activity implements View.OnClickListener {
           }else  if(view.getId()==R.id.btn_open){
               WebRTCClient.getInstance().asClient(this,"192.168.0.17");
           }else  if(view.getId()==R.id.btn_close){
-              WebRTCClient.getInstance().open(false);
+              WebRTCClient.getInstance().closeClient();
           }
     }
     public  void toa(String  msg){

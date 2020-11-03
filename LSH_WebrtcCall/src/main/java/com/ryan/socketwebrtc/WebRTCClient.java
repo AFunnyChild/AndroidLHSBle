@@ -50,6 +50,7 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -201,6 +202,7 @@ public class WebRTCClient  {
         if (mIsServer) {
             if (mServer==null){
                 mServer = new SignalServer(port);
+                mServer.onStart();
                 mServer.start();
             }else{
                 try {
@@ -321,6 +323,16 @@ public class WebRTCClient  {
 
     }
 
+    public  void  closeClient(){
+       if (mServer==null){
+           return;
+       }
+        List<WebSocket> mWebSocketList = mServer.mWebSocketList;
+        for (WebSocket conn : mWebSocketList) {
+            conn.close();
+            conn=null;
+        }
+    }
     public static class SimpleSdpObserver implements SdpObserver {
         @Override
         public void onCreateSuccess(SessionDescription sessionDescription) {
@@ -438,6 +450,7 @@ public class WebRTCClient  {
         }
         mPeerConnection.close();
         mPeerConnection = null;
+
 
         printInfoOnScreen("Hangup Done.");
         updateCallState(true);
@@ -662,18 +675,20 @@ public class WebRTCClient  {
         }
     }
 
-    class SignalServer extends WebSocketServer {
+    public class SignalServer extends WebSocketServer {
 
         public SignalServer( int port ) {
             super(new InetSocketAddress(port));
         }
-
+        public List<WebSocket>  mWebSocketList=new ArrayList<>();
         @Override
         public void onOpen(WebSocket conn, ClientHandshake handshake) {
             Logger.d("=== SignalServer onOpen()");
             printInfoOnScreen("onOpen有客户端连接上...调用start call");
             //调用call， 进行媒体协商
             doStartCall(conn);
+            mWebSocketList.add(conn);
+
         }
 
         @Override
@@ -840,15 +855,21 @@ public class WebRTCClient  {
     }
 
     public void printInfoOnScreen(String msg) {
-        Activity  activity=(Activity) mContext;
-        activity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Toast.makeText(mContext, msg, Toast.LENGTH_SHORT).show();
-            }
-        });
+        if (mIsShowToast){
+            Activity  activity=(Activity) mContext;
+            activity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(mContext, msg, Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+
         Log.d("webrtccall", msg);
     }
-
+    public boolean mIsShowToast=false;
+   public  void  isShowToast(boolean isShowToast){
+       this.mIsShowToast=isShowToast;
+   }
 
 }
