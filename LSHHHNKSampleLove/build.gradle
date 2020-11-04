@@ -2,7 +2,7 @@ apply plugin: 'com.android.library'
 
 android {
     compileSdkVersion 28
-    buildToolsVersion "28.0.3"
+    compileSdkVersion 28
 
 
     defaultConfig {
@@ -41,6 +41,7 @@ dependencies {
     api 'com.squareup.picasso:picasso:2.5.2'
     implementation 'androidx.appcompat:appcompat:1.1.0'
     api project(path: ':LSHBle')
+    api project(path: ':LSH_WebrtcCall')
     api project(path: ':LSHSpeechDemo')
 //    api project(path: ':LSHKeepAlive')
     api 'com.tencent.bugly:crashreport_upgrade:1.4.2'
