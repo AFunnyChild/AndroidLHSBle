@@ -85,7 +85,7 @@ public class VoiceWakeuperHelper {
 				mIvw.writeAudio(byetsFromFile,0,byetsFromFile.length);*/
             //	mIvw.stopListening();
         } else {
-       //    Toast.makeText(mContext, "语音操作未初始化", Toast.LENGTH_SHORT).show();
+           Toast.makeText(mContext, "语音操作未初始化", Toast.LENGTH_SHORT).show();
         }
     }
 

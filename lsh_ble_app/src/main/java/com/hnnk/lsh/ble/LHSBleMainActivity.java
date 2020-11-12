@@ -5,6 +5,7 @@ import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.ClipboardManager;
@@ -41,7 +42,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 
-public class LHSBleMainActivity extends AppCompatActivity implements View.OnClickListener {
+public class LHSBleMainActivity extends Activity implements View.OnClickListener {
     static LHSBleMainActivity activity;
     private static final int REQUEST_CODE_CHOOSE = 23;
     @Override
@@ -62,6 +63,7 @@ public class LHSBleMainActivity extends AppCompatActivity implements View.OnClic
         //设置顶部,左边布局
         params.gravity= Gravity.TOP|Gravity.LEFT;
         requestPermissions();
+        initWake();
     }
 
     private void initWake() {
@@ -158,6 +160,6 @@ public class LHSBleMainActivity extends AppCompatActivity implements View.OnClic
     @Override
     public void onResume() {
         super.onResume();
-        FloatWindowManager.getInstance().applyOrShowFloatWindow(this,true);
+      //  FloatWindowManager.getInstance().applyOrShowFloatWindow(this,true);
     }
 }

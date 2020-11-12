@@ -11,7 +11,7 @@
         <!-- 移动统计分析 -->
         <meta-data
             android:name="IFLYTEK_APPKEY"
-            android:value="'5cee406c'" />
+            android:value="'5facb834'" />
         <meta-data
             android:name="IFLYTEK_CHANNEL"
             android:value="Android_Demo" />
