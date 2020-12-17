@@ -41,7 +41,7 @@ public class LoveApplication extends Application {
 //           DaemonEnv.startServiceMayBind(MouseAccessibilityService.class);
 //        }
         Log.d("Application", "service name: "+this.getPackageName());
-        SpeechUtility.createUtility(LoveApplication.this, "appid=" + "5facb834");
+        SpeechUtility.createUtility(LoveApplication.this, "appid=" + "5fdafc40");
         Setting.setLogLevel(Setting.LOG_LEVEL.none);
         mApplication=this;
         Beta.enableHotfix=false;
