@@ -155,6 +155,7 @@ public class CallActivity extends Activity implements View.OnClickListener {
 
         if (mIsServer) {
             mServer = new SignalServer(port);
+            mServer.setReuseAddr(true);
             mServer.start();
         }
         else {

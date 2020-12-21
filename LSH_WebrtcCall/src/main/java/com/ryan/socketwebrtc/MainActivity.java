@@ -21,7 +21,7 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_webrtc_call_main);
 
         String[] perms = {
                 Manifest.permission.CAMERA,
@@ -60,7 +60,7 @@ public class MainActivity extends Activity {
 
 
     public static String getLocalIpAddress() {
-        String strIP=null;
+        String strIP="";
         try {
             for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements();) {
                 NetworkInterface intf = en.nextElement();

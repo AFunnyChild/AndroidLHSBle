@@ -202,7 +202,8 @@ public class WebRTCClient  {
         if (mIsServer) {
             if (mServer==null){
                 mServer = new SignalServer(port);
-                mServer.onStart();
+                mServer.setReuseAddr(true);
+              //  mServer.onStart();
                 mServer.start();
             }else{
                 try {
@@ -215,6 +216,7 @@ public class WebRTCClient  {
                     e.printStackTrace();
                 }
                 mServer = new SignalServer(port);
+                mServer.setReuseAddr(true);
                 mServer.start();
             }
 
