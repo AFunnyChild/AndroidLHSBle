@@ -63,7 +63,7 @@ public class LHSBleMainActivity extends Activity implements View.OnClickListener
         //设置顶部,左边布局
         params.gravity= Gravity.TOP|Gravity.LEFT;
         requestPermissions();
-        initWake();
+       initWake();
     }
 
     private void initWake() {
@@ -138,7 +138,7 @@ public class LHSBleMainActivity extends Activity implements View.OnClickListener
     public void onClick(final View v) {
     if (v.getId()==R.id.btn_start){
 //        AVCallFloatView.getInstance(this).initWake();
-       // FloatWindowManager.getInstance().applyOrShowFloatWindow(this,true);
+        FloatWindowManager.getInstance().applyOrShowFloatWindow(this,true);
     }else{
     //    FloatWindowManager.getInstance().applyOrShowFloatWindow(LoveApplication.getInstance(),false);
         BleScanActivity  bleScanActivity=new BleScanActivity(this);
@@ -151,6 +151,7 @@ public class LHSBleMainActivity extends Activity implements View.OnClickListener
             case JniEvent.ON_VOICE_PASTE:
                 break;
                 case JniEvent.ON_RESET_MOUSE:
+                    Toast.makeText(activity, "sada", Toast.LENGTH_SHORT).show();
                 break;
             default:
                 break;

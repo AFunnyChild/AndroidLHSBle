@@ -76,15 +76,15 @@ public class LoveApplication extends Application {
             //Beta.showUpgradeDialog(upgradeInfo.title,upgradeInfo.upgradeType,upgradeInfo.newFeature,upgradeInfo.publishTime,1,upgradeInfo.versionCode,upgradeInfo.versionName,upgradeInfo.apkUrl,upgradeInfo.fileSize,upgradeInfo.apkMd5,upgradeInfo.imageUrl,0,null,null,null,true);
         }
         ignoreBatteryOptimization(this);
-        AVCallFloatView.getInstance(this);
-        CountDownTimer timer = new CountDownTimer(5000, 1000) {
-            public void onTick(long millisUntilFinished) {
-            }
-            public void onFinish() {
-                AVCallFloatView.getInstance(LoveApplication.this).initWake(LoveApplication.this);
-            }
-        };
-        timer.start();
+//        AVCallFloatView.getInstance(this);
+//        CountDownTimer timer = new CountDownTimer(5000, 1000) {
+//            public void onTick(long millisUntilFinished) {
+//            }
+//            public void onFinish() {
+//                AVCallFloatView.getInstance(LoveApplication.this).initWake(LoveApplication.this);
+//            }
+//        };
+//        timer.start();
     }
 
     /**
