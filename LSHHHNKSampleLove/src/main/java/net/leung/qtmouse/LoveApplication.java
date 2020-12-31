@@ -77,14 +77,14 @@ public class LoveApplication extends Application {
         }
         ignoreBatteryOptimization(this);
         AVCallFloatView.getInstance(this);
-        CountDownTimer timer = new CountDownTimer(5000, 1000) {
-            public void onTick(long millisUntilFinished) {
-            }
-            public void onFinish() {
-                AVCallFloatView.getInstance(LoveApplication.this).initWake(LoveApplication.this);
-            }
-        };
-        timer.start();
+//        CountDownTimer timer = new CountDownTimer(5000, 1000) {
+//            public void onTick(long millisUntilFinished) {
+//            }
+//            public void onFinish() {
+//                AVCallFloatView.getInstance(LoveApplication.this).initWake(LoveApplication.this);
+//            }
+//        };
+//        timer.start();
     }
 
     /**

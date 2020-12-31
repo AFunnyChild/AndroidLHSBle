@@ -151,6 +151,7 @@ public class LHSBleMainActivity extends Activity implements View.OnClickListener
             case JniEvent.ON_VOICE_PASTE:
                 break;
                 case JniEvent.ON_RESET_MOUSE:
+                    Toast.makeText(activity, "reset", Toast.LENGTH_SHORT).show();
                 break;
             default:
                 break;
@@ -162,4 +163,5 @@ public class LHSBleMainActivity extends Activity implements View.OnClickListener
         super.onResume();
       //  FloatWindowManager.getInstance().applyOrShowFloatWindow(this,true);
     }
+
 }

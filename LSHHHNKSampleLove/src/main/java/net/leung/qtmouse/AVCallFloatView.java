@@ -105,7 +105,7 @@ public class AVCallFloatView  {
             @Override
             public void onEvent(int id) {
                //  Toast.makeText(mContext, id+"", Toast.LENGTH_SHORT).show();
-                Log.d(TAG, "Voice onEvent: " +id);
+                Log.e("call", "Voice onEvent: reset");
                 if (id==0){
                     EventBus.getDefault().post(new JniEvent(JniEvent.ON_RESET_MOUSE));
                    // EventBus.getDefault().post(new MouseEvent(7));

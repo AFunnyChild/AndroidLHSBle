@@ -8,6 +8,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import com.yey.library_restartapp.YRestartAPP;
+
 import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
@@ -52,10 +54,11 @@ public class MainActivity extends Activity {
     }
 
     public void onBtnClient(View view) {
-        Intent intent = new Intent(this, CallActivity.class);
-        intent.putExtra("server", false);
-        startActivity(intent);
-        finish();
+//        Intent intent = new Intent(this, CallActivity.class);
+//        intent.putExtra("server", false);
+//        startActivity(intent);
+//        finish();
+
     }
 
 
