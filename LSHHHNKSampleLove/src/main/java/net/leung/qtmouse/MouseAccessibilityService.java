@@ -30,6 +30,8 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.widget.Toast;
 
+import static android.view.accessibility.AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED;
+
 
 public class MouseAccessibilityService extends BaseAccessibilityService {
 
@@ -140,6 +142,12 @@ public class MouseAccessibilityService extends BaseAccessibilityService {
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
         super.onAccessibilityEvent(event);
+       // Log.e(TAG, "onAccessibilityEvent: "+event.toString() );
+        if (event.getEventType()==TYPE_WINDOW_STATE_CHANGED){
+           // Log.e(TAG, "onAccessibilityEvent: "+event.toString() );
+            EventBus.getDefault().post(new JniEvent(JniEvent.ON_WINDOW_CHANGE));
+        }
+
     }
 
     @Override
