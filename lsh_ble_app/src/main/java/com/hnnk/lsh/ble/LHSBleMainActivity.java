@@ -1,41 +1,36 @@
 package com.hnnk.lsh.ble;
 
-import androidx.appcompat.app.AppCompatActivity;
+
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.content.ClipboardManager;
+
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 
-import android.provider.Settings;
-import android.util.Log;
+
+import android.os.CountDownTimer;
 import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
-import android.view.accessibility.AccessibilityNodeInfo;
+
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.feng.mydemo.activity.BleScanActivity;
 import com.iflytek.VoiceWakeuperHelper;
 
+import  net.leung.qtmouse.LoadingDialog;
 
 
-import net.leung.qtmouse.AVCallFloatView;
-import net.leung.qtmouse.CursorView;
-import net.leung.qtmouse.FloatWindowManager;
 import net.leung.qtmouse.JniEvent;
 
 import net.leung.qtmouse.LoveApplication;
-import net.leung.qtmouse.MouseAccessibilityService;
-import net.leung.qtmouse.MouseEvent;
+
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -137,8 +132,22 @@ public class LHSBleMainActivity extends Activity implements View.OnClickListener
     @Override
     public void onClick(final View v) {
     if (v.getId()==R.id.btn_start){
-//        AVCallFloatView.getInstance(this).initWake();
-        //FloatWindowManager.getInstance().applyOrShowFloatWindow(this,true);
+//        LoadingDialog.createDialog(this,10);
+//        CountDownTimer cdt = new CountDownTimer(5000 + 50, 1000) {
+//            @Override
+//            public void onTick(long millisUntilFinished) {
+//
+//            }
+//
+//            @Override
+//            public void onFinish() {
+//                //倒计时3秒结束时对话框消失
+//                LoadingDialog.closeDialog();
+//
+//            }
+//        };
+//        cdt.start();
+
     }else{
     //    FloatWindowManager.getInstance().applyOrShowFloatWindow(LoveApplication.getInstance(),false);
         BleScanActivity  bleScanActivity=new BleScanActivity(this);
