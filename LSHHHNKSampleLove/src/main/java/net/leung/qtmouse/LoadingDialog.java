@@ -116,7 +116,11 @@ public class LoadingDialog extends Dialog{
             @Override
             public void onFinish() {
                 //倒计时3秒结束时对话框消失
-               dismiss();
+                if (loadingDialog!=null){
+                    loadingDialog.dismiss();
+                    loadingDialog=null;
+                }
+
 
             }
         };

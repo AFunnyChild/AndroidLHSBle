@@ -131,7 +131,7 @@ public class LHSBleMainActivity extends Activity implements View.OnClickListener
     @SuppressLint("CheckResult")
     @Override
     public void onClick(final View v) {
-    if (v.getId()==R.id.btn_start){
+//    if (v.getId()==R.id.btn_start){
 //        LoadingDialog.createDialog(this,10);
 //        CountDownTimer cdt = new CountDownTimer(5000 + 50, 1000) {
 //            @Override
@@ -147,12 +147,12 @@ public class LHSBleMainActivity extends Activity implements View.OnClickListener
 //            }
 //        };
 //        cdt.start();
-
-    }else{
-    //    FloatWindowManager.getInstance().applyOrShowFloatWindow(LoveApplication.getInstance(),false);
-        BleScanActivity  bleScanActivity=new BleScanActivity(this);
-        bleScanActivity.showBleWindow();
-    }
+//
+//    }else{
+//    //    FloatWindowManager.getInstance().applyOrShowFloatWindow(LoveApplication.getInstance(),false);
+//        BleScanActivity  bleScanActivity=new BleScanActivity(this);
+//        bleScanActivity.showBleWindow();
+//    }
     }
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMouseMove(JniEvent event) {
