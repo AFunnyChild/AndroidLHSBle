@@ -322,8 +322,13 @@ public class BleScanActivity extends Dialog implements View.OnClickListener, Ada
                 @Override
                 public void run() {
                     // 在这里执行你要想的操作 比如直接在这里更新ui或者调用回调在 在回调中更新ui
-                    mLeDeviceListAdapter.addDevice(device);
-                    mLeDeviceListAdapter.notifyDataSetChanged();
+                     String deviceName = device.getName();
+                    if (deviceName != null && deviceName.length() > 0){
+                        String fitterName=deviceName.replace("H2000","脑机生命环").replace("HNNK_","脑机生命环");
+                        mLeDeviceListAdapter.addDevice(device);
+                        mLeDeviceListAdapter.notifyDataSetChanged();
+                    }
+
                 }
             });
 

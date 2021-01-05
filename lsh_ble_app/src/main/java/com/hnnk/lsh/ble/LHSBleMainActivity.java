@@ -138,7 +138,7 @@ public class LHSBleMainActivity extends Activity implements View.OnClickListener
     public void onClick(final View v) {
     if (v.getId()==R.id.btn_start){
 //        AVCallFloatView.getInstance(this).initWake();
-        FloatWindowManager.getInstance().applyOrShowFloatWindow(this,true);
+        //FloatWindowManager.getInstance().applyOrShowFloatWindow(this,true);
     }else{
     //    FloatWindowManager.getInstance().applyOrShowFloatWindow(LoveApplication.getInstance(),false);
         BleScanActivity  bleScanActivity=new BleScanActivity(this);
