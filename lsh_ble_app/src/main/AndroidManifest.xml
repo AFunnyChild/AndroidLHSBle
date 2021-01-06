@@ -10,7 +10,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:excludeFromRecents="false" android:name=".LHSBleMainActivity">
+        <activity android:excludeFromRecents="true" android:name=".LHSBleMainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

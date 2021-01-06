@@ -7,23 +7,28 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
 
 
 import android.os.CountDownTimer;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
 
+import android.view.inputmethod.InputMethodManager;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.feng.mydemo.activity.BleScanActivity;
 import com.iflytek.VoiceWakeuperHelper;
 
+import net.leung.qtmouse.FloatWindowManager;
 import  net.leung.qtmouse.LoadingDialog;
 
 
@@ -35,6 +40,8 @@ import net.leung.qtmouse.LoveApplication;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
+import java.lang.reflect.Method;
 
 
 public class LHSBleMainActivity extends Activity implements View.OnClickListener {
@@ -131,36 +138,35 @@ public class LHSBleMainActivity extends Activity implements View.OnClickListener
     @SuppressLint("CheckResult")
     @Override
     public void onClick(final View v) {
-//    if (v.getId()==R.id.btn_start){
-//        LoadingDialog.createDialog(this,10);
-//        CountDownTimer cdt = new CountDownTimer(5000 + 50, 1000) {
-//            @Override
-//            public void onTick(long millisUntilFinished) {
-//
-//            }
-//
-//            @Override
-//            public void onFinish() {
-//                //倒计时3秒结束时对话框消失
-//                LoadingDialog.closeDialog();
-//
-//            }
-//        };
-//        cdt.start();
-//
-//    }else{
-//    //    FloatWindowManager.getInstance().applyOrShowFloatWindow(LoveApplication.getInstance(),false);
-//        BleScanActivity  bleScanActivity=new BleScanActivity(this);
-//        bleScanActivity.showBleWindow();
-//    }
+    if (v.getId()==R.id.btn_start){
+        LoadingDialog.createDialog(this,10);
+        CountDownTimer cdt = new CountDownTimer(5000 + 50, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+
+            }
+
+            @Override
+            public void onFinish() {
+                //倒计时3秒结束时对话框消失
+                LoadingDialog.closeDialog();
+
+            }
+        };
+        cdt.start();
+
+    }else{
+        FloatWindowManager.getInstance().applyOrShowFloatWindow(this,true);
+    }
     }
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMouseMove(JniEvent event) {
         switch (event.eventType) {
             case JniEvent.ON_VOICE_PASTE:
                 break;
-                case JniEvent.ON_RESET_MOUSE:
-                    Toast.makeText(activity, "sada", Toast.LENGTH_SHORT).show();
+                case JniEvent.ON_WINDOW_CHANGE:
+                //    Toast.makeText(activity, "sada", Toast.LENGTH_SHORT).show();
+                    Log.e("ss", "onMouseMove: "+isSoftShowing() );
                 break;
             default:
                 break;
@@ -172,4 +178,17 @@ public class LHSBleMainActivity extends Activity implements View.OnClickListener
         super.onResume();
       //  FloatWindowManager.getInstance().applyOrShowFloatWindow(this,true);
     }
+    private boolean isSoftShowing() {
+        //获取当屏幕内容的高度
+        int screenHeight = this.getWindow().getDecorView().getHeight();
+        //获取View可见区域的bottom
+        Rect rect = new Rect();
+        //DecorView即为activity的顶级view
+        this.getWindow().getDecorView().getWindowVisibleDisplayFrame(rect);
+        //考虑到虚拟导航栏的情况（虚拟导航栏情况下：screenHeight = rect.bottom + 虚拟导航栏高度）
+        //选取screenHeight*2/3进行判断
+        Log.e("test", "isSoftShowing: "+(screenHeight*2/3 > rect.bottom) );
+        return screenHeight*2/3 > rect.bottom;
+    }
+
 }
