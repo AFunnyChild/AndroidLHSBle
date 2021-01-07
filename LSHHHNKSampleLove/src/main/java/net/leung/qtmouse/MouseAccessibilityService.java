@@ -2,12 +2,14 @@ package net.leung.qtmouse;
 
 import android.accessibilityservice.GestureDescription;
 import android.annotation.TargetApi;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Path;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.os.Build;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.WindowManager.LayoutParams;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
@@ -142,7 +144,7 @@ public class MouseAccessibilityService extends BaseAccessibilityService {
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
         super.onAccessibilityEvent(event);
-       // Log.e(TAG, "onAccessibilityEvent: "+event.toString() );
+    //    Log.e(TAG, "onAccessibilityEvent: "+event.toString() );
         if (event.getEventType()==TYPE_WINDOW_STATE_CHANGED){
            // Log.e(TAG, "onAccessibilityEvent: "+event.toString() );
             EventBus.getDefault().post(new JniEvent(JniEvent.ON_WINDOW_CHANGE));
@@ -181,9 +183,22 @@ public class MouseAccessibilityService extends BaseAccessibilityService {
                   performScrollRight();
                 }
             }
+
+            @Override
+            public void onIsClicked() {
+                EventBus.getDefault().post(new JniEvent(JniEvent.ON_WINDOW_CHANGE));
+
+            }
         });
 
         Log.d(TAG, "onCreate");
+    }
+
+    @Override
+    protected boolean onKeyEvent(KeyEvent event) {
+
+            //    Log.e(TAG,"event="+ event.toString());
+        return super.onKeyEvent(event);
     }
 
     @Override

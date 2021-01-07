@@ -102,6 +102,9 @@ public class SideBarContent implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         int id = v.getId();
+        if (iSideEventListener != null) {
+            iSideEventListener.onIsClicked();
+        }
         if (id == R.id.tv_left) {
             if (iSideEventListener != null) {
                 iSideEventListener.onEvent(3);
@@ -301,6 +304,7 @@ public class SideBarContent implements View.OnClickListener {
 
     public  interface ISideEventListener{
       void onEvent(int eventIndex);
+      void onIsClicked();
 
 }
     @SuppressLint("HandlerLeak")

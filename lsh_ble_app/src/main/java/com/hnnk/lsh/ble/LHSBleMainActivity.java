@@ -139,24 +139,12 @@ public class LHSBleMainActivity extends Activity implements View.OnClickListener
     @Override
     public void onClick(final View v) {
     if (v.getId()==R.id.btn_start){
-        LoadingDialog.createDialog(this,10);
-        CountDownTimer cdt = new CountDownTimer(5000 + 50, 1000) {
-            @Override
-            public void onTick(long millisUntilFinished) {
-
-            }
-
-            @Override
-            public void onFinish() {
-                //倒计时3秒结束时对话框消失
-                LoadingDialog.closeDialog();
-
-            }
-        };
-        cdt.start();
+        FloatWindowManager.getInstance().applyOrShowFloatWindow(this,true);
 
     }else{
-        FloatWindowManager.getInstance().applyOrShowFloatWindow(this,true);
+       // FloatWindowManager.getInstance().applyOrShowFloatWindow(this,true);
+        BleScanActivity  bleScanActivity=new BleScanActivity(this);
+        bleScanActivity.showBleWindow();
     }
     }
     @Subscribe(threadMode = ThreadMode.MAIN)
