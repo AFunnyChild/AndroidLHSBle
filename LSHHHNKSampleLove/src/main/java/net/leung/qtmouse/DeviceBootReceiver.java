@@ -34,7 +34,11 @@ public class DeviceBootReceiver extends BroadcastReceiver {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 if(MouseAccessibilityService.isAccessibilityServiceEnable(context)) {
                     Intent intent1 = new Intent(context, MouseAccessibilityService.class);
-                      context.startService(intent1);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        context.startForegroundService(intent1);
+                    } else {
+                        context.startService(intent1);
+                    }
 
                 }else {
                     MainPageGo(context);
@@ -42,7 +46,12 @@ public class DeviceBootReceiver extends BroadcastReceiver {
             }else {
                 if(MouseAccessibilityService.isAccessibilityServiceEnable(context)) {
                     Intent intent1 = new Intent(context, MouseAccessibilityService.class);
-                      context.startService(intent1);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        context.startForegroundService(intent1);
+                    } else {
+                        context.startService(intent1);
+                    }
+
 
                 }else {
                     MainPageGo(context);

@@ -7,8 +7,11 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 
+import android.app.ActivityManager;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.Rect;
 import android.os.Build;
@@ -16,6 +19,7 @@ import android.os.Bundle;
 
 
 import android.os.CountDownTimer;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -27,6 +31,7 @@ import android.widget.Toast;
 
 import com.feng.mydemo.activity.BleScanActivity;
 import com.iflytek.VoiceWakeuperHelper;
+import com.ryan.socketwebrtc.MainActivity;
 
 import net.leung.qtmouse.FloatWindowManager;
 import  net.leung.qtmouse.LoadingDialog;
@@ -42,11 +47,17 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.lang.reflect.Method;
+import java.util.List;
+import java.util.Random;
 
 
 public class LHSBleMainActivity extends Activity implements View.OnClickListener {
     static LHSBleMainActivity activity;
     private static final int REQUEST_CODE_CHOOSE = 23;
+    private long longTime=0;
+    private CountDownTimer timer;
+    private MyReceiver receiver;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,6 +77,29 @@ public class LHSBleMainActivity extends Activity implements View.OnClickListener
         params.gravity= Gravity.TOP|Gravity.LEFT;
         requestPermissions();
        initWake();
+        receiver = new MyReceiver();
+        IntentFilter homeFilter = new IntentFilter(Intent.ACTION_CLOSE_SYSTEM_DIALOGS);
+
+        registerReceiver(receiver, homeFilter);
+        new Thread(){
+            @Override
+            public void run() {
+                super.run();
+                while (true){
+                    try {
+                        Thread.sleep(500);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            isBackground(LHSBleMainActivity.this);
+                        }
+                    });
+                }
+            }
+        }.start();
     }
 
     private void initWake() {
@@ -139,14 +173,16 @@ public class LHSBleMainActivity extends Activity implements View.OnClickListener
     @Override
     public void onClick(final View v) {
     if (v.getId()==R.id.btn_start){
-        FloatWindowManager.getInstance().applyOrShowFloatWindow(this,true);
+       // FloatWindowManager.getInstance().applyOrShowFloatWindow(this,true);
+
 
     }else{
-       // FloatWindowManager.getInstance().applyOrShowFloatWindow(this,true);
-        BleScanActivity  bleScanActivity=new BleScanActivity(this);
-        bleScanActivity.showBleWindow();
+        FloatWindowManager.getInstance().applyOrShowFloatWindow(this,true);
+//        BleScanActivity  bleScanActivity=new BleScanActivity(this);
+//        bleScanActivity.showBleWindow();
     }
     }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMouseMove(JniEvent event) {
         switch (event.eventType) {
@@ -154,7 +190,8 @@ public class LHSBleMainActivity extends Activity implements View.OnClickListener
                 break;
                 case JniEvent.ON_WINDOW_CHANGE:
                 //    Toast.makeText(activity, "sada", Toast.LENGTH_SHORT).show();
-                    Log.e("ss", "onMouseMove: "+isSoftShowing() );
+
+                   // Log.e("ss", "onMouseMove: "+isSoftShowing() );
                 break;
             default:
                 break;
@@ -164,6 +201,7 @@ public class LHSBleMainActivity extends Activity implements View.OnClickListener
     @Override
     public void onResume() {
         super.onResume();
+
       //  FloatWindowManager.getInstance().applyOrShowFloatWindow(this,true);
     }
     private boolean isSoftShowing() {
@@ -179,4 +217,77 @@ public class LHSBleMainActivity extends Activity implements View.OnClickListener
         return screenHeight*2/3 > rect.bottom;
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+     //   moveTaskToBack(false);
+        Log.e("MyReceiver","service onPause start"  );
+
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.e("onStop", "onMouseMove11: "+isSoftShowing() );
+    }
+    private class MyReceiver extends BroadcastReceiver {
+
+        private final String SYSTEM_DIALOG_REASON_KEY = "reason";
+        private final String SYSTEM_DIALOG_REASON_HOME_KEY = "homekey";
+        private final String SYSTEM_DIALOG_REASON_RECENT_APPS = "recentapps";
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if (action.equals(Intent.ACTION_CLOSE_SYSTEM_DIALOGS)) {
+                String reason = intent.getStringExtra(SYSTEM_DIALOG_REASON_KEY);
+
+                if (reason == null)
+                    return;
+                // Home键
+                if (reason.equals(SYSTEM_DIALOG_REASON_HOME_KEY)) {
+
+                }
+
+                // 最近任务列表键
+                if (reason.equals(SYSTEM_DIALOG_REASON_RECENT_APPS)) {
+                    Log.e("MyReceiver","service start"  );
+
+                   moveTaskToBack(false);
+
+
+                }
+            }
+        }
+    }
+   static   Random random = new Random();
+    public  boolean isBackground(Context context) {
+        ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        List<ActivityManager.RunningAppProcessInfo> appProcesses = activityManager.getRunningAppProcesses();
+        for (ActivityManager.RunningAppProcessInfo appProcess : appProcesses) {
+            if (appProcess.processName.equals(context.getPackageName())) {
+                if (appProcess.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_BACKGROUND) {
+                    Log.i("后台", appProcess.processName);
+                    ActivityManager am = (ActivityManager)getSystemService(Context.ACTIVITY_SERVICE);
+
+                    for (ActivityManager.AppTask appTask : am.getAppTasks()) {
+                        appTask.setExcludeFromRecents(random.nextInt(2)>=1);
+
+                    }
+                    return true;
+                }else{
+
+                    Log.i("前台", appProcess.processName);
+                    ActivityManager am = (ActivityManager)getSystemService(Context.ACTIVITY_SERVICE);
+                    for (ActivityManager.AppTask appTask : am.getAppTasks()) {
+                        appTask.setExcludeFromRecents(true);
+
+                    }
+                    return false;
+                }
+            }
+        }
+        return false;
+    }
 }

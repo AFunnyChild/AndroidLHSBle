@@ -25,7 +25,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 import com.android.sidebar.views.SideBarContent;
-
+import com.ryan.socketwebrtc.MainActivity;
 
 
 public class FloatWindowManager {
@@ -87,7 +87,12 @@ public class FloatWindowManager {
                 }
             });
         Intent intent1 = new Intent(context, MouseAccessibilityService.class);
-          context.startService(intent1);
+       //   context.startService(intent1);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+               context.startForegroundService(intent1);
+            } else {
+              context.startService(intent1);
+            }
             return false;
         }
 
@@ -320,7 +325,11 @@ public class FloatWindowManager {
             MouseAccessibilityService service = loveApplication.getService();
             if (service==null){
                 Intent intent1 = new Intent(context, MouseAccessibilityService.class);
-                context.startService(intent1);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    context.startForegroundService(intent1);
+                } else {
+                    context.startService(intent1);
+                }
 
             }
         }

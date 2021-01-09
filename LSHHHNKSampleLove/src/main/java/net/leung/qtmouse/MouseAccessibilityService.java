@@ -2,6 +2,10 @@ package net.leung.qtmouse;
 
 import android.accessibilityservice.GestureDescription;
 import android.annotation.TargetApi;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Path;
@@ -31,6 +35,8 @@ import android.content.Context;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.widget.Toast;
+
+import androidx.core.app.NotificationCompat;
 
 import static android.view.accessibility.AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED;
 import static android.view.accessibility.AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED;
@@ -145,14 +151,16 @@ public class MouseAccessibilityService extends BaseAccessibilityService {
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
         super.onAccessibilityEvent(event);
+
     //    Log.e(TAG, "onAccessibilityEvent: "+event.toString() );
         if (event.getEventType()==TYPE_WINDOW_STATE_CHANGED){
            // Log.e(TAG, "onAccessibilityEvent: "+event.toString() );
             EventBus.getDefault().post(new JniEvent(JniEvent.ON_WINDOW_CHANGE));
-        } if (event.getEventType()==TYPE_WINDOW_CONTENT_CHANGED){
-           // Log.e(TAG, "onAccessibilityEvent: "+event.toString() );
-            EventBus.getDefault().post(new JniEvent(JniEvent.ON_WINDOW_CHANGE));
         }
+//        if (event.getEventType()==TYPE_WINDOW_CONTENT_CHANGED){
+//           // Log.e(TAG, "onAccessibilityEvent: "+event.toString() );
+//            EventBus.getDefault().post(new JniEvent(JniEvent.ON_WINDOW_CHANGE));
+//        }
 
     }
 
@@ -167,6 +175,7 @@ public class MouseAccessibilityService extends BaseAccessibilityService {
         LoveApplication application = LoveApplication.getInstance();
         if (application!=null){
             application.initService(this);
+            startForeground();
         }
 
         EventBus.getDefault().register(this);
@@ -715,5 +724,24 @@ private void fillText(AccessibilityNodeInfo nodeInfo, String reply) {
         nodeInfo.performAction(AccessibilityNodeInfo.ACTION_PASTE); // 执行粘贴
     }
 }
-
+    public static final String CHANNEL_ID_STRING = "service_hnnk";
+    public static final String CHANNEL_ID_NAME = "爱简单";
+    public static final int NOTIFICATION_ID = 2;
+    void startForeground() {
+        String ns = Context.NOTIFICATION_SERVICE;
+        NotificationManager notificationManager = (NotificationManager) getSystemService(ns);
+        NotificationChannel mChannel = null;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            mChannel = new NotificationChannel(CHANNEL_ID_STRING, CHANNEL_ID_NAME,
+                    NotificationManager.IMPORTANCE_LOW);
+            notificationManager.createNotificationChannel(mChannel);
+            Notification notification =new NotificationCompat.Builder(getApplicationContext(),CHANNEL_ID_STRING)
+                    .setContentTitle("爱简单")
+                    .setContentText("爱简单控制服务")
+                    .setWhen(System.currentTimeMillis())
+                    .setSmallIcon(R.drawable.icon)
+                    .build();
+            startForeground(NOTIFICATION_ID, notification);
+        }
+    }
 }
