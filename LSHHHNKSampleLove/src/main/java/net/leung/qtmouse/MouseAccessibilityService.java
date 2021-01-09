@@ -744,4 +744,6 @@ private void fillText(AccessibilityNodeInfo nodeInfo, String reply) {
             startForeground(NOTIFICATION_ID, notification);
         }
     }
+
+
 }
