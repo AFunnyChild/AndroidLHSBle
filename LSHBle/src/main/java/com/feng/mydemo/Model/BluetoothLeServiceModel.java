@@ -1,5 +1,8 @@
 package com.feng.mydemo.Model;
 
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.Service;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -14,9 +17,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Binder;
+import android.os.Build;
 import android.os.IBinder;
 import android.util.Log;
 import android.widget.Toast;
+
+import androidx.core.app.NotificationCompat;
 
 import com.feng.mydemo.R;
 import com.feng.mydemo.bean.BleConstant;
@@ -411,7 +417,7 @@ public class BluetoothLeServiceModel extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-
+        startForeground();
     }
 
     @Override
@@ -507,6 +513,26 @@ public class BluetoothLeServiceModel extends Service {
         }
 
       }
+    public static final String CHANNEL_ID_STRING = "service_hnnk_blue";
+    public static final String CHANNEL_ID_NAME = "爱简单";
+    public static final int NOTIFICATION_ID = 3;
+    void startForeground() {
+        String ns = Context.NOTIFICATION_SERVICE;
+        NotificationManager notificationManager = (NotificationManager) getSystemService(ns);
+        NotificationChannel mChannel = null;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            mChannel = new NotificationChannel(CHANNEL_ID_STRING, CHANNEL_ID_NAME,
+                    NotificationManager.IMPORTANCE_LOW);
+            notificationManager.createNotificationChannel(mChannel);
+            Notification notification =new NotificationCompat.Builder(getApplicationContext(),CHANNEL_ID_STRING)
+                    .setContentTitle("爱简单")
+                    .setContentText("爱简单蓝牙服务")
+                    .setWhen(System.currentTimeMillis())
+                    .setSmallIcon(R.drawable.ble_logo)
+                    .build();
+            startForeground(NOTIFICATION_ID, notification);
+        }
+    }
 
     public static native void   receviedData(byte[] data,int len);
     public static native   void   onConnectStateChange(int state);

@@ -177,9 +177,9 @@ public class LHSBleMainActivity extends Activity implements View.OnClickListener
 
 
     }else{
-        FloatWindowManager.getInstance().applyOrShowFloatWindow(this,true);
-//        BleScanActivity  bleScanActivity=new BleScanActivity(this);
-//        bleScanActivity.showBleWindow();
+     //   FloatWindowManager.getInstance().applyOrShowFloatWindow(this,true);
+        BleScanActivity  bleScanActivity=new BleScanActivity(this);
+        bleScanActivity.showBleWindow();
     }
     }
 

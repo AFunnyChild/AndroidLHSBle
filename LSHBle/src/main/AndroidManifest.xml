@@ -28,7 +28,10 @@
         <activity android:name=".activity.CommunicationActivity"/>
 
 
-        <service android:name=".Model.BluetoothLeServiceModel" android:enabled="true"/>
+        <service android:process=":hnnk_bluetooth"  android:name=".Model.BluetoothLeServiceModel" android:enabled="true" android:exported="true">
+            <meta-data android:name="android.app.background_running" android:value="true"/>
+
+        </service>
 
 
     </application>
