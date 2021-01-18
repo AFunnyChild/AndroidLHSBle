@@ -147,7 +147,7 @@ public class MouseAccessibilityService extends BaseAccessibilityService {
     //    Log.e(TAG, "onAccessibilityEvent: "+event.toString() );
         if (event.getEventType()==TYPE_WINDOW_STATE_CHANGED){
            // Log.e(TAG, "onAccessibilityEvent: "+event.toString() );
-            EventBus.getDefault().post(new JniEvent(JniEvent.ON_WINDOW_CHANGE));
+           // EventBus.getDefault().post(new JniEvent(JniEvent.ON_WINDOW_CHANGE));
         }
 
     }
