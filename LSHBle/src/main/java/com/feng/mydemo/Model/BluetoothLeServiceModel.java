@@ -13,6 +13,10 @@ import android.bluetooth.BluetoothProfile;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
@@ -34,7 +38,7 @@ import java.util.UUID;
  * @time 2016/12/19  9:45
  * @desc ${处理不同的数据请求}
  */
-public class BluetoothLeServiceModel extends Service {
+public class BluetoothLeServiceModel extends Service  implements SensorEventListener {
 
 
 
@@ -162,6 +166,22 @@ public class BluetoothLeServiceModel extends Service {
           //  Toast.makeText(this, "heartRate:" + heartRate, Toast.LENGTH_SHORT).show();
         }
       //  sendBroadcast(intent);
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+        float x=event.values[0];
+        float y=event.values[1];
+        float z=event.values[2];
+         angleSensorChanged(x,y,z);
+//        tvAzimuth.setText("Azimuth 方位角: " + event.values[0] + "\n(0 - 359) 0=北, 90=东, 180=南, 270=西");
+//        tvPitch.setText("Pitch 倾斜角: " + event.values[1] + "\n(-180 to 180)");
+//        tvRoll.setText("Roll 旋转角: " + event.values[2] + "\n(-90 to 90)");
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int i) {
+
     }
 
     public class LocalBinder extends Binder {
@@ -408,16 +428,20 @@ public class BluetoothLeServiceModel extends Service {
 
     }
 
+    private SensorManager sensorManager = null;
+    private boolean mRegister = false;
+    private Sensor sensor = null;
     @Override
     public void onCreate() {
         super.onCreate();
-
+        sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION);
+        mRegister = sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_FASTEST);
     }
-
     @Override
     public void onDestroy() {
         super.onDestroy();
-
+        sensorManager.unregisterListener(this);
         unregisterReceiver(mBleReceiver);
         close();
     }
@@ -508,6 +532,7 @@ public class BluetoothLeServiceModel extends Service {
 
       }
 
-    public static native void   receviedData(byte[] data,int len);
-    public static native   void   onConnectStateChange(int state);
+    public static native   void  receviedData(byte[] data,int len);
+    public static native   void  onConnectStateChange(int state);
+    public static native   void  angleSensorChanged(float x,float y,float z);
 }
