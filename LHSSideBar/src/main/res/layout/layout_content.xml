@@ -80,7 +80,7 @@
                 android:checked="false"
                 style="@style/ButtonStyle"
                 android:drawableTop="@drawable/ic_lock_open_"
-                android:layout_gravity="center"
+                 android:textAlignment="center"
                 android:text="@string/lock" />
         </LinearLayout>
 

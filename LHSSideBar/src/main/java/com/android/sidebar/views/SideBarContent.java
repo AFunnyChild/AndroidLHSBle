@@ -4,6 +4,7 @@ import android.accessibilityservice.AccessibilityService;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -23,6 +24,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.widget.AppCompatCheckedTextView;
 import androidx.appcompat.widget.AppCompatTextView;
+import androidx.core.content.ContextCompat;
 
 import com.android.sidebar.R;
 import com.android.sidebar.utils.PermissionUtil;
@@ -78,11 +80,11 @@ public class SideBarContent implements View.OnClickListener {
         LayoutInflater inflater = LayoutInflater.from(context);
         mContentView = (LinearLayout) inflater.inflate(R.layout.layout_content, null);
         // init click
-        mContentView.findViewById(R.id.tv_left).setOnClickListener(this);
-        mContentView.findViewById(R.id.tv_back).setOnClickListener(this);
-        mContentView.findViewById(R.id.tv_home).setOnClickListener(this);
+        mContentView.findViewById(R.id.tv_left).  setOnClickListener(this);
+        mContentView.findViewById(R.id.tv_back).  setOnClickListener(this);
+        mContentView.findViewById(R.id.tv_home).  setOnClickListener(this);
         mContentView.findViewById(R.id.tv_upward).setOnClickListener(this);
-        mContentView.findViewById(R.id.tv_down).setOnClickListener(this);
+        mContentView.findViewById(R.id.tv_down).  setOnClickListener(this);
         mTvVolume = mContentView.findViewById(R.id.tv_volume);
         mTvVolume.setOnClickListener(this);
         mContentView.findViewById(R.id.tv_right).setOnClickListener(this);
@@ -132,8 +134,24 @@ public class SideBarContent implements View.OnClickListener {
              tvLock.setChecked(!tvLock.isChecked());
              Drawable drawTop= null;
               if (tvLock.isChecked()){
-                  drawTop=  mContext.getResources().getDrawable(R.drawable.ic_lock_outline_);
+             mContentView.findViewById(R.id.tv_left).setVisibility(View.INVISIBLE);
+             mContentView.findViewById(R.id.tv_back).setVisibility(View.INVISIBLE);
+             mContentView.findViewById(R.id.tv_home).setVisibility(View.INVISIBLE);
+             mContentView.findViewById(R.id.tv_upward).setVisibility(View.INVISIBLE);
+             mContentView.findViewById(R.id.tv_down).setVisibility(View.INVISIBLE);
+             mContentView.findViewById(R.id.tv_volume).setVisibility(View.INVISIBLE);
+             mContentView.findViewById(R.id.tv_right).setVisibility(View.INVISIBLE);
+              tvLock.setTextColor(ContextCompat.getColor(mContext,R.color.color_lock_red));
+                  drawTop=  mContext.getResources().getDrawable(R.drawable.ic_lock_open_red);
               }else{
+                  mContentView.findViewById(R.id.tv_left).setVisibility(View.VISIBLE);
+                  mContentView.findViewById(R.id.tv_back).setVisibility(View.VISIBLE);
+                  mContentView.findViewById(R.id.tv_home).setVisibility(View.VISIBLE);
+                  mContentView.findViewById(R.id.tv_upward).setVisibility(View.VISIBLE);
+                  mContentView.findViewById(R.id.tv_down).setVisibility(View.VISIBLE);
+                  mContentView.findViewById(R.id.tv_volume).setVisibility(View.VISIBLE);
+                  mContentView.findViewById(R.id.tv_right).setVisibility(View.VISIBLE);
+                  tvLock.setTextColor(ContextCompat.getColor(mContext,R.color.color_main));
                   drawTop=  mContext.getResources().getDrawable(R.drawable.ic_lock_open_);
               }
             drawTop.setBounds(0, 0, drawTop.getMinimumWidth(),drawTop.getMinimumHeight());
