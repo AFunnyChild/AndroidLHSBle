@@ -76,8 +76,9 @@ public class BluetoothLeServiceModel extends Service  implements SensorEventList
                 String address = gatt.getDevice().getAddress();
                 if (address.contains(mHeadAddress)){
                     onConnectStateChange(1);
+                    System.out.println("连接成功: "+address+"-"+mHeadAddress);
                 }
-                System.out.println("连接成功: "+address);
+
                 connMap.put(address, gatt);
                 gatt.discoverServices();
 
@@ -86,6 +87,7 @@ public class BluetoothLeServiceModel extends Service  implements SensorEventList
                 mConnectionState = STATE_DISCONNECTED;
                 if (gatt.getDevice().getAddress().contains(mHeadAddress)){
                     onConnectStateChange(0);
+                    System.out.println("断开连接成功: "+gatt.getDevice().getAddress()+"-"+mHeadAddress);
                 }
                 broadcastUpdate(intentAction);
                 connMap.remove(gatt.getDevice().getAddress());
@@ -425,6 +427,12 @@ public class BluetoothLeServiceModel extends Service  implements SensorEventList
               }
               mDeviceAddress = intent.getStringExtra(EXTRAS_DEVICE_ADDRESS);
               mDeviceName = intent.getStringExtra(EXTRAS_DEVICE_NAME);
+              boolean  isChair = intent.getBooleanExtra(DEVICE_IS_CHAIR,false);
+              if (isChair){
+                  mChairAddress=mDeviceAddress;
+              }else{
+                  mHeadAddress=mDeviceAddress;
+              }
               if (!initialize()) {
                   Toast.makeText(this, "UnSupport "+"Bluetooth", Toast.LENGTH_SHORT).show();
               }
@@ -447,6 +455,7 @@ public class BluetoothLeServiceModel extends Service  implements SensorEventList
               mDeviceName = intent.getStringExtra(EXTRAS_DEVICE_NAME);
               boolean  isChair = intent.getBooleanExtra(DEVICE_IS_CHAIR,false);
               if (isChair){
+                  mChairAddress=mDeviceAddress;
                   BluetoothGatt bluetoothGatt = connMap.get(mChairAddress);
                   if(bluetoothGatt!=null){
                       bluetoothGatt.close();
@@ -456,6 +465,7 @@ public class BluetoothLeServiceModel extends Service  implements SensorEventList
 
 
               }else{
+                  mHeadAddress=mDeviceAddress;
                   BluetoothGatt bluetoothGatt = connMap.get(mHeadAddress);
                   if (bluetoothGatt!=null){
                       bluetoothGatt.close();
