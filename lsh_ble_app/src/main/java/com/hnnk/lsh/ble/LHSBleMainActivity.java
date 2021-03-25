@@ -16,15 +16,18 @@ import android.os.Bundle;
 
 
 import android.os.CountDownTimer;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
 
 import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
+import com.feng.mydemo.Model.BluetoothLeServiceModel;
 import com.feng.mydemo.activity.BleScanActivity;
 import com.iflytek.VoiceWakeuperHelper;
 
@@ -47,6 +50,8 @@ import java.lang.reflect.Method;
 public class LHSBleMainActivity extends Activity implements View.OnClickListener {
     static LHSBleMainActivity activity;
     private static final int REQUEST_CODE_CHOOSE = 23;
+    private EditText et_index;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,6 +59,7 @@ public class LHSBleMainActivity extends Activity implements View.OnClickListener
         setContentView(R.layout.activity_main);
         findViewById(R.id.btn_start).setOnClickListener(this);
         findViewById(R.id.btn_state).setOnClickListener(this);
+        et_index = findViewById(R.id.et_index);
         LoveApplication.getInstance().initActivity(this);
         EventBus.getDefault().register(this);
         activity=this;
@@ -139,7 +145,11 @@ public class LHSBleMainActivity extends Activity implements View.OnClickListener
     @Override
     public void onClick(final View v) {
     if (v.getId()==R.id.btn_start){
-        FloatWindowManager.getInstance().applyOrShowFloatWindow(this,true);
+        String s = et_index.getText().toString();
+        Integer index = Integer.valueOf(s);
+        Log.e("BleScanActivity", "onClick: "+index);
+        BluetoothLeServiceModel.offsetDirection(index);
+
 
     }else{
        // FloatWindowManager.getInstance().applyOrShowFloatWindow(this,true);

@@ -223,10 +223,10 @@ public class DeviceControlActivity extends Activity implements View.OnClickListe
                 Log.d("DeviceControlActivity", uuid);
                 if (uuid.contains("6e400003")) {
                     Log.e("console", "2gatt Characteristic: " + uuid);
-                    mBluetoothLeService.setCharacteristicNotification(gattCharacteristic, true);
+                    mBluetoothLeService.setCharacteristicNotification(gattCharacteristic, true,mDeviceAddress);
                     mNotifyCharacteristic = mBluetoothLeService.getBluetoothGattCharacteristic();
                     Log.e("console", "2gatt Characteristic: " + mNotifyCharacteristic.describeContents());
-                   mBluetoothLeService.readCharacteristic(gattCharacteristic);
+                   mBluetoothLeService.readCharacteristic(gattCharacteristic,mDeviceAddress);
                 }
 
             }
@@ -263,7 +263,7 @@ public class DeviceControlActivity extends Activity implements View.OnClickListe
             byte[] ss=new byte[1];
             ss[0]=7;
             mNotifyCharacteristic.setValue(ss);
-            mBluetoothLeService.writeCharacteristic(mNotifyCharacteristic);
+            mBluetoothLeService.writeCharacteristic(mNotifyCharacteristic,false);
         }catch (Exception e){
             System.out.println("null connect"+e.getStackTrace());
         }

@@ -234,6 +234,11 @@ public class BleScanActivity extends Dialog implements View.OnClickListener, Ada
         Intent startIntent = new Intent(getContext(), BluetoothLeServiceModel.class);
         startIntent.putExtra(BluetoothLeServiceModel.EXTRAS_DEVICE_NAME, device.getName());
         startIntent.putExtra(BluetoothLeServiceModel.EXTRAS_DEVICE_ADDRESS, device.getAddress());
+        boolean isChairBlue=true;
+        if (device.getName().contains("H2000")||device.getName().contains("HNNK_")){
+            isChairBlue= false;
+        }
+        startIntent.putExtra(BluetoothLeServiceModel.DEVICE_IS_CHAIR, isChairBlue);
          getContext().startService(startIntent);
          BleScanActivity.this.dismiss();
         if (mScanning) {
@@ -325,7 +330,7 @@ public class BleScanActivity extends Dialog implements View.OnClickListener, Ada
                      String deviceName = device.getName();
                     if (deviceName != null && deviceName.length() > 0){
                      //   String fitterName=deviceName.replace("H2000","脑机生命环").replace("HNNK_","脑机生命环");
-                          if (deviceName.contains("H2000")||deviceName.contains("HNNK_")){
+                          if (deviceName.contains("H2000")||deviceName.contains("HNNK_")||deviceName.contains("串口")){
                               mLeDeviceListAdapter.addDevice(device);
                               mLeDeviceListAdapter.notifyDataSetChanged();
                           }

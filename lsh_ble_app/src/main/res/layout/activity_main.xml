@@ -20,6 +20,8 @@
 
 
     <EditText
+        android:id="@+id/et_index"
+        android:text="0"
         android:layout_width="100dp"
         android:layout_height="wrap_content"></EditText>
 
