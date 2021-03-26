@@ -59,6 +59,11 @@ public class LHSBleMainActivity extends Activity implements View.OnClickListener
         setContentView(R.layout.activity_main);
         findViewById(R.id.btn_start).setOnClickListener(this);
         findViewById(R.id.btn_state).setOnClickListener(this);
+        findViewById(R.id.btn_0).setOnClickListener(this);
+        findViewById(R.id.btn_1).setOnClickListener(this);
+        findViewById(R.id.btn_2).setOnClickListener(this);
+        findViewById(R.id.btn_3).setOnClickListener(this);
+        findViewById(R.id.btn_4).setOnClickListener(this);
         et_index = findViewById(R.id.et_index);
         LoveApplication.getInstance().initActivity(this);
         EventBus.getDefault().register(this);
@@ -144,14 +149,30 @@ public class LHSBleMainActivity extends Activity implements View.OnClickListener
     @SuppressLint("CheckResult")
     @Override
     public void onClick(final View v) {
-    if (v.getId()==R.id.btn_start){
+    if (v.getId()==R.id.btn_start) {
         String s = et_index.getText().toString();
         Integer index = Integer.valueOf(s);
-        Log.e("BleScanActivity", "onClick: "+index);
+        Log.e("BleScanActivity", "onClick: " + index);
         BluetoothLeServiceModel.offsetDirection(index);
+    }
+    if (v.getId()==R.id.btn_0) {
+        Log.e("BleScanActivity", "onClick: " + 0);
+        BluetoothLeServiceModel.offsetDirection(0);
+    }  if (v.getId()==R.id.btn_1) {
+        Log.e("BleScanActivity", "onClick: " + 1);
+        BluetoothLeServiceModel.offsetDirection(1);
+    }  if (v.getId()==R.id.btn_2) {
+        Log.e("BleScanActivity", "onClick: " + 2);
+        BluetoothLeServiceModel.offsetDirection(2);
+    }  if (v.getId()==R.id.btn_3) {
+        Log.e("BleScanActivity", "onClick: " + 3);
+        BluetoothLeServiceModel.offsetDirection(3);
+    }  if (v.getId()==R.id.btn_4) {
+        Log.e("BleScanActivity", "onClick: " + 4);
+        BluetoothLeServiceModel.offsetDirection(4);
+    }
 
-
-    }else{
+    if(v.getId()==R.id.btn_state){
        // FloatWindowManager.getInstance().applyOrShowFloatWindow(this,true);
         BleScanActivity  bleScanActivity=new BleScanActivity(this);
         bleScanActivity.showBleWindow();

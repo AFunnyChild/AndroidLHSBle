@@ -18,7 +18,9 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Binder;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Message;
 import android.os.SystemClock;
 import android.util.ArrayMap;
 import android.util.Log;
@@ -31,6 +33,7 @@ import com.feng.mydemo.presenter.BleReceiver;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
@@ -219,6 +222,7 @@ public class BluetoothLeServiceModel extends Service  implements SensorEventList
     public boolean onUnbind(Intent intent) {
 
         close();
+        m_is_run_thread=false;
         return super.onUnbind(intent);
     }
 
@@ -315,6 +319,7 @@ public class BluetoothLeServiceModel extends Service  implements SensorEventList
              }
 
         }
+        m_is_run_thread=false;
         connMap.clear();
         if (mBluetoothGatt == null) {
             return;
@@ -493,9 +498,50 @@ public class BluetoothLeServiceModel extends Service  implements SensorEventList
     private SensorManager sensorManager = null;
     private boolean mRegister = false;
     private Sensor sensor = null;
+    boolean   m_is_run_thread=false;
+    // handler:处理程序
+    Handler handler = new Handler() {
+
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+
+            writeChairInt(msg.what);
+
+        }
+
+    };
+
     @Override
     public void onCreate() {
         super.onCreate();
+        m_is_run_thread=true;
+        new Thread(){
+            @Override
+            public void run() {
+                super.run();
+                while (m_is_run_thread){
+                    try {
+                        Thread.sleep(10);
+                         if (m_blue_data_list.size()>0){
+                             Iterator<Integer> iterator = m_blue_data_list.iterator();
+                             while (iterator.hasNext()) {
+                                 Integer current = iterator.next();
+                                 handler.sendEmptyMessage(current);
+                                     iterator.remove();
+                                 Thread.sleep(20);
+                             }
+
+
+
+                         }
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+        }.start();
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION);
         mRegister = sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_FASTEST);
@@ -601,12 +647,16 @@ public class BluetoothLeServiceModel extends Service  implements SensorEventList
         }
 
       }
-      public static   void  writeChairInt(int value){
+      public static   void  writeChairInt(List<Integer> value_list){
         if (mChairWriteCharacteristic==null){
             return;
         }
-        byte[]  writeByte=new byte[1];
-        writeByte[0]=(byte)value;
+        byte[]  writeByte=new byte[value_list.size()];
+          for (int i = 0; i < value_list.size(); i++) {
+              int value=value_list.get(i);
+              writeByte[i]=(byte)value;
+          }
+          m_blue_data_list.clear();
           mChairWriteCharacteristic.setValue(writeByte);
         if (bluetoothLeServiceModel!=null){
 
@@ -614,58 +664,51 @@ public class BluetoothLeServiceModel extends Service  implements SensorEventList
         }
 
       }
-      public  static void offsetDirection(int index){
+      public static   void  writeChairInt(int value){
+        if (mChairWriteCharacteristic==null){
+            return;
+        }
+        byte[]  writeByte=new byte[1];
+
+          writeByte[0]=(byte)value;
+          mChairWriteCharacteristic.setValue(writeByte);
+        if (bluetoothLeServiceModel!=null){
+
+            bluetoothLeServiceModel.writeCharacteristic(mChairWriteCharacteristic,true);
+        }
+
+      }
+        static  List<Integer> m_blue_data_list=new ArrayList<>();
+      public synchronized static void offsetDirection(int index){
+          m_blue_data_list.clear();
         if(index==0){
-            BluetoothLeServiceModel.writeChairInt(3);
-            SystemClock.sleep(100);
-            BluetoothLeServiceModel.writeChairInt(2);
-            SystemClock.sleep(100);
-            BluetoothLeServiceModel.writeChairInt(1);
-            SystemClock.sleep(100);
-            BluetoothLeServiceModel.writeChairInt(1);
+            m_blue_data_list.add(3);
+            m_blue_data_list.add(2);
+            m_blue_data_list.add(1);
+            m_blue_data_list.add(1);
         }
         if(index==1){
-            BluetoothLeServiceModel.writeChairInt(3);
-            SystemClock.sleep(100);
-            BluetoothLeServiceModel.writeChairInt(2);
-            SystemClock.sleep(100);
-            BluetoothLeServiceModel.writeChairInt(2);
-            SystemClock.sleep(100);
-            BluetoothLeServiceModel.writeChairInt(2);
+            m_blue_data_list.add(3);
+            m_blue_data_list.add(2);
+            m_blue_data_list.add(2);
+            m_blue_data_list.add(2);
         }   if(index==2){
-            BluetoothLeServiceModel.writeChairInt(3);
-            SystemClock.sleep(100);
-            BluetoothLeServiceModel.writeChairInt(2);
-            SystemClock.sleep(100);
-            BluetoothLeServiceModel.writeChairInt(3);
-            SystemClock.sleep(100);
-            BluetoothLeServiceModel.writeChairInt(3);
+              m_blue_data_list.add(3);
+              m_blue_data_list.add(2);
+              m_blue_data_list.add(3);
+              m_blue_data_list.add(3);
         }
-          if(index==2){
-            BluetoothLeServiceModel.writeChairInt(3);
-            SystemClock.sleep(100);
-            BluetoothLeServiceModel.writeChairInt(2);
-            SystemClock.sleep(100);
-            BluetoothLeServiceModel.writeChairInt(3);
-            SystemClock.sleep(100);
-            BluetoothLeServiceModel.writeChairInt(3);
-        }
+
       if(index==3){
-            BluetoothLeServiceModel.writeChairInt(3);
-            SystemClock.sleep(100);
-            BluetoothLeServiceModel.writeChairInt(2);
-            SystemClock.sleep(100);
-            BluetoothLeServiceModel.writeChairInt(4);
-            SystemClock.sleep(100);
-            BluetoothLeServiceModel.writeChairInt(4);
+          m_blue_data_list.add(3);
+          m_blue_data_list.add(2);
+          m_blue_data_list.add(4);
+          m_blue_data_list.add(4);
         }  if(index==4){
-            BluetoothLeServiceModel.writeChairInt(3);
-            SystemClock.sleep(100);
-            BluetoothLeServiceModel.writeChairInt(2);
-            SystemClock.sleep(100);
-            BluetoothLeServiceModel.writeChairInt(0);
-            SystemClock.sleep(100);
-            BluetoothLeServiceModel.writeChairInt(0);
+              m_blue_data_list.add(3);
+              m_blue_data_list.add(2);
+              m_blue_data_list.add(0);
+              m_blue_data_list.add(0);
         }
 
       }
