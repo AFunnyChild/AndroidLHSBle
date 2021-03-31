@@ -3,11 +3,13 @@ package com.feng.mydemo.activity;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Rect;
@@ -21,6 +23,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 
+import android.provider.Settings;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
@@ -101,6 +104,22 @@ public class BleScanActivity extends Dialog implements View.OnClickListener, Ada
         mListView.setOnItemClickListener(this);
         findViewById(R.id.ic_close).setOnClickListener(this);
         mHandler = new Handler();
+        if (!checkGPSPermission(mContext)){
+           // openGPSDialog((Activity) mContext);
+          //  return  false;
+            showConfirmDialog(mContext, "搜索蓝牙需要启动定位,您的手机没有开启定位，请开启后再试", confirm -> {
+                if (confirm) {
+                    //跳转到手机打开GPS页面
+                    Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                    //设置完成后返回原来的界面
+                    Activity activity = (Activity) this.mContext;
+                    activity.startActivityForResult(intent,0);
+                    dismiss();
+                } else {
+                    Log.e("BleScan", "user manually refuse ACCESSIBILITY_SERVICE");
+                }
+            });
+        }
 //        // 检查当前手机是否支持ble 蓝牙,如果不支持退出程序
 //        if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
 //            Toast.makeText(this, R.string.ble_not_supported, Toast.LENGTH_SHORT).show();
@@ -130,6 +149,82 @@ public class BleScanActivity extends Dialog implements View.OnClickListener, Ada
         scanLeDevice(true);
     }
 
+    /**
+     * 判断GPS是否开启
+     */
+    private boolean checkGPSPermission(Context  context) {
+        LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+        //判断GPS是否开启，没有开启，则开启
+        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+    }
+    /**
+     * 打开GPS对话框
+     */
+    private void openGPSDialog(final Activity context) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("请打开GPS连接")
+                .setMessage("为了提高定位的准确度，更好的为您服务，请打开GPS")
+                .setPositiveButton("设置", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        //跳转到手机打开GPS页面
+                        Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                        //设置完成后返回原来的界面
+                        context.startActivityForResult(intent,0);
+                    }
+                })
+                .setNeutralButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                }).show();
+    }
+    private interface OnConfirmResult {
+        void confirmResult(boolean confirm);
+    }
+    String  mMessage="";
+    private Dialog dialog;
+    private void showConfirmDialog(Context context, String message, final OnConfirmResult result) {
+        //
+        if (dialog ==null||(mMessage.equals(message)==false)||(mContext==null)||(mContext!=context)) {
+            if (dialog!=null){
+                dialog.dismiss();
+                dialog=null;
+            }
+            mMessage=message;
+            mContext= context;
+            dialog = new AlertDialog.Builder(mContext).setCancelable(false).setTitle("")
+                    .setMessage(message)
+                    .setPositiveButton("现在去开启",
+                            (dialog, which) -> {
+                                result.confirmResult(true);
+                                dialog.dismiss();
+                                dialog=null;
+                            }).create();
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){//6.0
+                dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY);
+            }else {
+                dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+
+            }
+        }
+
+//.setNegativeButton("暂不开启",
+//                (dialog, which) -> {
+//                    result.confirmResult(false);
+//                    dialog.dismiss();
+//                    dialog=null;
+//                })
+
+
+        if (dialog.isShowing()==false){
+
+            dialog.show();
+        }
+
+    }
     //    @Override
 //    public boolean onCreateOptionsMenu(Menu menu) {
 ////        getMenuInflater().inflate(R.menu.main, menu);

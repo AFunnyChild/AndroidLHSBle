@@ -4,8 +4,10 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.PixelFormat;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
@@ -58,6 +60,7 @@ public class FloatWindowManager {
             dialog.dismiss();
             dialog=null;
         }
+
         if (!checkAndApplyPermission(context)) {
             return false;
         }
@@ -93,6 +96,7 @@ public class FloatWindowManager {
 
         return true;
     }
+
 
     private boolean checkPermission(Context context) {
         //6.0 版本之后由于 google 增加了对悬浮窗权限的统一管理
