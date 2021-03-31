@@ -16,6 +16,7 @@ import android.graphics.Rect;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Handler;
 
 import androidx.annotation.NonNull;
@@ -43,6 +44,7 @@ import android.widget.Toast;
 
 import com.feng.mydemo.Model.BluetoothLeServiceModel;
 import com.feng.mydemo.R;
+import com.feng.mydemo.presenter.GPSPresenter;
 import com.feng.mydemo.view.DeviceControlActivity;
 
 import java.util.ArrayList;
@@ -53,7 +55,7 @@ import java.util.ArrayList;
  * @desc ${TODD}
  */
 @SuppressLint("NewApi")
-public class BleScanActivity extends Dialog implements View.OnClickListener, AdapterView.OnItemClickListener {
+public class BleScanActivity extends Dialog implements View.OnClickListener, AdapterView.OnItemClickListener, GPSPresenter.GPS_Interface {
     private LeDeviceListAdapter mLeDeviceListAdapter;
     private BluetoothAdapter mBluetoothAdapter;
     private boolean mScanning;
@@ -66,6 +68,8 @@ public class BleScanActivity extends Dialog implements View.OnClickListener, Ada
     private TextView mBtnScan;
     private ProgressBar mPbScan;
    public Context mContext;
+    private GPSPresenter gps_presenter;
+
     public BleScanActivity(@NonNull Context context) {
         super(context);
         this.mContext=context;
@@ -107,18 +111,29 @@ public class BleScanActivity extends Dialog implements View.OnClickListener, Ada
         if (!checkGPSPermission(mContext)){
            // openGPSDialog((Activity) mContext);
           //  return  false;
-            showConfirmDialog(mContext, "搜索蓝牙需要启动定位,您的手机没有开启定位，请开启后再试", confirm -> {
-                if (confirm) {
-                    //跳转到手机打开GPS页面
-                    Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                    //设置完成后返回原来的界面
-                    Activity activity = (Activity) this.mContext;
-                    activity.startActivityForResult(intent,0);
-                    dismiss();
-                } else {
-                    Log.e("BleScan", "user manually refuse ACCESSIBILITY_SERVICE");
+             CountDownTimer countDownTimer = new CountDownTimer(1500, 100) {
+                @Override
+                public void onTick(long millisUntilFinished) {
+
                 }
-            });
+
+                @Override
+                public void onFinish() {
+                    showConfirmDialog(mContext, "搜索蓝牙需要启动定位,您的手机没有开启定位，请开启后再试", confirm -> {
+                        if (confirm) {
+                            //跳转到手机打开GPS页面
+                            Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                            //设置完成后返回原来的界面
+                            Activity activity = (Activity) mContext;
+                            activity.startActivityForResult(intent,0);
+                          //  dismiss();
+                        } else {
+                            Log.e("BleScan", "user manually refuse ACCESSIBILITY_SERVICE");
+                        }
+                    });
+                }
+            };
+            countDownTimer.start();
         }
 //        // 检查当前手机是否支持ble 蓝牙,如果不支持退出程序
 //        if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
@@ -153,9 +168,18 @@ public class BleScanActivity extends Dialog implements View.OnClickListener, Ada
      * 判断GPS是否开启
      */
     private boolean checkGPSPermission(Context  context) {
-        LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-        //判断GPS是否开启，没有开启，则开启
-        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        //当Android版本大于等于6.0时才会加载布局，注册广播接收器
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            gps_presenter = new GPSPresenter(context, this);
+            boolean gpsIsOpen = gps_presenter.gpsIsOpen(context);
+            return  gpsIsOpen;
+        }
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//            LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+//            //判断GPS是否开启，没有开启，则开启
+//            return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+//        }
+         return true;
     }
     /**
      * 打开GPS对话框
@@ -180,6 +204,32 @@ public class BleScanActivity extends Dialog implements View.OnClickListener, Ada
                     }
                 }).show();
     }
+
+    @Override
+    public void gpsSwitchState(boolean gpsOpen) {
+     if (gpsOpen){
+         // 初始化 Bluetooth adapter, 通过蓝牙管理器得到一个参考蓝牙适配器(API必须在以上android4.3或以上和版本)
+         final BluetoothManager bluetoothManager = (BluetoothManager) mContext.getSystemService(Context.BLUETOOTH_SERVICE);
+         mBluetoothAdapter = bluetoothManager.getAdapter();
+         // 检查设备上是否支持蓝牙
+         if (mBluetoothAdapter == null) {
+             Toast.makeText(mContext, R.string.error_bluetooth_not_supported, Toast.LENGTH_SHORT).show();
+
+             return;
+         }
+         if (!mBluetoothAdapter.isEnabled()) {
+             //若没打开则打开蓝牙
+             mBluetoothAdapter.enable();
+
+         }
+         // 初始化蓝牙列表adapter
+         mLeDeviceListAdapter = new LeDeviceListAdapter();
+         mListView.setAdapter(mLeDeviceListAdapter);
+         // setListAdapter(mLeDeviceListAdapter);
+         scanLeDevice(true);
+     }
+    }
+
     private interface OnConfirmResult {
         void confirmResult(boolean confirm);
     }
@@ -203,12 +253,26 @@ public class BleScanActivity extends Dialog implements View.OnClickListener, Ada
                                 dialog=null;
                             }).create();
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){//6.0
-                dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY);
-            }else {
-                dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+//            if(!Settings.canDrawOverlays(mContext)) {
+//                Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
+//                mContext.startActivity(intent);
+//                return;
+//            } else {
+//                //绘ui代码, 这里说明6.0系统已经有权限了
+//            }
+//            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){//6.0
+//                dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY);
+//            }else {
+//                dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_TOAST);
+//
+//            }
+//            if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.M){
+//                dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY);
+//            }else{
+//                dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_TOAST);
+//            }
 
-            }
+
         }
 
 //.setNegativeButton("暂不开启",
