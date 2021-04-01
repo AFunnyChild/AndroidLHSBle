@@ -523,17 +523,17 @@ public class BluetoothLeServiceModel extends Service  implements SensorEventList
                 while (m_is_run_thread){
                     try {
                         Thread.sleep(10);
-                         if (m_blue_data_list.size()>0){
-                             Iterator<Integer> iterator = m_blue_data_list.iterator();
-                             while (iterator.hasNext()) {
-                                 Integer current = iterator.next();
-                                 handler.sendEmptyMessage(current);
+                         synchronized (m_blue_data_list){
+                             if (m_blue_data_list.size()>0){
+                                 Iterator<Integer> iterator = m_blue_data_list.iterator();
+                                 while (iterator.hasNext()) {
+                                     Integer current = iterator.next();
+                                     handler.sendEmptyMessage(current);
                                      iterator.remove();
-                                 Thread.sleep(20);
-                             }
+                                     Thread.sleep(20);
+                                 }
 
-
-
+                         }
                          }
                     } catch (InterruptedException e) {
                         e.printStackTrace();
@@ -678,7 +678,7 @@ public class BluetoothLeServiceModel extends Service  implements SensorEventList
         }
 
       }
-        static  List<Integer> m_blue_data_list=new ArrayList<>();
+        static List<Integer> m_blue_data_list=new ArrayList<>();
       public synchronized static void offsetDirection(int index){
           m_blue_data_list.clear();
         if(index==0){
