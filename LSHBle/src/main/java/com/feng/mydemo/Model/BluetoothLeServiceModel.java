@@ -95,6 +95,12 @@ public class BluetoothLeServiceModel extends Service {
                 }
                 broadcastUpdate(intentAction);
                 connMap.remove(gatt.getDevice().getAddress());
+                if(gatt.getDevice().getAddress().equals(mHeadAddress)){
+                    mHeadAddress="##";
+                }else{
+                    mDeviceAddress="##";
+                }
+
             }
         }
         @Override
