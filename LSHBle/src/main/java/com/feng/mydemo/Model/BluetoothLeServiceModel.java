@@ -13,9 +13,8 @@ import android.bluetooth.BluetoothProfile;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+
 import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Binder;
 import android.os.Handler;
@@ -43,7 +42,7 @@ import java.util.UUID;
  * @time 2016/12/19  9:45
  * @desc ${处理不同的数据请求}
  */
-public class BluetoothLeServiceModel extends Service  implements SensorEventListener {
+public class BluetoothLeServiceModel extends Service {
 
 
 
@@ -80,9 +79,7 @@ public class BluetoothLeServiceModel extends Service  implements SensorEventList
                 if (address.contains(mHeadAddress)){
                     onConnectStateChange(1);
                     System.out.println("连接成功: "+address+"-"+mHeadAddress);
-                    sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-                    sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION);
-                    mRegister = sensorManager.registerListener(BluetoothLeServiceModel.this, sensor, SensorManager.SENSOR_DELAY_FASTEST);
+
                 }
 
                 connMap.put(address, gatt);
@@ -93,7 +90,7 @@ public class BluetoothLeServiceModel extends Service  implements SensorEventList
                 mConnectionState = STATE_DISCONNECTED;
                 if (gatt.getDevice().getAddress().contains(mHeadAddress)){
                     onConnectStateChange(0);
-                    sensorManager.unregisterListener(BluetoothLeServiceModel.this);
+               
                     System.out.println("断开连接成功: "+gatt.getDevice().getAddress()+"-"+mHeadAddress);
                 }
                 broadcastUpdate(intentAction);
@@ -195,21 +192,7 @@ public class BluetoothLeServiceModel extends Service  implements SensorEventList
       //  sendBroadcast(intent);
     }
 
-    @Override
-    public void onSensorChanged(SensorEvent event) {
-        float x=event.values[0];
-        float y=event.values[1];
-        float z=event.values[2];
-         angleSensorChanged(x,y,z);
-//        tvAzimuth.setText("Azimuth 方位角: " + event.values[0] + "\n(0 - 359) 0=北, 90=东, 180=南, 270=西");
-//        tvPitch.setText("Pitch 倾斜角: " + event.values[1] + "\n(-180 to 180)");
-//        tvRoll.setText("Roll 旋转角: " + event.values[2] + "\n(-90 to 90)");
-    }
 
-    @Override
-    public void onAccuracyChanged(Sensor sensor, int i) {
-
-    }
 
     public class LocalBinder extends Binder {
      public BluetoothLeServiceModel getService() {
@@ -499,9 +482,7 @@ public class BluetoothLeServiceModel extends Service  implements SensorEventList
 
     }
 
-    private SensorManager sensorManager = null;
-    private boolean mRegister = false;
-    private Sensor sensor = null;
+
     boolean   m_is_run_thread=false;
     // handler:处理程序
     Handler handler = new Handler() {
@@ -717,7 +698,7 @@ public class BluetoothLeServiceModel extends Service  implements SensorEventList
 
     public static native   void  receviedData(byte[] data,int len);
     public static native   void  onConnectStateChange(int state);
-    public static native   void  angleSensorChanged(float x,float y,float z);
+
 
 //    public static    void  receviedData(byte[] data,int len){
 //        String datastr="";
