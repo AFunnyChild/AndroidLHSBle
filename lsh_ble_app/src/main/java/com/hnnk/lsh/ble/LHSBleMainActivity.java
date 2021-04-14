@@ -1,57 +1,39 @@
 package com.hnnk.lsh.ble;
-
-
 import androidx.core.app.ActivityCompat;
-
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
-
-
 import android.os.CountDownTimer;
 import android.os.SystemClock;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
-
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.Toast;
-
 import com.feng.mydemo.Model.BluetoothLeServiceModel;
 import com.feng.mydemo.activity.BleScanActivity;
 import com.iflytek.VoiceWakeuperHelper;
-
 import net.leung.qtmouse.FloatWindowManager;
 import  net.leung.qtmouse.LoadingDialog;
-
-
 import net.leung.qtmouse.JniEvent;
-
 import net.leung.qtmouse.LoveApplication;
-
-
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
 import java.lang.reflect.Method;
-
-
 public class LHSBleMainActivity extends Activity implements View.OnClickListener {
     static LHSBleMainActivity activity;
     private static final int REQUEST_CODE_CHOOSE = 23;
     private EditText et_index;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,7 +52,6 @@ public class LHSBleMainActivity extends Activity implements View.OnClickListener
         activity=this;
         getWindow().setFlags( WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN );
-
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams
                 (FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
         //设置顶部,左边布局
@@ -142,10 +123,8 @@ public class LHSBleMainActivity extends Activity implements View.OnClickListener
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE_CHOOSE && resultCode == RESULT_OK) {
-
         }
     }
-    int i=0;
     @SuppressLint("CheckResult")
     @Override
     public void onClick(final View v) {
@@ -191,7 +170,6 @@ public class LHSBleMainActivity extends Activity implements View.OnClickListener
                 break;
         }
     }
-
     @Override
     public void onResume() {
         super.onResume();
@@ -209,5 +187,4 @@ public class LHSBleMainActivity extends Activity implements View.OnClickListener
         Log.e("test", "isSoftShowing: "+(screenHeight*2/3 > rect.bottom) );
         return screenHeight*2/3 > rect.bottom;
     }
-
 }

@@ -80,6 +80,9 @@ public class BluetoothLeServiceModel extends Service  implements SensorEventList
                 if (address.contains(mHeadAddress)){
                     onConnectStateChange(1);
                     System.out.println("连接成功: "+address+"-"+mHeadAddress);
+                    sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+                    sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION);
+                    mRegister = sensorManager.registerListener(BluetoothLeServiceModel.this, sensor, SensorManager.SENSOR_DELAY_FASTEST);
                 }
 
                 connMap.put(address, gatt);
@@ -90,6 +93,7 @@ public class BluetoothLeServiceModel extends Service  implements SensorEventList
                 mConnectionState = STATE_DISCONNECTED;
                 if (gatt.getDevice().getAddress().contains(mHeadAddress)){
                     onConnectStateChange(0);
+                    sensorManager.unregisterListener(BluetoothLeServiceModel.this);
                     System.out.println("断开连接成功: "+gatt.getDevice().getAddress()+"-"+mHeadAddress);
                 }
                 broadcastUpdate(intentAction);
@@ -542,14 +546,12 @@ public class BluetoothLeServiceModel extends Service  implements SensorEventList
 
             }
         }.start();
-        sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION);
-        mRegister = sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_FASTEST);
+
     }
     @Override
     public void onDestroy() {
         super.onDestroy();
-        sensorManager.unregisterListener(this);
+
         unregisterReceiver(mBleReceiver);
         close();
     }
