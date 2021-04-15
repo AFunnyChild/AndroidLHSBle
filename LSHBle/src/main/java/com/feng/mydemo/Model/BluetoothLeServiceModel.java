@@ -51,7 +51,7 @@ public class BluetoothLeServiceModel extends Service {
     private String mBluetoothDeviceAddress;
     private String mHeadAddress="##";
     private String mChairAddress="##";
-    private BluetoothGatt mBluetoothGatt;
+   // private BluetoothGatt mBluetoothGatt;
     private int mConnectionState = STATE_DISCONNECTED;
     private ArrayList<String> mDs=new ArrayList<>();
     private static final int STATE_DISCONNECTED = 0;
@@ -84,6 +84,7 @@ public class BluetoothLeServiceModel extends Service {
 
                 connMap.put(address, gatt);
                 gatt.discoverServices();
+                System.out.println("连接成功: "+address+"-"+mHeadAddress+"-"+mChairAddress+"-"+connMap.size()+"-"+(mWriteCharacteristic==null)+"-"+(mWriteCharacteristic==null));
 
             } else if (newState == BluetoothProfile.STATE_DISCONNECTED) {
                 intentAction = ACTION_GATT_DISCONNECTED;
@@ -97,9 +98,14 @@ public class BluetoothLeServiceModel extends Service {
                 connMap.remove(gatt.getDevice().getAddress());
                 if(gatt.getDevice().getAddress().equals(mHeadAddress)){
                     mHeadAddress="##";
+                    mWriteCharacteristic=null;
                 }else{
-                    mDeviceAddress="##";
+                    mChairAddress="##";
+                    mChairWriteCharacteristic=null;
                 }
+                System.out.println("连接断开: "+gatt.getDevice().getAddress()+"-"+mHeadAddress+"-"+mChairAddress+"-"+connMap.size()+"-"+(mWriteCharacteristic==null)+"-"+(mWriteCharacteristic==null));
+                gatt.close();
+                gatt=null;
 
             }
         }
@@ -117,7 +123,7 @@ public class BluetoothLeServiceModel extends Service {
 
             if (status == BluetoothGatt.GATT_SUCCESS) {
                 broadcastUpdate(ACTION_GATT_SERVICES_DISCOVERED);
-                displayGattServices(getSupportedGattServices(),gatt.getDevice().getAddress());
+                displayGattServices(getSupportedGattServices(gatt.getDevice().getAddress()),gatt.getDevice().getAddress());
             } else {
             }
         }
@@ -280,24 +286,13 @@ public class BluetoothLeServiceModel extends Service {
         }
         // 连接一个蓝牙
         // 建立连接并得到mBluetoothGatt,mBluetoothGatt软件的核心,进行数据交互的关键对象
-        mBluetoothGatt = device.connectGatt(this, false, mGattCallback);
+        device.connectGatt(this, false, mGattCallback);
         mBluetoothDeviceAddress = address;
         mConnectionState = STATE_CONNECTING;
         return true;
     }
 
-    /**
-     *
-     * 取消连接
-     *
-     *
-     */
-    public void disconnect() {
-        if (mBluetoothAdapter == null || mBluetoothGatt == null) {
-            return;
-        }
-        mBluetoothGatt.disconnect();
-    }
+
 
     /**
      * 关闭蓝牙连接
@@ -314,11 +309,7 @@ public class BluetoothLeServiceModel extends Service {
         }
         m_is_run_thread=false;
         connMap.clear();
-        if (mBluetoothGatt == null) {
-            return;
-        }
-        mBluetoothGatt.close();
-        mBluetoothGatt = null;
+
     }
 
     /**
@@ -329,7 +320,7 @@ public class BluetoothLeServiceModel extends Service {
      * @param characteristic 写入的特征
      */
     public void readCharacteristic(BluetoothGattCharacteristic characteristic,String address) {
-        if (mBluetoothAdapter == null || mBluetoothGatt == null) {
+        if (mBluetoothAdapter == null || connMap.get(address) == null) {
 
             return;
         }
@@ -366,16 +357,16 @@ public class BluetoothLeServiceModel extends Service {
      *
      * @return A 服务总和
      */
-    public List<BluetoothGattService> getSupportedGattServices() {
-        if (mBluetoothGatt == null) return null;
+    public List<BluetoothGattService> getSupportedGattServices(String adress) {
+        if (connMap.get(adress) == null) return null;
 
-        return mBluetoothGatt.getServices();
+        return connMap.get(adress).getServices();
     }
 
-    public BluetoothGattCharacteristic getBluetoothGattCharacteristic()
+    public BluetoothGattCharacteristic getBluetoothGattCharacteristic(String  address)
     {
 
-        return this.mBluetoothGatt.getService(UUID.fromString(BleConstant.service)).getCharacteristic(UUID.fromString(BleConstant.Characteristic1a));
+        return connMap.get(address).getService(UUID.fromString(BleConstant.service)).getCharacteristic(UUID.fromString(BleConstant.Characteristic1a));
     }
 
     public BluetoothGattCharacteristic getChairWriteGattCharacteristic(String address)
@@ -601,10 +592,10 @@ public class BluetoothLeServiceModel extends Service {
                 Log.d("DeviceControlActivity", uuid);
                 if (uuid.contains("6e400003")) {
                     Log.e("console", "2gatt Characteristic: " + uuid);
-                   setCharacteristicNotification(gattCharacteristic, true,address);
-                    mNotifyCharacteristic = getBluetoothGattCharacteristic();
+                    setCharacteristicNotification(gattCharacteristic, true,address);
+                    mNotifyCharacteristic = getBluetoothGattCharacteristic(address);
                     Log.e("console", "2gatt Characteristic: " + mNotifyCharacteristic.describeContents());
-                  readCharacteristic(gattCharacteristic,address);
+                    readCharacteristic(gattCharacteristic,address);
                 }
                 if (uuid.contains("6e400002")) {
                     mHeadAddress=address;

@@ -82,7 +82,7 @@ public class DeviceControlActivity extends Activity implements View.OnClickListe
             }
             // 成功启动初始化后自动连接到设备。
             boolean connect = mBluetoothLeService.connect(mDeviceAddress);
-            mSupportedGattServices = mBluetoothLeService.getSupportedGattServices();
+            mSupportedGattServices = mBluetoothLeService.getSupportedGattServices(mDeviceAddress);
             Log.d("DeviceControlActivity", "connect:" + connect);
         }
 
@@ -181,11 +181,7 @@ public class DeviceControlActivity extends Activity implements View.OnClickListe
         }
     }
 
-    public List<BluetoothGattService> getDatas() {
 
-
-        return mBluetoothLeService.getSupportedGattServices();
-    }
 
     public void displayGattServices(List<BluetoothGattService> gattServices) {
         if (gattServices == null) return;
@@ -224,7 +220,7 @@ public class DeviceControlActivity extends Activity implements View.OnClickListe
                 if (uuid.contains("6e400003")) {
                     Log.e("console", "2gatt Characteristic: " + uuid);
                     mBluetoothLeService.setCharacteristicNotification(gattCharacteristic, true,mDeviceAddress);
-                    mNotifyCharacteristic = mBluetoothLeService.getBluetoothGattCharacteristic();
+                    mNotifyCharacteristic = mBluetoothLeService.getBluetoothGattCharacteristic(mDeviceAddress);
                     Log.e("console", "2gatt Characteristic: " + mNotifyCharacteristic.describeContents());
                    mBluetoothLeService.readCharacteristic(gattCharacteristic,mDeviceAddress);
                 }
