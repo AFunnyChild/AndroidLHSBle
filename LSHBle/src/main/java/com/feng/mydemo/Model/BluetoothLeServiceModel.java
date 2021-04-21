@@ -31,6 +31,7 @@ import com.feng.mydemo.bean.SampleGattAttributes;
 import com.feng.mydemo.presenter.BleReceiver;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -644,6 +645,18 @@ public class BluetoothLeServiceModel extends Service {
         }
 
       }
+    public static   void  writeChairArray(byte[] value_list,int size){
+        if (mChairWriteCharacteristic==null){
+            return;
+        }
+         byte[]  write_array= Arrays.copyOf(value_list, size);
+        mChairWriteCharacteristic.setValue(write_array);
+        if (bluetoothLeServiceModel!=null){
+
+            bluetoothLeServiceModel.writeCharacteristic(mChairWriteCharacteristic,true);
+        }
+
+    }
       public static   void  writeChairInt(int value){
         if (mChairWriteCharacteristic==null){
             return;
