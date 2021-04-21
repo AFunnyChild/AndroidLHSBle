@@ -692,6 +692,39 @@ public class BluetoothLeServiceModel extends Service {
         }
 
       }
+    public synchronized static void offsetDirectionArray(int index){
+        List<Integer> value_list=new ArrayList<>();
+        if(index==0){
+           value_list.add(3);
+           value_list.add(2);
+           value_list.add(1);
+           value_list.add(1);
+        }
+        if(index==1){
+            value_list.add(3);
+            value_list.add(2);
+            value_list.add(2);
+            value_list.add(2);
+        }   if(index==2){
+            value_list.add(3);
+            value_list.add(2);
+            value_list.add(3);
+            value_list.add(3);
+        }
+
+        if(index==3){
+            value_list.add(3);
+            value_list.add(2);
+            value_list.add(4);
+            value_list.add(4);
+        }  if(index==4){
+           value_list.add(3);
+           value_list.add(2);
+           value_list.add(0);
+           value_list.add(0);
+        }
+     writeChairInt(value_list);
+    }
 
     public static native   void  receviedData(byte[] data,int len);
     public static native   void  onConnectStateChange(int state);
