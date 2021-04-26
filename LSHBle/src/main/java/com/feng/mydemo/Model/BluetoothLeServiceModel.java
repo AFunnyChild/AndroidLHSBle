@@ -651,6 +651,8 @@ public class BluetoothLeServiceModel extends Service {
         }
          byte[]  write_array= Arrays.copyOf(value_list, size);
         mChairWriteCharacteristic.setValue(write_array);
+        String string = Arrays.toString(write_array);
+        Log.e("BluetoothLeServiceModel", "writeChairArray: "+string);
         if (bluetoothLeServiceModel!=null){
 
             bluetoothLeServiceModel.writeCharacteristic(mChairWriteCharacteristic,true);
