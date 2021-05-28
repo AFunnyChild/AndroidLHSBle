@@ -624,7 +624,14 @@ public static void onStartClicked(int showMenu) {
     handler.post(new Runnable() {
         @Override
         public void run() {
-            serviceRunning = FloatWindowManager.getInstance().applyOrShowFloatWindow(LoveApplication.getInstance().getMainActivity(), showMenu == 1 ? true : false);
+            if(showMenu<2){
+                serviceRunning = FloatWindowManager.getInstance().applyOrShowFloatWindow(LoveApplication.getInstance().getMainActivity(), showMenu == 1 ? true : false);
+            }
+            if (showMenu>=2){
+
+                FloatWindowManager.getInstance().setSideBarVisible(LoveApplication.getInstance().getMainActivity(), showMenu == 3 ? true : false);
+            }
+
         }
     });
 }
