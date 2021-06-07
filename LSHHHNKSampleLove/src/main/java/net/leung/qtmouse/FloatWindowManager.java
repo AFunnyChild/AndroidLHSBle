@@ -69,25 +69,7 @@ public class FloatWindowManager {
         return true;
     }
     public  boolean setSideBarVisible(Context context,boolean  showMenu){
-        this.mIsShowMenu=showMenu;
-        if (dialog!=null){
-            dialog.dismiss();
-            dialog=null;
-        }
 
-        if (!checkAndApplyPermission(context)) {
-            return false;
-        }
-
-        LoveApplication loveApplication = LoveApplication.getInstance();
-        if (loveApplication!=null){
-            MouseAccessibilityService service = loveApplication.getService();
-            if (service==null){
-                Intent intent1 = new Intent(context, MouseAccessibilityService.class);
-                context.startService(intent1);
-
-            }
-        }
         SideBarContent.getInstance().setIsShowing(showMenu);
         return true;
     }
