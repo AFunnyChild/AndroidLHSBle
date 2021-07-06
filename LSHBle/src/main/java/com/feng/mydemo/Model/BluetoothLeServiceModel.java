@@ -67,6 +67,7 @@ public class BluetoothLeServiceModel extends Service {
 
     public final static UUID UUID_HEART_RATE_MEASUREMENT       = UUID.fromString(SampleGattAttributes.HEART_RATE_MEASUREMENT);
      ArrayMap<String, BluetoothGatt> connMap = new ArrayMap<String, BluetoothGatt>();
+     int mHeadBlueConnectedIndex=-1;
     private final BluetoothGattCallback mGattCallback = new BluetoothGattCallback() {
         @Override
         public void onConnectionStateChange(BluetoothGatt gatt, int status, int newState) {
@@ -78,6 +79,12 @@ public class BluetoothLeServiceModel extends Service {
                broadcastUpdate(intentAction);
                 String address = gatt.getDevice().getAddress();
                 if (address.contains(mHeadAddress)){
+                    if (mHeadBlueConnectedIndex>0&&connMap.size()>=(mHeadBlueConnectedIndex+1)){
+                        connMap.get(mHeadBlueConnectedIndex).close();
+                        connMap.remove(mHeadBlueConnectedIndex);
+
+                    }
+                    mHeadBlueConnectedIndex=connMap.size();
                     onConnectStateChange(1);
                     System.out.println("连接成功: "+address+"-"+mHeadAddress);
 
@@ -92,7 +99,7 @@ public class BluetoothLeServiceModel extends Service {
                 mConnectionState = STATE_DISCONNECTED;
                 if (gatt.getDevice().getAddress().contains(mHeadAddress)){
                     onConnectStateChange(0);
-               
+                    mHeadBlueConnectedIndex=-1;
                     System.out.println("断开连接成功: "+gatt.getDevice().getAddress()+"-"+mHeadAddress);
                 }
                 broadcastUpdate(intentAction);

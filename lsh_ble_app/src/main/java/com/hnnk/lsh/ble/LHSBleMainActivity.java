@@ -22,6 +22,8 @@ import android.widget.Toast;
 import com.feng.mydemo.Model.BluetoothLeServiceModel;
 import com.feng.mydemo.activity.BleScanActivity;
 import com.iflytek.VoiceWakeuperHelper;
+import com.ryan.socketwebrtc.MainActivity;
+
 import net.leung.qtmouse.FloatWindowManager;
 import  net.leung.qtmouse.LoadingDialog;
 import net.leung.qtmouse.JniEvent;
@@ -29,11 +31,17 @@ import net.leung.qtmouse.LoveApplication;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.lang.reflect.Method;
 public class LHSBleMainActivity extends Activity implements View.OnClickListener {
     static LHSBleMainActivity activity;
     private static final int REQUEST_CODE_CHOOSE = 23;
     private EditText et_index;
+    private VoiceWakeuperHelper mVoiceWakeuperHelper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,10 +66,37 @@ public class LHSBleMainActivity extends Activity implements View.OnClickListener
         params.gravity= Gravity.TOP|Gravity.LEFT;
         requestPermissions();
        initWake();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                System.out.println(Thread.currentThread().getId());
+
+                while (true){
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            //UI操作
+                             if (isSoftShowing()==false){
+
+                                 mVoiceWakeuperHelper.startListening();
+                             }
+                            //
+                        }
+                    });
+
+                }
+            }
+        }).start();
+
     }
 
     private void initWake() {
-        VoiceWakeuperHelper mVoiceWakeuperHelper = new VoiceWakeuperHelper();
+        mVoiceWakeuperHelper = new VoiceWakeuperHelper();
         mVoiceWakeuperHelper.initWake(this, new VoiceWakeuperHelper.IReceivedEvent() {
             @Override
             public void onEvent(final int id) {
@@ -129,17 +164,13 @@ public class LHSBleMainActivity extends Activity implements View.OnClickListener
     @Override
     public void onClick(final View v) {
     if (v.getId()==R.id.btn_start) {
-        String s = et_index.getText().toString();
-        Integer index = Integer.valueOf(s);
-        Log.e("BleScanActivity", "onClick: " + index);
-        BluetoothLeServiceModel.offsetDirection(index);
+        FloatWindowManager.getInstance().applyOrShowFloatWindow(this,true);
     }
     if (v.getId()==R.id.btn_0) {
-        Log.e("BleScanActivity", "onClick: " + 0);
-        BluetoothLeServiceModel.offsetDirection(0);
+        mVoiceWakeuperHelper.startListening();
+
     }  if (v.getId()==R.id.btn_1) {
-        Log.e("BleScanActivity", "onClick: " + 1);
-        BluetoothLeServiceModel.offsetDirection(1);
+            mVoiceWakeuperHelper.stopListening();
     }  if (v.getId()==R.id.btn_2) {
         Log.e("BleScanActivity", "onClick: " + 2);
         BluetoothLeServiceModel.offsetDirection(2);
@@ -163,8 +194,17 @@ public class LHSBleMainActivity extends Activity implements View.OnClickListener
             case JniEvent.ON_VOICE_PASTE:
                 break;
                 case JniEvent.ON_WINDOW_CHANGE:
-                //    Toast.makeText(activity, "sada", Toast.LENGTH_SHORT).show();
-                    Log.e("ss", "onMouseMove: "+isSoftShowing() );
+                 //  Toast.makeText(activity, "sada", Toast.LENGTH_SHORT).show();
+                    //Log.e("ss", "onMouseMove: "+isSoftShowing() );
+                break;
+                case JniEvent.SOFTINPUT_SHOW:
+                    mVoiceWakeuperHelper.stopListening();
+
+                    Log.d( "voicewake", "SOFTINPUT_SHOW: startListening start" );
+                break;
+                case JniEvent.SOFTINPUT_CAN_CLOSE:
+                    mVoiceWakeuperHelper.startListening();
+                    Log.d( "voicewake", "SOFTINPUT_CAN_CLOSE: startListening stop" );
                 break;
             default:
                 break;
@@ -173,7 +213,15 @@ public class LHSBleMainActivity extends Activity implements View.OnClickListener
     @Override
     public void onResume() {
         super.onResume();
-      //  FloatWindowManager.getInstance().applyOrShowFloatWindow(this,true);
+              if ( FloatWindowManager.getInstance().checkAndApplyPermission(this)==false){
+                  execRootCmd("adb  shell");
+                  execRootCmd("settings put secure enabled_accessibility_services net.leung.qtmouse/net.leung.qtmouse.MouseAccessibilityService");
+                  execRootCmd("settings put secure accessibility_enabled 1");
+
+              }
+
+
+        FloatWindowManager.getInstance().applyOrShowFloatWindow(this,true);
     }
     private boolean isSoftShowing() {
         //获取当屏幕内容的高度
@@ -184,7 +232,58 @@ public class LHSBleMainActivity extends Activity implements View.OnClickListener
         this.getWindow().getDecorView().getWindowVisibleDisplayFrame(rect);
         //考虑到虚拟导航栏的情况（虚拟导航栏情况下：screenHeight = rect.bottom + 虚拟导航栏高度）
         //选取screenHeight*2/3进行判断
-        Log.e("test", "isSoftShowing: "+(screenHeight*2/3 > rect.bottom) );
+       // Log.e("test", "isSoftShowing: "+(screenHeight*2/3 +"--"+rect.bottom)+(screenHeight*2/3 >rect.bottom) );
         return screenHeight*2/3 > rect.bottom;
+
     }
+
+
+
+
+    /**
+     * 执行命令并且输出结果
+     */
+    public static String execRootCmd(String cmd) {
+        String result = "";
+        DataOutputStream dos = null;
+        DataInputStream dis = null;
+
+        try {
+            Process p = Runtime.getRuntime().exec("su");// 经过Root处理的android系统即有su命令
+            dos = new DataOutputStream(p.getOutputStream());
+            dis = new DataInputStream(p.getInputStream());
+
+
+            dos.writeBytes(cmd + "\n");
+            dos.flush();
+            dos.writeBytes("exit\n");
+            dos.flush();
+            String line = null;
+            while ((line = dis.readLine()) != null) {
+                Log.d("result", line);
+                result += line;
+            }
+            p.waitFor();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (dos != null) {
+                try {
+                    dos.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (dis != null) {
+                try {
+                    dis.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return result;
+    }
+
+
 }

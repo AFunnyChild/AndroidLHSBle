@@ -144,10 +144,17 @@ public class MouseAccessibilityService extends BaseAccessibilityService {
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
         super.onAccessibilityEvent(event);
-    //    Log.e(TAG, "onAccessibilityEvent: "+event.toString() );
+
+   //  Log.e(TAG, "onAccessibilityEvent: "+getRootInActiveWindow().toString() );
         if (event.getEventType()==TYPE_WINDOW_STATE_CHANGED){
-           // Log.e(TAG, "onAccessibilityEvent: "+event.toString() );
-           // EventBus.getDefault().post(new JniEvent(JniEvent.ON_WINDOW_CHANGE));
+           // Log.e(TAG, "onAccessibilityEvent:TYPE_WINDOW_STATE_CHANGED "+event.toString()+event.getContentChangeTypes() );
+            if(event.toString().contains("SoftInput")||event.toString().contains("input")){
+            //    Log.e(TAG, "onAccessibilityEvent: SOFTINPUT_SHOW"+event.toString()+event.getContentChangeTypes() );
+                EventBus.getDefault().post(new JniEvent(JniEvent.SOFTINPUT_SHOW));
+            }else{
+
+                EventBus.getDefault().post(new JniEvent(JniEvent.SOFTINPUT_CAN_CLOSE));
+            }
         }
 
     }

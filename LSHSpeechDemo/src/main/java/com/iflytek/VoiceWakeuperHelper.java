@@ -195,10 +195,19 @@ public class VoiceWakeuperHelper {
         Log.d( TAG, "resPath: "+resPath );
         return resPath;
     }
-    public   void startListening(){
-        mIvw.startListening(mWakeuperListener);
+    boolean  mIsListening=false;
+    public  synchronized void startListening(){
+
+        if(mIsListening==false){
+            mIvw.startListening(mWakeuperListener);
+            mIsListening=true;
+            Log.d( TAG, "resPath: startListening start" );
+        }
+
     }
-    public   void stopListening(){
+    public  synchronized void stopListening(){
+        mIsListening=false;
+        Log.d( TAG, "resPath: startListening stop" );
         mIvw.stopListening();
     }
 }
