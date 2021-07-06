@@ -67,7 +67,7 @@ public class BluetoothLeServiceModel extends Service {
 
     public final static UUID UUID_HEART_RATE_MEASUREMENT       = UUID.fromString(SampleGattAttributes.HEART_RATE_MEASUREMENT);
      ArrayMap<String, BluetoothGatt> connMap = new ArrayMap<String, BluetoothGatt>();
-     int mHeadBlueConnectedIndex=-1;
+   //  int mHeadBlueConnectedIndex=-1;
     private final BluetoothGattCallback mGattCallback = new BluetoothGattCallback() {
         @Override
         public void onConnectionStateChange(BluetoothGatt gatt, int status, int newState) {
@@ -79,12 +79,12 @@ public class BluetoothLeServiceModel extends Service {
                broadcastUpdate(intentAction);
                 String address = gatt.getDevice().getAddress();
                 if (address.contains(mHeadAddress)){
-                    if (mHeadBlueConnectedIndex>0&&connMap.size()>=(mHeadBlueConnectedIndex+1)){
-                        connMap.get(mHeadBlueConnectedIndex).close();
-                        connMap.remove(mHeadBlueConnectedIndex);
-
-                    }
-                    mHeadBlueConnectedIndex=connMap.size();
+//                    if (mHeadBlueConnectedIndex>0&&connMap.size()>=(mHeadBlueConnectedIndex+1)){
+//                        connMap.get(mHeadBlueConnectedIndex).close();
+//                        connMap.remove(mHeadBlueConnectedIndex);
+//
+//                    }
+//                    mHeadBlueConnectedIndex=connMap.size();
                     onConnectStateChange(1);
                     System.out.println("连接成功: "+address+"-"+mHeadAddress);
 
@@ -99,7 +99,7 @@ public class BluetoothLeServiceModel extends Service {
                 mConnectionState = STATE_DISCONNECTED;
                 if (gatt.getDevice().getAddress().contains(mHeadAddress)){
                     onConnectStateChange(0);
-                    mHeadBlueConnectedIndex=-1;
+                //    mHeadBlueConnectedIndex=-1;
                     System.out.println("断开连接成功: "+gatt.getDevice().getAddress()+"-"+mHeadAddress);
                 }
                 broadcastUpdate(intentAction);
@@ -416,6 +416,7 @@ public class BluetoothLeServiceModel extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+
           if (connMap.size()<=0){
               bluetoothLeServiceModel=this;
               if (intent==null){
@@ -426,9 +427,22 @@ public class BluetoothLeServiceModel extends Service {
               mDeviceName = intent.getStringExtra(EXTRAS_DEVICE_NAME);
               boolean  isChair = intent.getBooleanExtra(DEVICE_IS_CHAIR,false);
               if (isChair){
+                  BluetoothGatt head_gatt=  connMap.get(mChairAddress);
+                  if(head_gatt!=null){
+                      connMap.remove(mChairAddress);
+                      head_gatt.close();
+                  }
                   mChairAddress=mDeviceAddress;
               }else{
+                 // Log.d("UnSupport", "onStartCommand: "+ mDeviceAddress+"UnSupport "+mHeadAddress);
+                  BluetoothGatt head_gatt=  connMap.get(mHeadAddress);
+
+                  if(head_gatt!=null){
+                      connMap.remove(mHeadAddress);
+                      head_gatt.close();
+                  }
                   mHeadAddress=mDeviceAddress;
+
               }
               if (!initialize()) {
                   Toast.makeText(this, "UnSupport "+"Bluetooth", Toast.LENGTH_SHORT).show();
@@ -452,24 +466,26 @@ public class BluetoothLeServiceModel extends Service {
               mDeviceName = intent.getStringExtra(EXTRAS_DEVICE_NAME);
               boolean  isChair = intent.getBooleanExtra(DEVICE_IS_CHAIR,false);
               if (isChair){
-                  mChairAddress=mDeviceAddress;
+
                   BluetoothGatt bluetoothGatt = connMap.get(mChairAddress);
                   if(bluetoothGatt!=null){
                       bluetoothGatt.close();
                       connMap.remove(mChairAddress);
                       bluetoothGatt=null;
                   }
-
+                  mChairAddress=mDeviceAddress;
 
               }else{
-                  mHeadAddress=mDeviceAddress;
+                //  Log.d("UnSupport", "onStartCommand: "+ mDeviceAddress+"UnSupport "+mHeadAddress);
+
+
                   BluetoothGatt bluetoothGatt = connMap.get(mHeadAddress);
                   if (bluetoothGatt!=null){
                       bluetoothGatt.close();
                       connMap.remove(mHeadAddress);
                       bluetoothGatt=null;
                   }
-
+                  mHeadAddress=mDeviceAddress;
               }
               if (!initialize()) {
                   Toast.makeText(this, "UnSupport "+"Bluetooth", Toast.LENGTH_SHORT).show();
