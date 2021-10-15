@@ -62,7 +62,7 @@ public class BleScanActivity extends Dialog implements View.OnClickListener, Ada
     private Handler mHandler;
     private static final int REQUEST_ENABLE_BT = 1;
     // 10秒后停止查找搜索.
-    private static final long SCAN_PERIOD = 10000;//请求码
+    private static final long SCAN_PERIOD = 300000;//请求码
     private static  final int MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION  = 100;
     private ListView mListView;
     private TextView mBtnScan;
@@ -358,16 +358,20 @@ public class BleScanActivity extends Dialog implements View.OnClickListener, Ada
     public void onClick(View v) {
         if (v.getId()==R.id.btn_scan){
 
-            if (!mScanning) {
-                mBtnScan.setText("SCAN");
-                mPbScan.setVisibility(View.INVISIBLE);
-                mLeDeviceListAdapter.clear();
-                scanLeDevice(true);
-            } else {
-                scanLeDevice(false);
-                mBtnScan.setText("STOP");
-                mPbScan.setVisibility(View.VISIBLE);
-            }
+           // mBtnScan.setText("SCAN");
+        //    mPbScan.setVisibility(View.INVISIBLE);
+            mLeDeviceListAdapter.clear();
+            scanLeDevice(true);
+//            if (!mScanning) {
+//                mBtnScan.setText("SCAN");
+//                mPbScan.setVisibility(View.INVISIBLE);
+//                mLeDeviceListAdapter.clear();
+//                scanLeDevice(true);
+//            } else {
+//                scanLeDevice(false);
+//                mBtnScan.setText("STOP");
+//                mPbScan.setVisibility(View.VISIBLE);
+//            }
         }
 
 //        if (item.getItemId()==R.id.menu_scan){
