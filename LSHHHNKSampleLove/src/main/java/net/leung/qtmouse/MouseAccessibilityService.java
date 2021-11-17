@@ -697,9 +697,9 @@ public static void setCursorPosition(int x, int y) {
  //EventBus.getDefault().post(new MouseEvent(0));
 }
 
-public static void setCursorDrop(boolean  isDrop) {
+public static void setCursorDrop(int  isDrop) {
     if (CursorView.getInstance() != null)
-        CursorView.getInstance().setCursorDrop(isDrop);
+        CursorView.getInstance().setCursorDrop((isDrop==1)?true:false);
  //EventBus.getDefault().post(new MouseEvent(0));
 }
 
