@@ -6,6 +6,8 @@ import android.os.Handler;
 import android.view.View;
 import android.view.WindowManager;
 import android.os.Message;
+import android.widget.ImageView;
+
 import net.leung.qtmouse.tools.Screen;
 
 import org.greenrobot.eventbus.EventBus;
@@ -53,19 +55,32 @@ public class CursorView extends BaseFloatView {
      * 每帧逝去的时间（单位：毫秒）
      */
     private final int frameTime = 50;
-
+     boolean  mIsDrop=true;
+    ImageView mIvCursor=null;
     public CursorView(@NonNull Context context) {
         super(context);
 
         View view = View.inflate(context, R.layout.cursor, null);
+        mIvCursor=  view.findViewById(R.id.imageView);
         addView(view);
 
         layoutParams.flags |= WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE//光标不会遮挡操作
                 | WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS;//光标可以移动到屏幕边缘
         layoutParams.x = 250;
         layoutParams.y = 250;
+        mIsDrop=true;
     }
+   public   void  setCursorDrop(boolean  isDrop){
+        if(mIsDrop!=isDrop){
+            mIsDrop=isDrop;
+            if (mIsDrop){
+                mIvCursor.setImageResource(R.mipmap.mouse_pointer_drop);
+            }else{
+                mIvCursor.setImageResource(R.mipmap.mouse_pointer);
+            }
+        }
 
+   }
     @Override
     public void setIsShowing(boolean isShowing) {
         super.setIsShowing(isShowing);
