@@ -203,7 +203,7 @@ public class BluetoothLeServiceModel extends Service {
             //1为整数值的偏移量
 
 //            final int heartRate = characteristic.getIntValue(format, 1);
-          //  Log.d(TAG, bytes2HexString(characteristic.getValue()));
+          Log.d("receviedData", bytes2HexString(characteristic.getValue()));
             byte[] bytes = characteristic.getValue();
             receviedData(bytes,bytes.length);
         //    intent.putExtra(EXTRA_DATA,characteristic.getValue());
@@ -375,6 +375,11 @@ public class BluetoothLeServiceModel extends Service {
     {
 
         return connMap.get(address).getService(UUID.fromString(BleConstant.service)).getCharacteristic(UUID.fromString(BleConstant.Characteristic1a));
+    }
+    public BluetoothGattCharacteristic getBluetoothGattCharacteristic2(String  address)
+    {
+
+        return connMap.get(address).getService(UUID.fromString(BleConstant.chairservice)).getCharacteristic(UUID.fromString(BleConstant.Characteristic1a2));
     }
 
     public BluetoothGattCharacteristic getChairWriteGattCharacteristic(String address)
@@ -617,7 +622,12 @@ public class BluetoothLeServiceModel extends Service {
                 if (uuid.contains("6e400003")||uuid.contains("8653000b")) {
                     Log.e("console", "2gatt Characteristic: " + uuid);
                     setCharacteristicNotification(gattCharacteristic, true,address);
-                    mNotifyCharacteristic = getBluetoothGattCharacteristic(address);
+                    if(uuid.contains("6e400003")){
+                        mNotifyCharacteristic = getBluetoothGattCharacteristic(address);
+                    }else{
+                        mNotifyCharacteristic = getBluetoothGattCharacteristic2(address);
+                    }
+
                     Log.e("console", "2gatt Characteristic: " + mNotifyCharacteristic.describeContents());
                     readCharacteristic(gattCharacteristic,address);
                 }
@@ -778,6 +788,8 @@ public class BluetoothLeServiceModel extends Service {
 
     public static native   void  receviedData(byte[] data,int len);
     public static native   void  onConnectStateChange(int state);
+//    public static    void  receviedData(byte[] data,int len){};
+//    public static    void  onConnectStateChange(int state){};
 
 
 //    public static    void  receviedData(byte[] data,int len){

@@ -164,7 +164,9 @@ public class LHSBleMainActivity extends Activity implements View.OnClickListener
     @Override
     public void onClick(final View v) {
     if (v.getId()==R.id.btn_start) {
-        FloatWindowManager.getInstance().applyOrShowFloatWindow(this,true);
+     //   FloatWindowManager.getInstance().applyOrShowFloatWindow(this,true);
+        BleScanActivity scanActivity=new BleScanActivity(this);
+        scanActivity.showBleWindow();
     }
     if (v.getId()==R.id.btn_0) {
         mVoiceWakeuperHelper.startListening();
@@ -213,15 +215,15 @@ public class LHSBleMainActivity extends Activity implements View.OnClickListener
     @Override
     public void onResume() {
         super.onResume();
-              if ( FloatWindowManager.getInstance().checkAndApplyPermission(this)==false){
-                  execRootCmd("adb  shell");
-                  execRootCmd("settings put secure enabled_accessibility_services net.leung.qtmouse/net.leung.qtmouse.MouseAccessibilityService");
-                  execRootCmd("settings put secure accessibility_enabled 1");
-
-              }
-
-
-        FloatWindowManager.getInstance().applyOrShowFloatWindow(this,true);
+//              if ( FloatWindowManager.getInstance().checkAndApplyPermission(this)==false){
+//                  execRootCmd("adb  shell");
+//                  execRootCmd("settings put secure enabled_accessibility_services net.leung.qtmouse/net.leung.qtmouse.MouseAccessibilityService");
+//                  execRootCmd("settings put secure accessibility_enabled 1");
+//
+//              }
+//
+//
+//        FloatWindowManager.getInstance().applyOrShowFloatWindow(this,true);
     }
     private boolean isSoftShowing() {
         //获取当屏幕内容的高度
