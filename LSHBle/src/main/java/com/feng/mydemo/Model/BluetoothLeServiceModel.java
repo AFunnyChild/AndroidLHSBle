@@ -788,10 +788,10 @@ public class BluetoothLeServiceModel extends Service {
      writeChairInt(value_list);
     }
 
-//    public static native   void  receviedData(byte[] data,int len);
-//    public static native   void  onConnectStateChange(int state);
-    public static    void  receviedData(byte[] data,int len){};
-    public static    void  onConnectStateChange(int state){};
+    public static native   void  receviedData(byte[] data,int len);
+    public static native   void  onConnectStateChange(int state);
+//    public static    void  receviedData(byte[] data,int len){};
+//    public static    void  onConnectStateChange(int state){};
 
 
 //    public static    void  receviedData(byte[] data,int len){
