@@ -614,7 +614,7 @@ public class BluetoothLeServiceModel extends Service {
                 gattCharacteristicGroupData.add(currentCharaData);
                 uuid = gattCharacteristic.getUuid().toString();
                 Log.d("DeviceControlActivity", uuid);
-                if (uuid.contains("6e400003")) {
+                if (uuid.contains("6e400003")||uuid.contains("8653000b")) {
                     Log.e("console", "2gatt Characteristic: " + uuid);
                     setCharacteristicNotification(gattCharacteristic, true,address);
                     mNotifyCharacteristic = getBluetoothGattCharacteristic(address);
