@@ -169,13 +169,31 @@ public class LHSBleMainActivity extends Activity implements View.OnClickListener
         scanActivity.showBleWindow();
     }
     if (v.getId()==R.id.btn_0) {
-        mVoiceWakeuperHelper.startListening();
+        byte[] bf=new byte[5];
+        bf[0]=0x02;
+        bf[1]=0x02;
+        bf[2]=0x02;
+        bf[3]=0x00;
+        bf[4]=0x00;
+        BluetoothLeServiceModel.writeChairArray(bf,5);
 
     }  if (v.getId()==R.id.btn_1) {
-            mVoiceWakeuperHelper.stopListening();
+            byte[] bf=new byte[5];
+            bf[0]=0x02;
+            bf[1]=0x03;
+            bf[2]=0x05;
+            bf[3]=0x00;
+            bf[4]=0x00;
+            BluetoothLeServiceModel.writeChairArray(bf,5);
     }  if (v.getId()==R.id.btn_2) {
-        Log.e("BleScanActivity", "onClick: " + 2);
-        BluetoothLeServiceModel.offsetDirection(2);
+            byte[] bf=new byte[5];//02 02 01 00 00
+            bf[0]=0x02;
+            bf[1]=0x02;
+            bf[2]=0x01;
+            bf[3]=0x00;
+            bf[4]=0x00;
+            BluetoothLeServiceModel.writeChairArray(bf,5);
+
     }  if (v.getId()==R.id.btn_3) {
         Log.e("BleScanActivity", "onClick: " + 3);
         BluetoothLeServiceModel.offsetDirection(3);

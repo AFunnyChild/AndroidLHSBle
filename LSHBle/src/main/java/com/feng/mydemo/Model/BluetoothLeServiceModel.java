@@ -86,7 +86,7 @@ public class BluetoothLeServiceModel extends Service {
 //                    }
 //                    mHeadBlueConnectedIndex=connMap.size();
                     onConnectStateChange(1);
-                    System.out.println("连接成功: "+address+"-"+mHeadAddress);
+                    System.out.println("连接成功mHeadAddress: "+address+"-"+mHeadAddress);
 
                 }
 
@@ -139,14 +139,14 @@ public class BluetoothLeServiceModel extends Service {
         @Override
         public void onCharacteristicWrite(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
             super.onCharacteristicWrite(gatt, characteristic, status);
-
+            Log.d("onCharacteristicRead", "onCharacteristicRead: "+"写到数据"+characteristic.getValue().toString());
         }
 
         @Override
         public void onCharacteristicRead(BluetoothGatt gatt,
                                          BluetoothGattCharacteristic characteristic,
                                          int status) {
-         //   Log.d(TAG, "onCharacteristicRead: "+"读取到数据");
+            Log.d("onCharacteristicRead", "onCharacteristicRead: "+"读到数据");
             //Toast.makeText(BluetoothLeServiceModel.this, "读取到数据", Toast.LENGTH_SHORT).show();
             if (status == BluetoothGatt.GATT_SUCCESS) {
                 broadcastUpdate(ACTION_DATA_AVAILABLE, characteristic);
@@ -156,6 +156,7 @@ public class BluetoothLeServiceModel extends Service {
         @Override
         public void onCharacteristicChanged(BluetoothGatt gatt,
                                             BluetoothGattCharacteristic characteristic) {
+            Log.d("onCharacteristicRead", "onCharacteristicRead: "+"读到数据");
             broadcastUpdate(ACTION_DATA_AVAILABLE, characteristic);
         }
     };
@@ -171,7 +172,7 @@ public class BluetoothLeServiceModel extends Service {
             return;
         }
         if (isChair){
-            Log.e("writeChairInt", "writeChairInt: "+mChairAddress );
+           // Log.e("writeChairInt", "writeChairInt: "+mChairAddress );
             this.connMap.get(mChairAddress).writeCharacteristic(paramBluetoothGattCharacteristic);
         }else{
             this.connMap.get(mHeadAddress).writeCharacteristic(paramBluetoothGattCharacteristic);
@@ -186,11 +187,12 @@ public class BluetoothLeServiceModel extends Service {
 
     private void broadcastUpdate(final String action,
                                  final BluetoothGattCharacteristic characteristic) {
-        final Intent intent = new Intent(action);
+      //  final Intent intent = new Intent(action);
 
         //这是心率测量剖面的特殊处理,数据解析
         //按每个规格进行.
-        if (UUID_HEART_RATE_MEASUREMENT.equals(characteristic.getUuid())) {
+        //UUID_HEART_RATE_MEASUREMENT.equals(characteristic.getUuid())
+        if (true) {
             int flag = characteristic.getProperties();
             int format = -1;
             if ((flag & 0x01) != 0) {
@@ -329,10 +331,11 @@ public class BluetoothLeServiceModel extends Service {
      */
     public void readCharacteristic(BluetoothGattCharacteristic characteristic,String address) {
         if (mBluetoothAdapter == null || connMap.get(address) == null) {
-
+            Log.e("console", "2gatt Characteristic: readCharacteristic null");
             return;
         }
-        connMap.get(address).readCharacteristic(characteristic);
+        BluetoothGatt bluetoothGatt = connMap.get(address);
+        bluetoothGatt.readCharacteristic(characteristic);
     }
 
     /**
@@ -351,7 +354,8 @@ public class BluetoothLeServiceModel extends Service {
         connMap.get(address).setCharacteristicNotification(characteristic, enabled);
 
         // This is specific to Heart Rate Measurement.
-        if (UUID_HEART_RATE_MEASUREMENT.equals(characteristic.getUuid())) {
+        //UUID_HEART_RATE_MEASUREMENT.equals(characteristic.getUuid())
+        if (true) {
             BluetoothGattDescriptor descriptor = characteristic.getDescriptor(
                     UUID.fromString(SampleGattAttributes.CLIENT_CHARACTERISTIC_CONFIG));
             descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
@@ -620,15 +624,13 @@ public class BluetoothLeServiceModel extends Service {
                 uuid = gattCharacteristic.getUuid().toString();
                 Log.d("DeviceControlActivity", uuid);
                 if (uuid.contains("6e400003")||uuid.contains("8653000b")) {
-                    Log.e("console", "2gatt Characteristic: " + uuid);
+                    Log.e("console", "2gatt setCharacteristicNotification: " + gattCharacteristic.getUuid());
                     setCharacteristicNotification(gattCharacteristic, true,address);
                     if(uuid.contains("6e400003")){
                         mNotifyCharacteristic = getBluetoothGattCharacteristic(address);
                     }else{
                         mNotifyCharacteristic = getBluetoothGattCharacteristic2(address);
                     }
-
-                    Log.e("console", "2gatt Characteristic: " + mNotifyCharacteristic.describeContents());
                     readCharacteristic(gattCharacteristic,address);
                 }
                 if (uuid.contains("6e400002")) {
@@ -694,12 +696,12 @@ public class BluetoothLeServiceModel extends Service {
         if (mChairWriteCharacteristic==null){
             return;
         }
-         byte[]  write_array= Arrays.copyOf(value_list, size);
-        mChairWriteCharacteristic.setValue(write_array);
-        String string = Arrays.toString(write_array);
-        Log.e("BluetoothLeServiceModel", "writeChairArray: "+string);
-        if (bluetoothLeServiceModel!=null){
+        // byte[]  write_array= Arrays.copyOf(value_list, size);
+        mChairWriteCharacteristic.setValue(value_list);
+      //  String string = Arrays.toString(write_array);
 
+        if (bluetoothLeServiceModel!=null){
+            Log.e("BluetoothLeServiceModel", "writeChairArray: "+value_list[0]+"-"+value_list[1]+"-"+value_list[2]+"="+size);
             bluetoothLeServiceModel.writeCharacteristic(mChairWriteCharacteristic,true);
         }
 
@@ -786,10 +788,10 @@ public class BluetoothLeServiceModel extends Service {
      writeChairInt(value_list);
     }
 
-    public static native   void  receviedData(byte[] data,int len);
-    public static native   void  onConnectStateChange(int state);
-//    public static    void  receviedData(byte[] data,int len){};
-//    public static    void  onConnectStateChange(int state){};
+//    public static native   void  receviedData(byte[] data,int len);
+//    public static native   void  onConnectStateChange(int state);
+    public static    void  receviedData(byte[] data,int len){};
+    public static    void  onConnectStateChange(int state){};
 
 
 //    public static    void  receviedData(byte[] data,int len){
