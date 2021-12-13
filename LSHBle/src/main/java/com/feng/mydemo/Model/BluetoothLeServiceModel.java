@@ -651,6 +651,18 @@ public class BluetoothLeServiceModel extends Service {
         }
 
       }
+    public static   void  writeArray(byte[] value_list,int size){
+        if (mWriteCharacteristic==null){
+            return;
+        }
+        byte[]  write_array= Arrays.copyOf(value_list, size);
+
+        mWriteCharacteristic.setValue(write_array);
+        if (bluetoothLeServiceModel!=null){
+            bluetoothLeServiceModel.writeCharacteristic(mWriteCharacteristic,false);
+        }
+
+    }
       public static   void  writeChairInt(List<Integer> value_list){
         if (mChairWriteCharacteristic==null){
             return;
