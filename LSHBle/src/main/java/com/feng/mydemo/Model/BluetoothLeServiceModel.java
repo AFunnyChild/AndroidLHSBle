@@ -190,6 +190,7 @@ public class BluetoothLeServiceModel extends Service {
             Log.e("writeChairInt", "writeChairInt: "+mChairAddress+"-"+mHeadAddress );
             this.connMap.get(mChairAddress).writeCharacteristic(paramBluetoothGattCharacteristic);
         }else{
+            Log.e("writeNoChairInt", "writeChairInt: "+mChairAddress+"-"+mHeadAddress );
             this.connMap.get(mHeadAddress).writeCharacteristic(paramBluetoothGattCharacteristic);
         }
 
@@ -220,7 +221,7 @@ public class BluetoothLeServiceModel extends Service {
             //1为整数值的偏移量
 
 //            final int heartRate = characteristic.getIntValue(format, 1);
-        //   Log.d("receviedData",bytes2HexString(characteristic.getValue())+"-"+characteristic.getValue().length);
+          Log.d("receviedData",bytes2HexString(characteristic.getValue())+"-"+characteristic.getValue().length);
         //  Log.d("receviedData", characteristic.getValue()+"");
             byte[] bytes = characteristic.getValue();
 
@@ -726,6 +727,7 @@ public class BluetoothLeServiceModel extends Service {
     }
     public static   void  writeTestArray(byte[] value_list,int size){
         if (mChairWriteCharacteristic==null){
+            Log.e("BluetoothLeServiceModel", "mChairWriteCharacteristic=null");
             return;
         }
         // byte[]  write_array= Arrays.copyOf(value_list, size);
@@ -733,7 +735,7 @@ public class BluetoothLeServiceModel extends Service {
       //  String string = Arrays.toString(write_array);
 
         if (bluetoothLeServiceModel!=null){
-         //   Log.e("BluetoothLeServiceModel", "writeChairArray: "+value_list[0]+"-"+value_list[1]+"-"+value_list[2]+"="+size);
+           Log.e("BluetoothLeServiceModel", "writeTestArray: "+value_list[0]+"-"+value_list[1]+"-"+value_list[2]+"="+size);
             bluetoothLeServiceModel.writeCharacteristic(mChairWriteCharacteristic,false);
         }
 
