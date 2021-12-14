@@ -117,8 +117,19 @@ public class BluetoothLeServiceModel extends Service {
 
             }
         }
-        @Override
+
+       @Override
+       public void onMtuChanged(BluetoothGatt gatt, int mtu, int status) {
+           super.onMtuChanged(gatt, mtu, status);
+           if (status == BluetoothGatt.GATT_SUCCESS) {
+               Log.d("onMtuChanged", "onMtuChanged=GATT_SUCCESS  "+ mtu+"--"+status);
+           }
+           Log.d("onMtuChanged", "onMtuChanged=  "+ mtu+"--"+status);
+       }
+
+       @Override
         public void onServicesDiscovered(BluetoothGatt gatt, int status) {
+            gatt.requestMtu(247);
             List<BluetoothGattService> services = gatt.getServices();
             for (BluetoothGattService service : services) {
                 mDs.add("servicesUUID=  "+ service.getUuid());
@@ -130,8 +141,10 @@ public class BluetoothLeServiceModel extends Service {
             }
 
             if (status == BluetoothGatt.GATT_SUCCESS) {
+               // gatt.requestMtu(24);
                 broadcastUpdate(ACTION_GATT_SERVICES_DISCOVERED);
                 displayGattServices(getSupportedGattServices(gatt.getDevice().getAddress()),gatt.getDevice().getAddress());
+
             } else {
             }
         }
@@ -146,7 +159,7 @@ public class BluetoothLeServiceModel extends Service {
         public void onCharacteristicRead(BluetoothGatt gatt,
                                          BluetoothGattCharacteristic characteristic,
                                          int status) {
-            Log.d("onCharacteristicRead", "onCharacteristicRead: "+"读到数据");
+
             //Toast.makeText(BluetoothLeServiceModel.this, "读取到数据", Toast.LENGTH_SHORT).show();
             if (status == BluetoothGatt.GATT_SUCCESS) {
                 broadcastUpdate(ACTION_DATA_AVAILABLE, characteristic);
@@ -156,7 +169,6 @@ public class BluetoothLeServiceModel extends Service {
         @Override
         public void onCharacteristicChanged(BluetoothGatt gatt,
                                             BluetoothGattCharacteristic characteristic) {
-            Log.d("onCharacteristicRead", "onCharacteristicRead: "+"读到数据");
             broadcastUpdate(ACTION_DATA_AVAILABLE, characteristic);
         }
     };
@@ -184,7 +196,7 @@ public class BluetoothLeServiceModel extends Service {
         final Intent intent = new Intent(action);
         sendBroadcast(intent);
     }
-
+    List<Byte>  byteList=new ArrayList<>();
     private void broadcastUpdate(final String action,
                                  final BluetoothGattCharacteristic characteristic) {
       //  final Intent intent = new Intent(action);
@@ -205,8 +217,10 @@ public class BluetoothLeServiceModel extends Service {
             //1为整数值的偏移量
 
 //            final int heartRate = characteristic.getIntValue(format, 1);
-          Log.d("receviedData", bytes2HexString(characteristic.getValue()));
+          //  Log.d("receviedData",bytes2HexString(characteristic.getValue())+"-"+characteristic.getValue().length);
+        //  Log.d("receviedData", characteristic.getValue()+"");
             byte[] bytes = characteristic.getValue();
+
             receviedData(bytes,bytes.length);
         //    intent.putExtra(EXTRA_DATA,characteristic.getValue());
           //  Toast.makeText(this, "heartRate:" + heartRate, Toast.LENGTH_SHORT).show();
@@ -296,7 +310,9 @@ public class BluetoothLeServiceModel extends Service {
         }
         // 连接一个蓝牙
         // 建立连接并得到mBluetoothGatt,mBluetoothGatt软件的核心,进行数据交互的关键对象
-        device.connectGatt(this, false, mGattCallback);
+        BluetoothGatt bluetoothGatt = device.connectGatt(this, false, mGattCallback);
+       bluetoothGatt.requestConnectionPriority(BluetoothGatt.CONNECTION_PRIORITY_HIGH);
+       bluetoothGatt.requestMtu(247);
         mBluetoothDeviceAddress = address;
         mConnectionState = STATE_CONNECTING;
         return true;
