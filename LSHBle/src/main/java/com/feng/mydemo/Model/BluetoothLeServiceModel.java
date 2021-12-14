@@ -129,10 +129,13 @@ public class BluetoothLeServiceModel extends Service {
 
        @Override
         public void onServicesDiscovered(BluetoothGatt gatt, int status) {
-            gatt.requestMtu(247);
+         //
             List<BluetoothGattService> services = gatt.getServices();
             for (BluetoothGattService service : services) {
                 mDs.add("servicesUUID=  "+ service.getUuid());
+                if (service.getUuid().toString().contains("8653000a")){
+                    gatt.requestMtu(247);
+                }
                 Log.d("onServicesDiscovered", "servicesUUID=  "+ service.getUuid());
                 List<BluetoothGattCharacteristic> characteristics = service.getCharacteristics();
                 for (BluetoothGattCharacteristic characteristic : characteristics) {
@@ -160,7 +163,7 @@ public class BluetoothLeServiceModel extends Service {
                                          BluetoothGattCharacteristic characteristic,
                                          int status) {
 
-            //Toast.makeText(BluetoothLeServiceModel.this, "读取到数据", Toast.LENGTH_SHORT).show();
+            Toast.makeText(BluetoothLeServiceModel.this, "读取到数据", Toast.LENGTH_SHORT).show();
             if (status == BluetoothGatt.GATT_SUCCESS) {
                 broadcastUpdate(ACTION_DATA_AVAILABLE, characteristic);
             }
@@ -184,7 +187,7 @@ public class BluetoothLeServiceModel extends Service {
             return;
         }
         if (isChair){
-           // Log.e("writeChairInt", "writeChairInt: "+mChairAddress );
+            Log.e("writeChairInt", "writeChairInt: "+mChairAddress+"-"+mHeadAddress );
             this.connMap.get(mChairAddress).writeCharacteristic(paramBluetoothGattCharacteristic);
         }else{
             this.connMap.get(mHeadAddress).writeCharacteristic(paramBluetoothGattCharacteristic);
@@ -217,7 +220,7 @@ public class BluetoothLeServiceModel extends Service {
             //1为整数值的偏移量
 
 //            final int heartRate = characteristic.getIntValue(format, 1);
-          //  Log.d("receviedData",bytes2HexString(characteristic.getValue())+"-"+characteristic.getValue().length);
+        //   Log.d("receviedData",bytes2HexString(characteristic.getValue())+"-"+characteristic.getValue().length);
         //  Log.d("receviedData", characteristic.getValue()+"");
             byte[] bytes = characteristic.getValue();
 
@@ -311,8 +314,7 @@ public class BluetoothLeServiceModel extends Service {
         // 连接一个蓝牙
         // 建立连接并得到mBluetoothGatt,mBluetoothGatt软件的核心,进行数据交互的关键对象
         BluetoothGatt bluetoothGatt = device.connectGatt(this, false, mGattCallback);
-       bluetoothGatt.requestConnectionPriority(BluetoothGatt.CONNECTION_PRIORITY_HIGH);
-       bluetoothGatt.requestMtu(247);
+      // bluetoothGatt.requestConnectionPriority(BluetoothGatt.CONNECTION_PRIORITY_HIGH);
         mBluetoothDeviceAddress = address;
         mConnectionState = STATE_CONNECTING;
         return true;
@@ -655,7 +657,7 @@ public class BluetoothLeServiceModel extends Service {
                     mWriteCharacteristic = getWriteCharacteristic(address);
                 }
                 if (uuid.contains("8653000c")) {
-                    mChairAddress=address;
+                  //  mChairAddress=address;
                     Log.e("console", "2gatt Characteristic: chairwrite" + uuid);
                     mChairWriteCharacteristic = getChairWriteGattCharacteristic(address);
                 }
@@ -719,6 +721,20 @@ public class BluetoothLeServiceModel extends Service {
         if (bluetoothLeServiceModel!=null){
             Log.e("BluetoothLeServiceModel", "writeChairArray: "+value_list[0]+"-"+value_list[1]+"-"+value_list[2]+"="+size);
             bluetoothLeServiceModel.writeCharacteristic(mChairWriteCharacteristic,true);
+        }
+
+    }
+    public static   void  writeTestArray(byte[] value_list,int size){
+        if (mChairWriteCharacteristic==null){
+            return;
+        }
+        // byte[]  write_array= Arrays.copyOf(value_list, size);
+        mChairWriteCharacteristic.setValue(value_list);
+      //  String string = Arrays.toString(write_array);
+
+        if (bluetoothLeServiceModel!=null){
+         //   Log.e("BluetoothLeServiceModel", "writeChairArray: "+value_list[0]+"-"+value_list[1]+"-"+value_list[2]+"="+size);
+            bluetoothLeServiceModel.writeCharacteristic(mChairWriteCharacteristic,false);
         }
 
     }
