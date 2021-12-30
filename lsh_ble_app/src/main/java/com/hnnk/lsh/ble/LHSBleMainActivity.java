@@ -28,6 +28,8 @@ import net.leung.qtmouse.FloatWindowManager;
 import  net.leung.qtmouse.LoadingDialog;
 import net.leung.qtmouse.JniEvent;
 import net.leung.qtmouse.LoveApplication;
+import net.leung.qtmouse.MouseAccessibilityService;
+
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -167,19 +169,16 @@ public class LHSBleMainActivity extends Activity implements View.OnClickListener
         FloatWindowManager.getInstance().applyOrShowFloatWindow(this,true);
     }
     if (v.getId()==R.id.btn_0) {
-        mVoiceWakeuperHelper.startListening();
+        MouseAccessibilityService.onStartClicked(3);
 
     }  if (v.getId()==R.id.btn_1) {
-            mVoiceWakeuperHelper.stopListening();
-    }  if (v.getId()==R.id.btn_2) {
-        Log.e("BleScanActivity", "onClick: " + 2);
-        BluetoothLeServiceModel.offsetDirection(2);
+            MouseAccessibilityService.onStartClicked(4);
+        }  if (v.getId()==R.id.btn_2) {
+
     }  if (v.getId()==R.id.btn_3) {
-        Log.e("BleScanActivity", "onClick: " + 3);
-        BluetoothLeServiceModel.offsetDirection(3);
+            MouseAccessibilityService.setCursorSize(25);
     }  if (v.getId()==R.id.btn_4) {
-        Log.e("BleScanActivity", "onClick: " + 4);
-        BluetoothLeServiceModel.offsetDirection(4);
+            MouseAccessibilityService.setCursorSize(40);
     }
 
     if(v.getId()==R.id.btn_state){

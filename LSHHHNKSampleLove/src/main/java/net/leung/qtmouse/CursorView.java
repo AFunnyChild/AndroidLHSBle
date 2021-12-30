@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Handler;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.os.Message;
 import android.widget.ImageView;
@@ -81,6 +82,25 @@ public class CursorView extends BaseFloatView {
         }
 
    }
+   public   void  setCursorSize(int  size){
+      if (mIvCursor!=null){
+          ViewGroup.LayoutParams layoutParams = mIvCursor.getLayoutParams();
+          layoutParams.width = dp2px(getContext(),size);
+          layoutParams.height = dp2px(getContext(),size);
+          mIvCursor.setLayoutParams(layoutParams);
+          System.out.println("mIvCursor size="+size);
+      }
+
+   }
+    /**
+     * 根据手机的分辨率从 dp 的单位 转成为 px(像素)
+     */
+    public static int dip2px(Context context, float dpValue) {
+        final float scale = context.getResources().getDisplayMetrics().density;
+        return (int) (dpValue * scale + 0.5f);
+    }
+
+
     @Override
     public void setIsShowing(boolean isShowing) {
         super.setIsShowing(isShowing);

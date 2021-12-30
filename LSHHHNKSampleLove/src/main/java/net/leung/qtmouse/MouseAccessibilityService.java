@@ -702,6 +702,11 @@ public static void setCursorDrop(int  isDrop) {
         CursorView.getInstance().setCursorDrop((isDrop==1)?true:false);
  //EventBus.getDefault().post(new MouseEvent(0));
 }
+public static void setCursorSize(int  size) {
+    if (CursorView.getInstance() != null)
+        CursorView.getInstance().setCursorSize(size);
+ //EventBus.getDefault().post(new MouseEvent(0));
+}
 
 
 /**
