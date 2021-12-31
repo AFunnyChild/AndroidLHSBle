@@ -85,10 +85,15 @@ public class CursorView extends BaseFloatView {
    public   void  setCursorSize(int  size){
       if (mIvCursor!=null){
           ViewGroup.LayoutParams layoutParams = mIvCursor.getLayoutParams();
-          layoutParams.width = dp2px(getContext(),size);
-          layoutParams.height = dp2px(getContext(),size);
+          int dp2px = dp2px(getContext(), size);
+          layoutParams.width =dp2px;
+          layoutParams.height = dp2px;
+          mIvCursor.setMaxHeight(dp2px);
+          mIvCursor.setMaxWidth(dp2px);
+          mIvCursor.setMinimumWidth(dp2px);
+          mIvCursor.setMinimumHeight(dp2px);
           mIvCursor.setLayoutParams(layoutParams);
-          System.out.println("mIvCursor size="+size);
+          System.out.println("mIvCursor size="+ layoutParams.height+"-"+layoutParams.width);
       }
 
    }
