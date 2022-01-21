@@ -25,6 +25,7 @@ import android.os.Handler;
 
 import com.android.sidebar.views.SideBarContent;
 import com.feng.mydemo.activity.BleScanActivity;
+import com.ryan.socketwebrtc.MainActivity;
 
 
 import android.content.Context;
@@ -635,7 +636,6 @@ public static void onStartClicked(int showMenu) {
                 serviceRunning = FloatWindowManager.getInstance().applyOrShowFloatWindow(LoveApplication.getInstance().getMainActivity(), showMenu == 1 ? true : false);
             }
             if (showMenu>=2){
-
                 FloatWindowManager.getInstance().setSideBarVisible(LoveApplication.getInstance().getMainActivity(), showMenu == 3 ? true : false);
             }
 
@@ -700,6 +700,20 @@ public static void setCursorPosition(int x, int y) {
 public static void setCursorDrop(int  isDrop) {
     if (CursorView.getInstance() != null)
         CursorView.getInstance().setCursorDrop((isDrop==1)?true:false);
+ //EventBus.getDefault().post(new MouseEvent(0));
+}
+public static void setCursorSize(int  size) {
+    if (CursorView.getInstance() != null){
+        Handler handler = new Handler( CursorView.getInstance().getContext().getMainLooper());
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                CursorView.getInstance().setCursorSize(size);
+            }
+        });
+
+    }
+
  //EventBus.getDefault().post(new MouseEvent(0));
 }
 

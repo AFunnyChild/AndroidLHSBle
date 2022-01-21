@@ -28,6 +28,8 @@ import net.leung.qtmouse.FloatWindowManager;
 import  net.leung.qtmouse.LoadingDialog;
 import net.leung.qtmouse.JniEvent;
 import net.leung.qtmouse.LoveApplication;
+import net.leung.qtmouse.MouseAccessibilityService;
+
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -169,6 +171,7 @@ public class LHSBleMainActivity extends Activity implements View.OnClickListener
         scanActivity.showBleWindow();
     }
     if (v.getId()==R.id.btn_0) {
+
         byte[] bf=new byte[5];
         bf[0]=0x02;
         bf[1]=0x02;
@@ -194,12 +197,17 @@ public class LHSBleMainActivity extends Activity implements View.OnClickListener
             bf[4]=0x00;
             BluetoothLeServiceModel.writeTestArray(bf,5);
 
+
+
+    }  if (v.getId()==R.id.btn_1) {
+            MouseAccessibilityService.onStartClicked(4);
+        }  if (v.getId()==R.id.btn_2) {
+
+
     }  if (v.getId()==R.id.btn_3) {
-        Log.e("BleScanActivity", "onClick: " + 3);
-        BluetoothLeServiceModel.offsetDirection(3);
+            MouseAccessibilityService.setCursorSize(25);
     }  if (v.getId()==R.id.btn_4) {
-        Log.e("BleScanActivity", "onClick: " + 4);
-        BluetoothLeServiceModel.offsetDirection(4);
+            MouseAccessibilityService.setCursorSize(40);
     }
 
     if(v.getId()==R.id.btn_state){
