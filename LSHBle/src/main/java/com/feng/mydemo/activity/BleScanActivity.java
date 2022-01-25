@@ -401,9 +401,10 @@ public class BleScanActivity extends Dialog implements View.OnClickListener, Ada
         if (device.getName().contains("H2000")||device.getName().contains("BLE")||device.getName().contains("HNNK_")){
             isChairBlue= false;
         }
-        if(device.getName().contains("轮椅")){
+        if(device.getName().contains("UartApp")){
             isChairBlue=true;
         }
+
         startIntent.putExtra(BluetoothLeServiceModel.DEVICE_IS_CHAIR, isChairBlue);
          getContext().startService(startIntent);
          BleScanActivity.this.dismiss();
