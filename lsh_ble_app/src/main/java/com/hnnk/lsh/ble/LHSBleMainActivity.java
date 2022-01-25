@@ -173,29 +173,29 @@ public class LHSBleMainActivity extends Activity implements View.OnClickListener
     if (v.getId()==R.id.btn_0) {
 
         byte[] bf=new byte[5];
-        bf[0]=0x02;
+        bf[0]=0x03;
         bf[1]=0x02;
-        bf[2]=0x02;
-        bf[3]=0x00;
-        bf[4]=0x00;
-        BluetoothLeServiceModel.writeTestArray(bf,5);
+        bf[2]=0x01;
+        bf[3]=0x06;
+        bf[4]=0x01;
+        BluetoothLeServiceModel.writeChairArray(bf,5);
 
     }  if (v.getId()==R.id.btn_1) {
             byte[] bf=new byte[5];
-            bf[0]=0x02;
-            bf[1]=0x03;
-            bf[2]=0x05;
-            bf[3]=0x00;
-            bf[4]=0x00;
-            BluetoothLeServiceModel.writeTestArray(bf,5);
-    }  if (v.getId()==R.id.btn_2) {
-            byte[] bf=new byte[5];//02 02 01 00 00
-            bf[0]=0x02;
+            bf[0]=0x03;
             bf[1]=0x02;
             bf[2]=0x01;
-            bf[3]=0x00;
+            bf[3]=0x02;
             bf[4]=0x00;
-            BluetoothLeServiceModel.writeTestArray(bf,5);
+            BluetoothLeServiceModel.writeChairArray(bf,5);
+    }  if (v.getId()==R.id.btn_2) {
+            byte[] bf=new byte[5];//02 02 01 00 00
+            bf[0]=0x03;
+            bf[1]=0x02;
+            bf[2]=0x02;
+            bf[3]=0x04;
+            bf[4]=-2;
+            BluetoothLeServiceModel.writeChairArray(bf,5);
 
 
 

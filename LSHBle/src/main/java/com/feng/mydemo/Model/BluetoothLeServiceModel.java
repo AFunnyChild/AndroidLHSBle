@@ -134,7 +134,7 @@ public class BluetoothLeServiceModel extends Service {
             for (BluetoothGattService service : services) {
                 mDs.add("servicesUUID=  "+ service.getUuid());
                 if (service.getUuid().toString().contains("8653000a")){
-                    gatt.requestMtu(247);
+                 //   gatt.requestMtu(247);
                 }
                 Log.d("onServicesDiscovered", "servicesUUID=  "+ service.getUuid());
                 List<BluetoothGattCharacteristic> characteristics = service.getCharacteristics();
@@ -717,8 +717,8 @@ public class BluetoothLeServiceModel extends Service {
         }
         // byte[]  write_array= Arrays.copyOf(value_list, size);
         mChairWriteCharacteristic.setValue(value_list);
-      //  String string = Arrays.toString(write_array);
-
+        String string = Arrays.toString(value_list);
+     //   Toast.makeText(bluetoothLeServiceModel, string, Toast.LENGTH_SHORT).show();
         if (bluetoothLeServiceModel!=null){
             Log.e("BluetoothLeServiceModel", "writeChairArray: "+value_list[0]+"-"+value_list[1]+"-"+value_list[2]+"="+size);
             bluetoothLeServiceModel.writeCharacteristic(mChairWriteCharacteristic,true);
