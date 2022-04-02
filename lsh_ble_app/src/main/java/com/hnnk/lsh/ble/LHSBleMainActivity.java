@@ -1,31 +1,26 @@
 package com.hnnk.lsh.ble;
-import androidx.core.app.ActivityCompat;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.CountDownTimer;
-import android.os.SystemClock;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.Toast;
-import com.feng.mydemo.Model.BluetoothLeServiceModel;
+
+import androidx.core.app.ActivityCompat;
+
 import com.feng.mydemo.activity.BleScanActivity;
 import com.iflytek.VoiceWakeuperHelper;
-import com.ryan.socketwebrtc.MainActivity;
 
 import net.leung.qtmouse.FloatWindowManager;
-import  net.leung.qtmouse.LoadingDialog;
 import net.leung.qtmouse.JniEvent;
 import net.leung.qtmouse.LoveApplication;
 import net.leung.qtmouse.MouseAccessibilityService;
@@ -37,7 +32,6 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.lang.reflect.Method;
 public class LHSBleMainActivity extends Activity implements View.OnClickListener {
     static LHSBleMainActivity activity;
     private static final int REQUEST_CODE_CHOOSE = 23;
@@ -169,12 +163,12 @@ public class LHSBleMainActivity extends Activity implements View.OnClickListener
         FloatWindowManager.getInstance().applyOrShowFloatWindow(this,true);
     }
     if (v.getId()==R.id.btn_0) {
-        MouseAccessibilityService.onStartClicked(3);
+        MouseAccessibilityService.setCursorDrop(0);
 
     }  if (v.getId()==R.id.btn_1) {
-            MouseAccessibilityService.onStartClicked(4);
+            MouseAccessibilityService.setCursorDrop(1);
         }  if (v.getId()==R.id.btn_2) {
-
+            MouseAccessibilityService.setCursorDrop(2);
     }  if (v.getId()==R.id.btn_3) {
             MouseAccessibilityService.setCursorSize(25);
     }  if (v.getId()==R.id.btn_4) {
