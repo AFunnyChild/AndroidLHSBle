@@ -214,7 +214,7 @@ public class LHSBleMainActivity extends Activity implements View.OnClickListener
               }
 
 
-        FloatWindowManager.getInstance().applyOrShowFloatWindow(this,true);
+      //  FloatWindowManager.getInstance().applyOrShowFloatWindow(this,true);
     }
     private boolean isSoftShowing() {
         //获取当屏幕内容的高度
