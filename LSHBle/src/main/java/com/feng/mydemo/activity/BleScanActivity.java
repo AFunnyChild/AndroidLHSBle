@@ -398,9 +398,10 @@ public class BleScanActivity extends Dialog implements View.OnClickListener, Ada
         startIntent.putExtra(BluetoothLeServiceModel.EXTRAS_DEVICE_NAME, device.getName());
         startIntent.putExtra(BluetoothLeServiceModel.EXTRAS_DEVICE_ADDRESS, device.getAddress());
         boolean isChairBlue=true;
-        if (device.getName().contains("H2000")||device.getName().contains("HNNK_")){
-            isChairBlue= false;
-        }
+//        if (device.getName().contains("H2000")||device.getName().contains("HNNK_")){
+//            isChairBlue= false;
+//        }
+        isChairBlue= false;
         startIntent.putExtra(BluetoothLeServiceModel.DEVICE_IS_CHAIR, isChairBlue);
          getContext().startService(startIntent);
          BleScanActivity.this.dismiss();
@@ -467,8 +468,8 @@ public class BleScanActivity extends Dialog implements View.OnClickListener, Ada
             BluetoothDevice device = mLeDevices.get(i);
             final String deviceName = device.getName();
             if (deviceName != null && deviceName.length() > 0){
-                String fitterName=deviceName.replace("H2000","脑机生命环").replace("HNNK_","脑机生命环");
-                viewHolder.deviceName.setText(fitterName);
+               // String fitterName=deviceName.replace("H2000","脑机生命环").replace("HNNK_","脑机生命环");
+                viewHolder.deviceName.setText(deviceName);
             }
             else{
                 viewHolder.deviceName.setText(R.string.unknown_device);
@@ -493,11 +494,12 @@ public class BleScanActivity extends Dialog implements View.OnClickListener, Ada
                      String deviceName = device.getName();
                     if (deviceName != null && deviceName.length() > 0){
                      //   String fitterName=deviceName.replace("H2000","脑机生命环").replace("HNNK_","脑机生命环");
-                          if (deviceName.contains("H2000")||deviceName.contains("HNNK_")||deviceName.contains("串口")){
-                              mLeDeviceListAdapter.addDevice(device);
-                              mLeDeviceListAdapter.notifyDataSetChanged();
-                          }
-
+//                          if (deviceName.contains("H2000")||deviceName.contains("HNNK_")||deviceName.contains("串口")){
+//                              mLeDeviceListAdapter.addDevice(device);
+//                              mLeDeviceListAdapter.notifyDataSetChanged();
+//                          }
+                        mLeDeviceListAdapter.addDevice(device);
+                        mLeDeviceListAdapter.notifyDataSetChanged();
                     }
 
                 }
