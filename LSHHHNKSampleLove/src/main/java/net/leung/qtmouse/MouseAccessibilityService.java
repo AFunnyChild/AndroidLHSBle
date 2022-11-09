@@ -2,35 +2,29 @@ package net.leung.qtmouse;
 
 import android.accessibilityservice.GestureDescription;
 import android.annotation.TargetApi;
-import android.content.Intent;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Path;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.os.Build;
+import android.os.Handler;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.WindowManager.LayoutParams;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
 
+import com.android.sidebar.views.SideBarContent;
+import com.feng.mydemo.activity.BleScanActivity;
+
 import net.leung.qtmouse.tools.Screen;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
-import android.os.Bundle;
-import android.os.Handler;
-
-import com.android.sidebar.views.SideBarContent;
-import com.feng.mydemo.activity.BleScanActivity;
-
-
-import android.content.Context;
-import android.content.ClipData;
-import android.content.ClipboardManager;
-import android.widget.Toast;
 
 import static android.view.accessibility.AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED;
 
@@ -635,7 +629,6 @@ public static void onStartClicked(int showMenu) {
                 serviceRunning = FloatWindowManager.getInstance().applyOrShowFloatWindow(LoveApplication.getInstance().getMainActivity(), showMenu == 1 ? true : false);
             }
             if (showMenu>=2){
-
                 FloatWindowManager.getInstance().setSideBarVisible(LoveApplication.getInstance().getMainActivity(), showMenu == 3 ? true : false);
             }
 
@@ -699,7 +692,21 @@ public static void setCursorPosition(int x, int y) {
 
 public static void setCursorDrop(int  isDrop) {
     if (CursorView.getInstance() != null)
-        CursorView.getInstance().setCursorDrop((isDrop==1)?true:false);
+        CursorView.getInstance().setCursorDrop(isDrop);
+ //EventBus.getDefault().post(new MouseEvent(0));
+}
+public static void setCursorSize(int  size) {
+    if (CursorView.getInstance() != null){
+        Handler handler = new Handler( CursorView.getInstance().getContext().getMainLooper());
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                CursorView.getInstance().setCursorSize(size);
+            }
+        });
+
+    }
+
  //EventBus.getDefault().post(new MouseEvent(0));
 }
 

@@ -3,21 +3,16 @@ package net.leung.qtmouse;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Handler;
-import android.view.View;
-import android.view.WindowManager;
 import android.os.Message;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ImageView;
-
-import net.leung.qtmouse.tools.Screen;
-
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import androidx.annotation.NonNull;
 import androidx.core.math.MathUtils;
 
-import static android.view.WindowManager.LayoutParams.TYPE_SYSTEM_ERROR;
+import net.leung.qtmouse.tools.Screen;
 
 public class CursorView extends BaseFloatView {
 
@@ -55,7 +50,7 @@ public class CursorView extends BaseFloatView {
      * 每帧逝去的时间（单位：毫秒）
      */
     private final int frameTime = 50;
-     boolean  mIsDrop=true;
+     int  mIsDrop=0;
     ImageView mIvCursor=null;
     public CursorView(@NonNull Context context) {
         super(context);
@@ -68,19 +63,47 @@ public class CursorView extends BaseFloatView {
                 | WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS;//光标可以移动到屏幕边缘
         layoutParams.x = 250;
         layoutParams.y = 250;
-        mIsDrop=true;
+        mIsDrop=0;
     }
-   public   void  setCursorDrop(boolean  isDrop){
-        if(mIsDrop!=isDrop){
-            mIsDrop=isDrop;
-            if (mIsDrop){
+   public   void  setCursorDrop(int  cursorDrop){
+        if(mIsDrop!=cursorDrop){
+            mIsDrop=cursorDrop;
+            if (mIsDrop==1){
                 mIvCursor.setImageResource(R.mipmap.mouse_pointer_drop);
-            }else{
+            }
+            if(mIsDrop==0){
                 mIvCursor.setImageResource(R.mipmap.mouse_pointer);
+            }
+            if(mIsDrop==2){
+                mIvCursor.setImageResource(R.mipmap.mouse_pointer_green);
             }
         }
 
    }
+   public   void  setCursorSize(int  size){
+      if (mIvCursor!=null){
+          ViewGroup.LayoutParams layoutParams = mIvCursor.getLayoutParams();
+          int dp2px = dp2px(getContext(), size);
+          layoutParams.width =dp2px;
+          layoutParams.height = dp2px;
+          mIvCursor.setMaxHeight(dp2px);
+          mIvCursor.setMaxWidth(dp2px);
+          mIvCursor.setMinimumWidth(dp2px);
+          mIvCursor.setMinimumHeight(dp2px);
+          mIvCursor.setLayoutParams(layoutParams);
+          System.out.println("mIvCursor size="+ layoutParams.height+"-"+layoutParams.width);
+      }
+
+   }
+    /**
+     * 根据手机的分辨率从 dp 的单位 转成为 px(像素)
+     */
+    public static int dip2px(Context context, float dpValue) {
+        final float scale = context.getResources().getDisplayMetrics().density;
+        return (int) (dpValue * scale + 0.5f);
+    }
+
+
     @Override
     public void setIsShowing(boolean isShowing) {
         super.setIsShowing(isShowing);

@@ -1,33 +1,30 @@
 package com.hnnk.lsh.ble;
-import androidx.core.app.ActivityCompat;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.CountDownTimer;
-import android.os.SystemClock;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.Toast;
-import com.feng.mydemo.Model.BluetoothLeServiceModel;
+
+import androidx.core.app.ActivityCompat;
+
 import com.feng.mydemo.activity.BleScanActivity;
 import com.iflytek.VoiceWakeuperHelper;
-import com.ryan.socketwebrtc.MainActivity;
 
 import net.leung.qtmouse.FloatWindowManager;
-import  net.leung.qtmouse.LoadingDialog;
 import net.leung.qtmouse.JniEvent;
 import net.leung.qtmouse.LoveApplication;
+import net.leung.qtmouse.MouseAccessibilityService;
+
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -35,7 +32,6 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.lang.reflect.Method;
 public class LHSBleMainActivity extends Activity implements View.OnClickListener {
     static LHSBleMainActivity activity;
     private static final int REQUEST_CODE_CHOOSE = 23;
@@ -65,7 +61,7 @@ public class LHSBleMainActivity extends Activity implements View.OnClickListener
         //设置顶部,左边布局
         params.gravity= Gravity.TOP|Gravity.LEFT;
         requestPermissions();
-       initWake();
+        initWake();
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -81,10 +77,10 @@ public class LHSBleMainActivity extends Activity implements View.OnClickListener
                         @Override
                         public void run() {
                             //UI操作
-                             if (isSoftShowing()==false){
+                            if (isSoftShowing()==false){
 
-                                 mVoiceWakeuperHelper.startListening();
-                             }
+                                mVoiceWakeuperHelper.startListening();
+                            }
                             //
                         }
                     });
@@ -163,68 +159,45 @@ public class LHSBleMainActivity extends Activity implements View.OnClickListener
     @SuppressLint("CheckResult")
     @Override
     public void onClick(final View v) {
-    if (v.getId()==R.id.btn_start) {
-     //   FloatWindowManager.getInstance().applyOrShowFloatWindow(this,true);
-        BleScanActivity scanActivity=new BleScanActivity(this);
-        scanActivity.showBleWindow();
-    }
-    if (v.getId()==R.id.btn_0) {
-        byte[] bf=new byte[5];
-        bf[0]=0x02;
-        bf[1]=0x02;
-        bf[2]=0x02;
-        bf[3]=0x00;
-        bf[4]=0x00;
-        BluetoothLeServiceModel.writeTestArray(bf,5);
+        if (v.getId()==R.id.btn_start) {
+            FloatWindowManager.getInstance().applyOrShowFloatWindow(this,true);
+        }
+        if (v.getId()==R.id.btn_0) {
+            MouseAccessibilityService.setCursorDrop(0);
 
-    }  if (v.getId()==R.id.btn_1) {
-            byte[] bf=new byte[5];
-            bf[0]=0x02;
-            bf[1]=0x03;
-            bf[2]=0x05;
-            bf[3]=0x00;
-            bf[4]=0x00;
-            BluetoothLeServiceModel.writeTestArray(bf,5);
-    }  if (v.getId()==R.id.btn_2) {
-            byte[] bf=new byte[5];//02 02 01 00 00
-            bf[0]=0x02;
-            bf[1]=0x02;
-            bf[2]=0x01;
-            bf[3]=0x00;
-            bf[4]=0x00;
-            BluetoothLeServiceModel.writeTestArray(bf,5);
+        }  if (v.getId()==R.id.btn_1) {
+            MouseAccessibilityService.setCursorDrop(1);
+        }  if (v.getId()==R.id.btn_2) {
+            MouseAccessibilityService.setCursorDrop(2);
+        }  if (v.getId()==R.id.btn_3) {
+            MouseAccessibilityService.setCursorSize(25);
+        }  if (v.getId()==R.id.btn_4) {
+            MouseAccessibilityService.setCursorSize(40);
+        }
 
-    }  if (v.getId()==R.id.btn_3) {
-        Log.e("BleScanActivity", "onClick: " + 3);
-        BluetoothLeServiceModel.offsetDirection(3);
-    }  if (v.getId()==R.id.btn_4) {
-        Log.e("BleScanActivity", "onClick: " + 4);
-        BluetoothLeServiceModel.offsetDirection(4);
-    }
-
-    if(v.getId()==R.id.btn_state){
-       // FloatWindowManager.getInstance().applyOrShowFloatWindow(this,true);
-        BleScanActivity  bleScanActivity=new BleScanActivity(this);
-        bleScanActivity.showBleWindow();
-    }
+        if(v.getId()==R.id.btn_state){
+            // FloatWindowManager.getInstance().applyOrShowFloatWindow(this,true);
+            BleScanActivity  bleScanActivity=new BleScanActivity(this);
+            bleScanActivity.showBleWindow();
+        }
     }
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMouseMove(JniEvent event) {
         switch (event.eventType) {
             case JniEvent.ON_VOICE_PASTE:
                 break;
-                case JniEvent.ON_WINDOW_CHANGE:
-                 //  Toast.makeText(activity, "sada", Toast.LENGTH_SHORT).show();
-                    //Log.e("ss", "onMouseMove: "+isSoftShowing() );
+            case JniEvent.ON_WINDOW_CHANGE:
+                //  Toast.makeText(activity, "sada", Toast.LENGTH_SHORT).show();
+                //Log.e("ss", "onMouseMove: "+isSoftShowing() );
                 break;
-                case JniEvent.SOFTINPUT_SHOW:
-                    mVoiceWakeuperHelper.stopListening();
+            case JniEvent.SOFTINPUT_SHOW:
+                mVoiceWakeuperHelper.stopListening();
 
-                    Log.d( "voicewake", "SOFTINPUT_SHOW: startListening start" );
+                Log.d( "voicewake", "SOFTINPUT_SHOW: startListening start" );
                 break;
-                case JniEvent.SOFTINPUT_CAN_CLOSE:
-                    mVoiceWakeuperHelper.startListening();
-                    Log.d( "voicewake", "SOFTINPUT_CAN_CLOSE: startListening stop" );
+            case JniEvent.SOFTINPUT_CAN_CLOSE:
+                mVoiceWakeuperHelper.startListening();
+                Log.d( "voicewake", "SOFTINPUT_CAN_CLOSE: startListening stop" );
                 break;
             default:
                 break;
@@ -233,15 +206,15 @@ public class LHSBleMainActivity extends Activity implements View.OnClickListener
     @Override
     public void onResume() {
         super.onResume();
-//              if ( FloatWindowManager.getInstance().checkAndApplyPermission(this)==false){
-//                  execRootCmd("adb  shell");
-//                  execRootCmd("settings put secure enabled_accessibility_services net.leung.qtmouse/net.leung.qtmouse.MouseAccessibilityService");
-//                  execRootCmd("settings put secure accessibility_enabled 1");
-//
-//              }
-//
-//
-//        FloatWindowManager.getInstance().applyOrShowFloatWindow(this,true);
+        if ( FloatWindowManager.getInstance().checkAndApplyPermission(this)==false){
+            execRootCmd("adb  shell");
+            execRootCmd("settings put secure enabled_accessibility_services net.leung.qtmouse/net.leung.qtmouse.MouseAccessibilityService");
+            execRootCmd("settings put secure accessibility_enabled 1");
+
+        }
+
+
+        //  FloatWindowManager.getInstance().applyOrShowFloatWindow(this,true);
     }
     private boolean isSoftShowing() {
         //获取当屏幕内容的高度
@@ -252,7 +225,7 @@ public class LHSBleMainActivity extends Activity implements View.OnClickListener
         this.getWindow().getDecorView().getWindowVisibleDisplayFrame(rect);
         //考虑到虚拟导航栏的情况（虚拟导航栏情况下：screenHeight = rect.bottom + 虚拟导航栏高度）
         //选取screenHeight*2/3进行判断
-       // Log.e("test", "isSoftShowing: "+(screenHeight*2/3 +"--"+rect.bottom)+(screenHeight*2/3 >rect.bottom) );
+        // Log.e("test", "isSoftShowing: "+(screenHeight*2/3 +"--"+rect.bottom)+(screenHeight*2/3 >rect.bottom) );
         return screenHeight*2/3 > rect.bottom;
 
     }
