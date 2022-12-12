@@ -77,6 +77,9 @@ public class CursorView extends BaseFloatView {
             if(mIsDrop==2){
                 mIvCursor.setImageResource(R.mipmap.mouse_pointer_green);
             }
+            if(mIsDrop==3){
+                mIvCursor.setImageResource(R.mipmap.mouse_pointer_yellow);
+            }
         }
 
    }
