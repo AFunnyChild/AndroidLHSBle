@@ -494,10 +494,10 @@ public class BleScanActivity extends Dialog implements View.OnClickListener, Ada
                     if (deviceName != null && deviceName.length() > 0){
                      //   String fitterName=deviceName.replace("H2000","脑机生命环").replace("HNNK_","脑机生命环");
                           if (deviceName.contains("TD03")||deviceName.contains("H2000")||deviceName.contains("HNNK_")||deviceName.contains("串口")){
-                              mLeDeviceListAdapter.addDevice(device);
-                              mLeDeviceListAdapter.notifyDataSetChanged();
-                          }
 
+                          }
+                        mLeDeviceListAdapter.addDevice(device);
+                        mLeDeviceListAdapter.notifyDataSetChanged();
                     }
 
                 }
