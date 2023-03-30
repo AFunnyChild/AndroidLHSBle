@@ -27,8 +27,10 @@ import android.widget.Toast;
 
 import com.feng.mydemo.R;
 import com.feng.mydemo.bean.BleConstant;
+import com.feng.mydemo.bean.JniMessage;
 import com.feng.mydemo.bean.SampleGattAttributes;
 import com.feng.mydemo.presenter.BleReceiver;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -78,6 +80,8 @@ public class BluetoothLeServiceModel extends Service {
 
                broadcastUpdate(intentAction);
                 String address = gatt.getDevice().getAddress();
+                String jni_msg = new Gson().toJson(new JniMessage("ble","BluetoothState",gatt.getDevice().getName(),"1"));
+               postMessage(jni_msg);
                 if (address.contains(mHeadAddress)){
 //                    if (mHeadBlueConnectedIndex>0&&connMap.size()>=(mHeadBlueConnectedIndex+1)){
 //                        connMap.get(mHeadBlueConnectedIndex).close();
@@ -104,6 +108,8 @@ public class BluetoothLeServiceModel extends Service {
                 }
                 broadcastUpdate(intentAction);
                 connMap.remove(gatt.getDevice().getAddress());
+                String jni_msg = new Gson().toJson(new JniMessage("ble","BluetoothState",gatt.getDevice().getName(),"0"));
+                postMessage(jni_msg);
                 if(gatt.getDevice().getAddress().equals(mHeadAddress)){
                     mHeadAddress="##";
                     mWriteCharacteristic=null;
@@ -766,7 +772,7 @@ public class BluetoothLeServiceModel extends Service {
 
     public static native   void  receviedData(byte[] data,int len);
     public static native   void  onConnectStateChange(int state);
-
+    public static native   void  postMessage(String msg);
 
 //    public static    void  receviedData(byte[] data,int len){
 //        String datastr="";
