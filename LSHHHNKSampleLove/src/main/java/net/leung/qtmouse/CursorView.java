@@ -161,10 +161,10 @@ public class CursorView extends BaseFloatView {
 //    }
 
     public void updatePosition() {
-        final int screenWidth = Screen.getWidth() - getWidth() ;
-        final int screenHeight = Screen.getHeight() - getHeight() ;
-        layoutParams.x = MathUtils.clamp(layoutParams.x, 0, screenWidth);
-        layoutParams.y = MathUtils.clamp(layoutParams.y, 0, screenHeight);
+        //final int screenWidth = Screen.getWidth() - getWidth() ;
+       // final int screenHeight = Screen.getHeight() - getHeight() ;
+       // layoutParams.x = MathUtils.clamp(layoutParams.x, 0, screenWidth);
+        //layoutParams.y = MathUtils.clamp(layoutParams.y, 0, screenHeight);
 
         try {
                getWindowManager().updateViewLayout(this, layoutParams);
