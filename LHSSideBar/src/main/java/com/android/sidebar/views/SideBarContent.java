@@ -141,9 +141,11 @@ public class SideBarContent implements View.OnClickListener {
              mContentView.findViewById(R.id.tv_down).setVisibility(View.INVISIBLE);
              mContentView.findViewById(R.id.tv_volume).setVisibility(View.INVISIBLE);
              mContentView.findViewById(R.id.tv_right).setVisibility(View.INVISIBLE);
-              tvLock.setTextColor(ContextCompat.getColor(mContext,R.color.color_lock_red));
+
+              tvLock.setTextColor(ContextCompat.getColor(mContext,R.color.bg_button_touch));
                   drawTop=  mContext.getResources().getDrawable(R.drawable.ic_lock_open_red);
               }else{
+
                   mContentView.findViewById(R.id.tv_left).setVisibility(View.VISIBLE);
                   mContentView.findViewById(R.id.tv_back).setVisibility(View.VISIBLE);
                   mContentView.findViewById(R.id.tv_home).setVisibility(View.VISIBLE);

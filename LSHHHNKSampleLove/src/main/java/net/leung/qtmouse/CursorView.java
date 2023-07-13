@@ -212,6 +212,6 @@ public class CursorView extends BaseFloatView {
     public void  updatePosition(int x ,int y){
           layoutParams.x=x;
           layoutParams.y=y;
-        updatePosition();
+          updatePosition();
     }
 }
