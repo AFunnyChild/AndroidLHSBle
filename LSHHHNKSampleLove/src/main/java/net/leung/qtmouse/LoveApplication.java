@@ -48,7 +48,7 @@ public class LoveApplication extends Application {
         Beta.initDelay=4000;
         Beta.smallIconId = getResources().getIdentifier("ic_launcher", "id", getPackageName());
         CrashReport.UserStrategy strategy = new CrashReport.UserStrategy(getApplicationContext());
-        Bugly.init(getApplicationContext(), "5a7644633a", true,strategy);
+        Bugly.init(getApplicationContext(), "3a1ef91f68", true,strategy);
 
 
         Log.d("Application", "upgradeInfo: "+(Bugly.getAppChannel()));
