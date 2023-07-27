@@ -573,16 +573,16 @@ String  voice_text="";
 
                     CursorView cursorView = CursorView.getInstance();
                     cursorView.getLocationOnScreen(mLocation);//获取在整个屏幕内的绝对坐标
-                    simulateClick(1000,600);
-//                    if (SideBarContent.getInstance().isMouseInView(mLocation[0]+10,mLocation[1]+10)){
-//
-//                        click();
-//                    }else{
-//
-//                        if (SideBarContent.getInstance().tvLock.isChecked()==false){
-//                            click();
-//                        }
-//                    }
+                    //simulateClick(1000,600);
+                    if (SideBarContent.getInstance().isMouseInView(mLocation[0]+10,mLocation[1]+10)){
+
+                        click();
+                    }else{
+
+                        if (SideBarContent.getInstance().tvLock.isChecked()==false){
+                            click();
+                        }
+                    }
 
                 }
 
