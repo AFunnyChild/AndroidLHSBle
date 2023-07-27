@@ -268,7 +268,7 @@ public class SideBarContent implements View.OnClickListener {
     @SuppressLint({"RtlHardcoded", "InflateParams"})
     public  void createToucher(  AccessibilityService sideBarService) {
         // get window manager
-        WindowManager windowManager = (WindowManager)sideBarService.getApplicationContext().getSystemService(Context.WINDOW_SERVICE);
+        WindowManager windowManager = (WindowManager)sideBarService.getSystemService(Context.WINDOW_SERVICE);
         // right arrow
 
 
@@ -276,7 +276,7 @@ public class SideBarContent implements View.OnClickListener {
         // compatible
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            mParams.type = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
+            mParams.type = WindowManager.LayoutParams.TYPE_ACCESSIBILITY_OVERLAY ;
         } else {
             mParams.type = WindowManager.LayoutParams.TYPE_SYSTEM_ALERT ;
         }

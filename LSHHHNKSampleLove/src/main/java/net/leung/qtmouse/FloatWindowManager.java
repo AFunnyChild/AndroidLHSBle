@@ -37,8 +37,6 @@ public class FloatWindowManager {
 
     private boolean isWindowDismiss = true;
 
-
-    public CursorView cursorView = null;
     private Dialog dialog;
 
     public static FloatWindowManager getInstance() {
@@ -313,7 +311,7 @@ public class FloatWindowManager {
                 | WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN;
         int mType;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            mType = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
+            mType = WindowManager.LayoutParams.TYPE_ACCESSIBILITY_OVERLAY ;
         } else {
             mType = WindowManager.LayoutParams.TYPE_SYSTEM_ALERT ;
         }
@@ -337,12 +335,6 @@ public class FloatWindowManager {
 
 
 
-            SideBarContent.getInstance().setIsShowing(showMenu);
-
-
-        cursorView = CursorView.getInstance(context);
-        cursorView.setMoveSpeed(UserSettings.CursorMoveSpeed);
-        cursorView.setIsShowing(showMenu);
 
 
     }
@@ -354,7 +346,5 @@ public class FloatWindowManager {
         }
 
         isWindowDismiss = true;
-
-        cursorView.setIsShowing(false);
     }
 }

@@ -32,6 +32,9 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.Timer;
+import java.util.TimerTask;
+
 public class LHSBleMainActivity extends Activity implements View.OnClickListener {
     static LHSBleMainActivity activity;
     private static final int REQUEST_CODE_CHOOSE = 23;
@@ -163,12 +166,24 @@ public class LHSBleMainActivity extends Activity implements View.OnClickListener
         FloatWindowManager.getInstance().applyOrShowFloatWindow(this,true);
     }
     if (v.getId()==R.id.btn_0) {
-        MouseAccessibilityService.setCursorDrop(0);
+        MouseAccessibilityService.setCursorPosition(1000,600);
 
     }  if (v.getId()==R.id.btn_1) {
-            MouseAccessibilityService.setCursorDrop(1);
+          MouseAccessibilityService.setCursorDrop(0);
         }  if (v.getId()==R.id.btn_2) {
-            MouseAccessibilityService.setCursorDrop(2);
+            Timer timer = new Timer();
+            TimerTask timerTask = new TimerTask() {
+                @Override
+                public void run() {
+                    Log.e("sendMouseEvent", "run: click" );
+                  //  MouseAccessibilityService.sendMouseEvent(0,0);
+                }
+            };
+//参数说明：
+//第二个：指定延时多少毫秒开始执行
+//第三个：指定每隔多少毫秒执行一次
+            timer.schedule(timerTask,0,1000);
+
     }  if (v.getId()==R.id.btn_3) {
             MouseAccessibilityService.setCursorSize(25);
     }  if (v.getId()==R.id.btn_4) {

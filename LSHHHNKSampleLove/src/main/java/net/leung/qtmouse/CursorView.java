@@ -2,6 +2,7 @@ package net.leung.qtmouse;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
@@ -57,6 +58,7 @@ public class CursorView extends BaseFloatView {
 
         View view = View.inflate(context, R.layout.cursor, null);
         mIvCursor=  view.findViewById(R.id.imageView);
+       // setPermission();
         addView(view);
 
         layoutParams.flags |= WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE//光标不会遮挡操作
@@ -105,8 +107,8 @@ public class CursorView extends BaseFloatView {
 
 
     @Override
-    public void setIsShowing(boolean isShowing) {
-        super.setIsShowing(isShowing);
+    public void setIsShowing(Context context,boolean isShowing) {
+        super.setIsShowing(context,isShowing);
         if (isShowing == this.isShowing) return;
 //        if (isShowing) {
 //            EventBus.getDefault().register(this);
@@ -213,5 +215,14 @@ public class CursorView extends BaseFloatView {
           layoutParams.x=x;
           layoutParams.y=y;
           updatePosition();
+    }
+
+    public void setPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            layoutParams.type = WindowManager.LayoutParams.TYPE_ACCESSIBILITY_OVERLAY;
+            // mLayoutParams.type = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
+        } else {
+            layoutParams.type = WindowManager.LayoutParams.TYPE_PHONE;
+        }
     }
 }

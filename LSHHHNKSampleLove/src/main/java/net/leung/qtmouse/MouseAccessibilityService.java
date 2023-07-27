@@ -13,6 +13,7 @@ import android.os.Build;
 import android.os.Handler;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.View;
 import android.view.WindowManager.LayoutParams;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
@@ -133,6 +134,32 @@ public class MouseAccessibilityService extends BaseAccessibilityService {
     protected void onServiceConnected() {
         super.onServiceConnected();
 
+        CursorView.getInstance(MouseAccessibilityService.this);
+        CursorView.getInstance().setMoveSpeed(UserSettings.CursorMoveSpeed);
+        CursorView.getInstance().setIsShowing(MouseAccessibilityService.this,true);
+        SideBarContent.getInstance().createToucher(MouseAccessibilityService.this);
+        SideBarContent.getInstance().setIsShowing(true);
+        SideBarContent.getInstance().setiSideEventListener(new SideBarContent.ISideEventListener() {
+            @Override
+            public void onEvent(int eventIndex) {
+                if (eventIndex==0){
+                    performScrollBackward();
+
+                }else  if(eventIndex==1){
+                    performScrollForward();
+                }else  if(eventIndex==2){
+                    performScrollLeft();
+                }else  if(eventIndex==3){
+                    performScrollRight();
+                }
+            }
+
+            @Override
+            public void onIsClicked() {
+                EventBus.getDefault().post(new JniEvent(JniEvent.ON_WINDOW_CHANGE));
+
+            }
+        });
     }
 
     @Override
@@ -168,29 +195,6 @@ public class MouseAccessibilityService extends BaseAccessibilityService {
 
         EventBus.getDefault().register(this);
    //   FloatWindowManager.getInstance().applyOrShowFloatWindowResume(this);
-        SideBarContent.getInstance().createToucher(this);
-
-        SideBarContent.getInstance().setiSideEventListener(new SideBarContent.ISideEventListener() {
-            @Override
-            public void onEvent(int eventIndex) {
-                if (eventIndex==0){
-                   performScrollBackward();
-
-                }else  if(eventIndex==1){
-                 performScrollForward();
-                }else  if(eventIndex==2){
-                  performScrollLeft();
-                }else  if(eventIndex==3){
-                  performScrollRight();
-                }
-            }
-
-            @Override
-            public void onIsClicked() {
-                EventBus.getDefault().post(new JniEvent(JniEvent.ON_WINDOW_CHANGE));
-
-            }
-        });
 
         Log.d(TAG, "onCreate");
     }
@@ -219,7 +223,7 @@ public class MouseAccessibilityService extends BaseAccessibilityService {
         Screen.update(newConfig.orientation);
 
         //更新光标位置
-        CursorView cursorView = CursorView.getInstance(this);
+        CursorView cursorView = CursorView.getInstance();
         if (cursorView != null) cursorView.updatePosition();
     }
 
@@ -228,7 +232,7 @@ public class MouseAccessibilityService extends BaseAccessibilityService {
     }
 
     private void doActionUnderMouse(ActionHandler handler) {
-        CursorView cursorView = CursorView.getInstance(this);
+        CursorView cursorView = CursorView.getInstance();
 
         if (handler == null || cursorView == null) return;
 
@@ -569,15 +573,16 @@ String  voice_text="";
 
                     CursorView cursorView = CursorView.getInstance();
                     cursorView.getLocationOnScreen(mLocation);//获取在整个屏幕内的绝对坐标
-                    if (SideBarContent.getInstance().isMouseInView(mLocation[0]+10,mLocation[1]+10)){
-
-                        click();
-                    }else{
-
-                        if (SideBarContent.getInstance().tvLock.isChecked()==false){
-                            click();
-                        }
-                    }
+                    simulateClick(1000,600);
+//                    if (SideBarContent.getInstance().isMouseInView(mLocation[0]+10,mLocation[1]+10)){
+//
+//                        click();
+//                    }else{
+//
+//                        if (SideBarContent.getInstance().tvLock.isChecked()==false){
+//                            click();
+//                        }
+//                    }
 
                 }
 
@@ -615,6 +620,17 @@ String  voice_text="";
     }
 
 //public static native void onServiceStateChanged(boolean running);
+public void simulateClick(int x, int y) {
+    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+       // LogUtils.d(TAG, "simulateClick ", "X: " + x, "Y: " + y);
+        Path path = new Path();
+        path.moveTo(x, y);
+        path.lineTo(x, y);
+        GestureDescription.Builder builder = new GestureDescription.Builder();
+        builder.addStroke(new GestureDescription.StrokeDescription(path, 0, 100));
+        dispatchGesture(builder.build(), null, null);
+    }
+}
 
 /**
  * 响应开始按钮点击
@@ -687,6 +703,8 @@ public static void setCursorMoveSpeed(int speed) {
 public static void setCursorPosition(int x, int y) {
     if (CursorView.getInstance() != null)
         CursorView.getInstance().setPosition(x, y);
+    //CursorView.getInstance().setVisibility(View.INVISIBLE);
+   // CursorView.getInstance().setPermission();
  //EventBus.getDefault().post(new MouseEvent(0));
 }
 

@@ -19,16 +19,15 @@ class BaseFloatView extends FrameLayout {
         layoutParams = FloatWindowManager.createLayoutParams(context);
     }
 
-    public void setIsShowing(boolean isShowing) {
+    public void setIsShowing(Context context,boolean isShowing) {
         if (isShowing == this.isShowing) return;
 
         if (isShowing) {
-
-            getWindowManager().addView(this, layoutParams);
+            WindowManager windowManager = (WindowManager)context.getSystemService(Context.WINDOW_SERVICE);
+            windowManager.addView(this, layoutParams);
         } else {
-            getWindowManager().removeViewImmediate(this);
+            windowManager.removeViewImmediate(this);
         }
-
         this.isShowing = isShowing;
     }
 
