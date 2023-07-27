@@ -217,12 +217,5 @@ public class CursorView extends BaseFloatView {
           updatePosition();
     }
 
-    public void setPermission() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            layoutParams.type = WindowManager.LayoutParams.TYPE_ACCESSIBILITY_OVERLAY;
-            // mLayoutParams.type = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
-        } else {
-            layoutParams.type = WindowManager.LayoutParams.TYPE_PHONE;
-        }
-    }
+ 
 }
