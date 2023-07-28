@@ -159,7 +159,7 @@ public class MouseAccessibilityService extends BaseAccessibilityService {
         });
         CursorView.getInstance(MouseAccessibilityService.this);
         CursorView.getInstance().setMoveSpeed(UserSettings.CursorMoveSpeed);
-        CursorView.getInstance().setCursorDrop(0);
+        CursorView.getInstance().setIsShowing(MouseAccessibilityService.this,true);
         CursorView.getInstance().setCursorDrop(1);
     }
 

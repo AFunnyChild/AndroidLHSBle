@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Build;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.util.DisplayMetrics;
 import android.view.View;
@@ -23,6 +24,9 @@ public class CursorView extends BaseFloatView {
 
 
     private volatile static CursorView mCursorView= null;
+    private final View mView;
+    private final View mRlContent;
+
     public static CursorView getInstance(Context context) {
         if (mCursorView == null) {
             synchronized (CursorView.class) {
@@ -60,10 +64,11 @@ public class CursorView extends BaseFloatView {
     public CursorView(@NonNull Context context) {
         super(context);
 
-        View view = View.inflate(context, R.layout.cursor, null);
-        mIvCursor=  view.findViewById(R.id.imageView);
-       // setPermission();
-        addView(view);
+        mView = View.inflate(context, R.layout.cursor, null);
+        mIvCursor=  mView.findViewById(R.id.imageView);
+        mRlContent = mView.findViewById(R.id.rl_cursor);
+        // setPermission();
+        addView(mView);
 
         layoutParams.flags |= WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE//光标不会遮挡操作
                 | WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS;//光标可以移动到屏幕边缘
@@ -78,15 +83,28 @@ public class CursorView extends BaseFloatView {
         if(mIsDrop!=cursorDrop){
             mIsDrop=cursorDrop;
             if (mIsDrop==1){
-                mIvCursor.setImageResource(R.mipmap.mouse_pointer_drop);
-                setIsShowing(mContext,false);
-                this.setVisibility(View.INVISIBLE);
-                SideBarContent.getInstance().setIsShowing(false);
+                Handler mainHandler = new Handler(Looper.getMainLooper());
+                mainHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        mIvCursor.setImageResource(R.mipmap.mouse_pointer_drop);
+                        CursorView.this.setVisibility(View.GONE);
+                        SideBarContent.getInstance().setIsShowing(false);
+                    }
+                });
+
             }
             if(mIsDrop==0){
-                mIvCursor.setImageResource(R.mipmap.mouse_pointer);
-                setIsShowing(mContext,true);
-                SideBarContent.getInstance().setIsShowing(true);
+                Handler mainHandler = new Handler(Looper.getMainLooper());
+                mainHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        mIvCursor.setImageResource(R.mipmap.mouse_pointer);
+                        CursorView.this.setVisibility(View.VISIBLE);
+                        SideBarContent.getInstance().setIsShowing(true);
+                    }
+                });
+
             }
             if(mIsDrop==2){
                 mIvCursor.setImageResource(R.mipmap.mouse_pointer_green);
