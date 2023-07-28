@@ -166,17 +166,17 @@ public class LHSBleMainActivity extends Activity implements View.OnClickListener
         FloatWindowManager.getInstance().applyOrShowFloatWindow(this,true);
     }
     if (v.getId()==R.id.btn_0) {
-        MouseAccessibilityService.setCursorPosition(1000,600);
+        MouseAccessibilityService.setCursorDrop(0);
 
     }  if (v.getId()==R.id.btn_1) {
-          MouseAccessibilityService.setCursorDrop(0);
+          MouseAccessibilityService.setCursorDrop(1);
         }  if (v.getId()==R.id.btn_2) {
             Timer timer = new Timer();
             TimerTask timerTask = new TimerTask() {
                 @Override
                 public void run() {
                     Log.e("sendMouseEvent", "run: click" );
-                  //  MouseAccessibilityService.sendMouseEvent(0,0);
+                    MouseAccessibilityService.sendMouseEvent(0,0);
                 }
             };
 //参数说明：

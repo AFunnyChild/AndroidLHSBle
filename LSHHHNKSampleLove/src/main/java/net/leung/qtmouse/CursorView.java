@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -12,6 +13,8 @@ import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.core.math.MathUtils;
+
+import com.android.sidebar.views.SideBarContent;
 
 import net.leung.qtmouse.tools.Screen;
 
@@ -51,8 +54,9 @@ public class CursorView extends BaseFloatView {
      * 每帧逝去的时间（单位：毫秒）
      */
     private final int frameTime = 50;
-     int  mIsDrop=0;
+     int  mIsDrop=-1;
     ImageView mIvCursor=null;
+    Context  mContext=null;
     public CursorView(@NonNull Context context) {
         super(context);
 
@@ -63,21 +67,30 @@ public class CursorView extends BaseFloatView {
 
         layoutParams.flags |= WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE//光标不会遮挡操作
                 | WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS;//光标可以移动到屏幕边缘
-        layoutParams.x = 250;
-        layoutParams.y = 250;
-        mIsDrop=0;
+        DisplayMetrics metrics = context.getResources().getDisplayMetrics();
+       int width = metrics.widthPixels;
+       int height = metrics.heightPixels;
+        layoutParams.x = width/2;
+        layoutParams.y = height/2;
+        mContext=context;
     }
    public   void  setCursorDrop(int  cursorDrop){
         if(mIsDrop!=cursorDrop){
             mIsDrop=cursorDrop;
             if (mIsDrop==1){
                 mIvCursor.setImageResource(R.mipmap.mouse_pointer_drop);
+                setIsShowing(mContext,false);
+                this.setVisibility(View.INVISIBLE);
+                SideBarContent.getInstance().setIsShowing(false);
             }
             if(mIsDrop==0){
                 mIvCursor.setImageResource(R.mipmap.mouse_pointer);
+                setIsShowing(mContext,true);
+                SideBarContent.getInstance().setIsShowing(true);
             }
             if(mIsDrop==2){
                 mIvCursor.setImageResource(R.mipmap.mouse_pointer_green);
+
             }
         }
 

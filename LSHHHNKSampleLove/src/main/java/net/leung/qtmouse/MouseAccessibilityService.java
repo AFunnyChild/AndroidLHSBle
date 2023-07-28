@@ -136,7 +136,6 @@ public class MouseAccessibilityService extends BaseAccessibilityService {
 
 
         SideBarContent.getInstance().createToucher(MouseAccessibilityService.this);
-        SideBarContent.getInstance().setIsShowing(true);
         SideBarContent.getInstance().setiSideEventListener(new SideBarContent.ISideEventListener() {
             @Override
             public void onEvent(int eventIndex) {
@@ -160,8 +159,7 @@ public class MouseAccessibilityService extends BaseAccessibilityService {
         });
         CursorView.getInstance(MouseAccessibilityService.this);
         CursorView.getInstance().setMoveSpeed(UserSettings.CursorMoveSpeed);
-        CursorView.getInstance().setIsShowing(MouseAccessibilityService.this,true);
-        CursorView.getInstance().setPosition(1950,400);
+
     }
 
     @Override
