@@ -175,7 +175,7 @@ public class LHSBleMainActivity extends Activity implements View.OnClickListener
             TimerTask timerTask = new TimerTask() {
                 @Override
                 public void run() {
-                    Log.e("sendMouseEvent", "run: click" );
+                    //Log.e("sendMouseEvent", "run: click" );
                     MouseAccessibilityService.sendMouseEvent(0,0);
                 }
             };
