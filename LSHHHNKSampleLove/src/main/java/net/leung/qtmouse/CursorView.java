@@ -1,5 +1,6 @@
 package net.leung.qtmouse;
 
+import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Build;
@@ -7,9 +8,14 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.LinearInterpolator;
+import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
@@ -158,7 +164,8 @@ public class CursorView extends BaseFloatView {
         if (speed > 0)
             this.moveSpeed = speed * frameTime / 1000;
     }
-
+    int m_pre_X=-1;
+    int m_pre_y=-1;
     /**
      * 直接移动光标到指定位置
      *
@@ -170,7 +177,9 @@ public class CursorView extends BaseFloatView {
        msg.what=2;
        msg.arg1=x;
        msg.arg2=y;
+
         handler.sendMessage(msg);
+
     }
 
 //    @Subscribe(threadMode = ThreadMode.MAIN)
@@ -232,10 +241,47 @@ public class CursorView extends BaseFloatView {
                     break;
                     case 2:
                  // 直接移除，定时器停止
-                     layoutParams.x = msg.arg1;
-                     layoutParams.y = msg.arg2;
+                        int interval=Math.abs(m_pre_X-msg.arg1)+Math.abs(m_pre_y-msg.arg2);
+
+                        if (interval>10&&m_pre_X!=-1){
+                            int current_x=msg.arg1;
+                            int current_y=msg.arg2;
+                            int interval_x=current_x-m_pre_X;
+                            int interval_y=current_y-m_pre_y;
+                            Log.e("handleMessage", "handleMessage: "+interval_x+"_"+interval_y );
+                            ValueAnimator va = ValueAnimator.ofInt(0,100);
+                            va.setDuration(35);
+                            va.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                                @Override
+                                public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                                    int scale = (int) va.getAnimatedValue();
+                                   int temp_x= (int) (m_pre_X+interval_x*scale/100.0);
+                                   int temp_y= (int) (m_pre_y+interval_y*scale/100.0);
+                                    layoutParams.x = temp_x;
+                                    layoutParams.y = temp_y;
+                                    Log.e("handleMessage",scale+"-"+temp_x+"-"+temp_y+"-m_pre_X"+ m_pre_X+"-m_pre_y"+m_pre_y+"-"+current_x+"-"+current_y );
+                                    updatePosition();
+                                }
+                            });
+                            va.setInterpolator(new LinearInterpolator());
+                            va.start();
+                            this.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    layoutParams.x = msg.arg1;
+                                    layoutParams.y = msg.arg2;
 //                        AVCallFloatView.getInstance(mCursorView.getContext()).updateViewPosition(msg.arg1,msg.arg2);
-                     updatePosition();
+                                    updatePosition();
+                                }
+                            },35);
+                        }else{
+                            layoutParams.x = msg.arg1;
+                            layoutParams.y = msg.arg2;
+                            updatePosition();
+                        }
+                        m_pre_X=msg.arg1;
+                        m_pre_y=msg.arg2;
+
                  break;
                 default:
                     break;

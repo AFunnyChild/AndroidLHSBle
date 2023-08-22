@@ -149,7 +149,6 @@ public class BleScanActivity extends Dialog implements View.OnClickListener, Ada
         // 检查设备上是否支持蓝牙
         if (mBluetoothAdapter == null) {
             Toast.makeText(mContext, R.string.error_bluetooth_not_supported, Toast.LENGTH_SHORT).show();
-
             return;
         }
         if (!mBluetoothAdapter.isEnabled()) {

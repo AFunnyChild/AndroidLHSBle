@@ -1,12 +1,12 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 28
-    buildToolsVersion "28"
+    compileSdkVersion 30
+    buildToolsVersion "30"
     defaultConfig {
         applicationId "net.leung.qtmouse"
         minSdkVersion 22
-        targetSdkVersion 28
+        targetSdkVersion 30
         versionName "1.00"
         ndk {
             // 设置支持的SO库架构

@@ -2,10 +2,16 @@ package net.leung.qtmouse;
 
 import android.accessibilityservice.GestureDescription;
 import android.annotation.TargetApi;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.graphics.Path;
 import android.graphics.Point;
 import android.graphics.Rect;
@@ -18,8 +24,11 @@ import android.view.WindowManager.LayoutParams;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
 
+import androidx.core.app.NotificationCompat;
+
 import com.android.sidebar.views.SideBarContent;
 import com.feng.mydemo.activity.BleScanActivity;
+import com.ryan.socketwebrtc.MainActivity;
 
 import net.leung.qtmouse.tools.Screen;
 
@@ -129,7 +138,41 @@ public class MouseAccessibilityService extends BaseAccessibilityService {
         }
         return sourceNode;
     }
+    //创建前台通知，可写成方法体，也可单独写成一个类
+    private Notification createForegroundNotification(){
+        //前台通知的id名，任意
+        String channelId = "ForegroundService";
+        //前台通知的名称，任意
+        String channelName = "Service";
+        //发送通知的等级，此处为高，根据业务情况而定
+        int importance = NotificationManager.IMPORTANCE_HIGH;
+        //判断Android版本，不同的Android版本请求不一样，以下代码为官方写法
+        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O){
+            NotificationChannel channel = new NotificationChannel(channelId,channelName,importance);
+            channel.setLightColor(Color.BLUE);
+            channel.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
+            NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+            notificationManager.createNotificationChannel(channel);
+        }
 
+        //点击通知时可进入的Activity
+        Intent notificationIntent = new Intent(this, MainActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this,0,notificationIntent,0);
+         //.setContentIntent(pendingIntent)//点击通知进入Activity
+        //最终创建的通知，以下代码为官方写法
+        //注释部分是可扩展的参数，根据自己的功能需求添加
+        return new NotificationCompat.Builder(this,channelId)
+                .setContentTitle("脑机AI鼠标")
+                .setContentText("脑机AI鼠标的服务")
+                .setSmallIcon(R.mipmap.mouse_pointer)//通知显示的图标
+                .setTicker("脑机AI鼠标的服务")
+                .build();
+        //.setOngoing(true)
+        //.setPriority(NotificationCompat.PRIORITY_MAX)
+        //.setCategory(Notification.CATEGORY_TRANSPORT)
+        //.setLargeIcon(Icon)
+        //.setWhen(System.currentTimeMillis())
+    }
     @Override
     protected void onServiceConnected() {
         super.onServiceConnected();
@@ -196,7 +239,10 @@ public class MouseAccessibilityService extends BaseAccessibilityService {
 
         EventBus.getDefault().register(this);
    //   FloatWindowManager.getInstance().applyOrShowFloatWindowResume(this);
-
+//服务创建时创建前台通知
+        Notification notification = createForegroundNotification();
+        //启动前台服务
+        startForeground(1,notification);
         Log.d(TAG, "onCreate");
     }
 
@@ -212,7 +258,8 @@ public class MouseAccessibilityService extends BaseAccessibilityService {
         super.onDestroy();
 
         EventBus.getDefault().unregister(this);
-
+        //在服务被销毁时，关闭前台服务
+        stopForeground(true);
         Log.d(TAG, "onDestroy");
     }
 

@@ -11,6 +11,8 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.animation.AnimationSet;
+import android.view.animation.TranslateAnimation;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.Toast;
@@ -171,21 +173,11 @@ public class LHSBleMainActivity extends Activity implements View.OnClickListener
     }  if (v.getId()==R.id.btn_1) {
           MouseAccessibilityService.setCursorDrop(1);
         }  if (v.getId()==R.id.btn_2) {
-            Timer timer = new Timer();
-            TimerTask timerTask = new TimerTask() {
-                @Override
-                public void run() {
-                    //Log.e("sendMouseEvent", "run: click" );
-                    MouseAccessibilityService.sendMouseEvent(0,0);
-                }
-            };
-//参数说明：
-//第二个：指定延时多少毫秒开始执行
-//第三个：指定每隔多少毫秒执行一次
-            timer.schedule(timerTask,0,1000);
+            MouseAccessibilityService.setCursorPosition(900,600);
+
 
     }  if (v.getId()==R.id.btn_3) {
-            MouseAccessibilityService.setCursorSize(25);
+            MouseAccessibilityService.setCursorPosition(920,600);
     }  if (v.getId()==R.id.btn_4) {
             MouseAccessibilityService.setCursorSize(40);
     }
