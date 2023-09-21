@@ -240,48 +240,10 @@ public class CursorView extends BaseFloatView {
                   //  handler.removeMessages(0);
                     break;
                     case 2:
-                 // 直接移除，定时器停止
-                        int interval=Math.abs(m_pre_X-msg.arg1)+Math.abs(m_pre_y-msg.arg2);
 
-                        if (interval>10&&m_pre_X!=-1){
-                            int current_x=msg.arg1;
-                            int current_y=msg.arg2;
-                            int interval_x=current_x-m_pre_X;
-                            int interval_y=current_y-m_pre_y;
-                            Log.e("handleMessage", "handleMessage: "+interval_x+"_"+interval_y );
-                            ValueAnimator va = ValueAnimator.ofInt(0,100);
-                            va.setDuration(35);
-                            va.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                                @Override
-                                public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                                    int scale = (int) va.getAnimatedValue();
-                                   int temp_x= (int) (m_pre_X+interval_x*scale/100.0);
-                                   int temp_y= (int) (m_pre_y+interval_y*scale/100.0);
-                                    layoutParams.x = temp_x;
-                                    layoutParams.y = temp_y;
-                                    Log.e("handleMessage",scale+"-"+temp_x+"-"+temp_y+"-m_pre_X"+ m_pre_X+"-m_pre_y"+m_pre_y+"-"+current_x+"-"+current_y );
-                                    updatePosition();
-                                }
-                            });
-                            va.setInterpolator(new LinearInterpolator());
-                            va.start();
-                            this.postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    layoutParams.x = msg.arg1;
-                                    layoutParams.y = msg.arg2;
-//                        AVCallFloatView.getInstance(mCursorView.getContext()).updateViewPosition(msg.arg1,msg.arg2);
-                                    updatePosition();
-                                }
-                            },35);
-                        }else{
-                            layoutParams.x = msg.arg1;
-                            layoutParams.y = msg.arg2;
-                            updatePosition();
-                        }
-                        m_pre_X=msg.arg1;
-                        m_pre_y=msg.arg2;
-
+                        layoutParams.x = msg.arg1;
+                        layoutParams.y = msg.arg2;
+                        updatePosition();
                  break;
                 default:
                     break;
