@@ -791,9 +791,11 @@ public static void setCursorSize(int  size) {
  //EventBus.getDefault().post(new MouseEvent(0));
 }
 public  static  void setLock(Boolean  isCheck){
+    SideBarContent.getInstance().tvLock.setChecked(isCheck);
     SideBarContent.getInstance().lockClick(isCheck);
 }
 public  static  void setLongClick(Boolean  isCheck){
+    SideBarContent.getInstance().tvLongClick.setChecked(isCheck);
     SideBarContent.getInstance().longClick(isCheck);
 }
 
