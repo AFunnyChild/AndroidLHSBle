@@ -123,9 +123,13 @@ public class AVCallFloatView  {
                     EventBus.getDefault().post(new MouseEvent(4));
                 }
 
-                if (id==5){
+                if (id==5){//鼠标锁定
                     //  MainActivity.ResetMouse();
-                    EventBus.getDefault().post(new JniEvent(JniEvent.ON_RESET_MOUSE));
+                  //  EventBus.getDefault().post(new JniEvent(JniEvent.ON_RESET_MOUSE));
+                }
+                if (id==6){//鼠标解锁
+                    //  MainActivity.ResetMouse();
+                  //  EventBus.getDefault().post(new JniEvent(JniEvent.ON_RESET_MOUSE));
                 }
 
             }

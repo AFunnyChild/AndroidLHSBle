@@ -38,6 +38,7 @@ import com.android.sidebar.utils.SystemVolume;
 public class SideBarContent implements View.OnClickListener {
     private volatile static SideBarContent mSideBarContent= null;
     public AppCompatCheckedTextView tvLock;
+    public AppCompatCheckedTextView tvLongClick;
     private AppCompatTextView mTvVolume;
 
     public static SideBarContent getInstance() {
@@ -90,6 +91,8 @@ public class SideBarContent implements View.OnClickListener {
         mContentView.findViewById(R.id.tv_right).setOnClickListener(this);
         tvLock = mContentView.findViewById(R.id.tv_lock);
         tvLock.setOnClickListener(this);
+        tvLongClick = mContentView.findViewById(R.id.tv_long_click);
+        tvLongClick.setOnClickListener(this);
         LinearLayout root = mContentView.findViewById(R.id.root);
         if(left) {
             root.setPadding(15,0,0,0);
@@ -132,34 +135,13 @@ public class SideBarContent implements View.OnClickListener {
             }
         } else if (id == R.id.tv_lock) {
              tvLock.setChecked(!tvLock.isChecked());
-             Drawable drawTop= null;
-              if (tvLock.isChecked()){
-             mContentView.findViewById(R.id.tv_left).setVisibility(View.INVISIBLE);
-             mContentView.findViewById(R.id.tv_back).setVisibility(View.INVISIBLE);
-             mContentView.findViewById(R.id.tv_home).setVisibility(View.INVISIBLE);
-             mContentView.findViewById(R.id.tv_upward).setVisibility(View.INVISIBLE);
-             mContentView.findViewById(R.id.tv_down).setVisibility(View.INVISIBLE);
-             mContentView.findViewById(R.id.tv_volume).setVisibility(View.INVISIBLE);
-             mContentView.findViewById(R.id.tv_right).setVisibility(View.INVISIBLE);
+             lockClick(tvLock.isChecked());
 
-              tvLock.setTextColor(ContextCompat.getColor(mContext,R.color.bg_button_touch));
-                  drawTop=  mContext.getResources().getDrawable(R.drawable.ic_lock_open_red);
-              }else{
-
-                  mContentView.findViewById(R.id.tv_left).setVisibility(View.VISIBLE);
-                  mContentView.findViewById(R.id.tv_back).setVisibility(View.VISIBLE);
-                  mContentView.findViewById(R.id.tv_home).setVisibility(View.VISIBLE);
-                  mContentView.findViewById(R.id.tv_upward).setVisibility(View.VISIBLE);
-                  mContentView.findViewById(R.id.tv_down).setVisibility(View.VISIBLE);
-                  mContentView.findViewById(R.id.tv_volume).setVisibility(View.VISIBLE);
-                  mContentView.findViewById(R.id.tv_right).setVisibility(View.VISIBLE);
-                  tvLock.setTextColor(ContextCompat.getColor(mContext,R.color.color_main));
-                  drawTop=  mContext.getResources().getDrawable(R.drawable.ic_lock_open_);
-              }
-            drawTop.setBounds(0, 0, drawTop.getMinimumWidth(),drawTop.getMinimumHeight());
-            tvLock.setCompoundDrawables(null,drawTop,null,null);
-
+        }else if (id == R.id.tv_long_click) {
+            tvLongClick.setChecked(!tvLongClick.isChecked());
+            longClick(tvLongClick.isChecked());
         }
+
     }
      Thread  mVolumeThread;
      boolean mVolumeThreadRunning=false;
@@ -291,7 +273,7 @@ public class SideBarContent implements View.OnClickListener {
         mParams.height = ViewGroup.LayoutParams.WRAP_CONTENT;
 
 
-        mParams.gravity = Gravity.END | Gravity.CENTER_VERTICAL;
+        mParams.gravity = Gravity.BOTTOM | Gravity.CENTER_VERTICAL;
         mParams.windowAnimations = R.style.RightSeekBarAnim;
 
 
@@ -333,5 +315,51 @@ public class SideBarContent implements View.OnClickListener {
         mTvVolume.setText("音量");
         }
     };
+   public void lockClick(Boolean isCheck){
+        Drawable drawTop= null;
+        if (isCheck){
+            mContentView.findViewById(R.id.tv_left).setVisibility(View.INVISIBLE);
+            mContentView.findViewById(R.id.tv_back).setVisibility(View.INVISIBLE);
+            mContentView.findViewById(R.id.tv_home).setVisibility(View.INVISIBLE);
+            mContentView.findViewById(R.id.tv_upward).setVisibility(View.INVISIBLE);
+            mContentView.findViewById(R.id.tv_down).setVisibility(View.INVISIBLE);
+            mContentView.findViewById(R.id.tv_volume).setVisibility(View.INVISIBLE);
+            mContentView.findViewById(R.id.tv_right).setVisibility(View.INVISIBLE);
+            mContentView.findViewById(R.id.tv_long_click).setVisibility(View.INVISIBLE);
 
+            tvLock.setTextColor(ContextCompat.getColor(mContext,R.color.color_lock_red));
+            drawTop=  mContext.getResources().getDrawable(R.drawable.ic_lock_open_red);
+        }else{
+
+            mContentView.findViewById(R.id.tv_left).setVisibility(View.VISIBLE);
+            mContentView.findViewById(R.id.tv_back).setVisibility(View.VISIBLE);
+            mContentView.findViewById(R.id.tv_home).setVisibility(View.VISIBLE);
+            mContentView.findViewById(R.id.tv_upward).setVisibility(View.VISIBLE);
+            mContentView.findViewById(R.id.tv_down).setVisibility(View.VISIBLE);
+            mContentView.findViewById(R.id.tv_volume).setVisibility(View.VISIBLE);
+            mContentView.findViewById(R.id.tv_right).setVisibility(View.VISIBLE);
+            mContentView.findViewById(R.id.tv_long_click).setVisibility(View.VISIBLE);
+            tvLock.setTextColor(ContextCompat.getColor(mContext,R.color.color_main));
+            drawTop=  mContext.getResources().getDrawable(R.drawable.ic_lock_open_);
+        }
+        drawTop.setBounds(0, 0, drawTop.getMinimumWidth(),drawTop.getMinimumHeight());
+        tvLock.setCompoundDrawables(null,drawTop,null,null);
+    }
+    public void  longClick(Boolean  isCheck){
+        Drawable drawTop= null;
+        if (isCheck){
+
+
+            tvLongClick.setTextColor(ContextCompat.getColor(mContext,R.color.color_lock_red));
+            drawTop=  mContext.getResources().getDrawable(R.drawable.ic_lock_long_click_red);
+        }else{
+
+
+            tvLongClick.setTextColor(ContextCompat.getColor(mContext,R.color.color_main));
+            drawTop=  mContext.getResources().getDrawable(R.drawable.ic_long_click);
+        }
+        drawTop.setBounds(0, 0, drawTop.getMinimumWidth(),drawTop.getMinimumHeight());
+        tvLongClick.setCompoundDrawables(null,drawTop,null,null);
+
+    }
 }

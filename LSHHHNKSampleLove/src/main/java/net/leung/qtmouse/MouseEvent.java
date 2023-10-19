@@ -17,7 +17,7 @@ public class MouseEvent {
             SCROLL_RIGHT = 9,//右滑
             ZOOM_IN = 10,//放大
             ZOOM_OUT = 11,//缩小
-            LONG_CLICK = 12,//长按
+            LONG_CLICK = 13,//长按
             HOME = 12,//HOME
             LOCATION = 14,
             VOICE=15;

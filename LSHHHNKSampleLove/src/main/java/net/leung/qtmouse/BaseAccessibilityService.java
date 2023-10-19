@@ -156,11 +156,11 @@ public class BaseAccessibilityService extends AccessibilityService {
     }
 
     @TargetApi(24)
-    public class GestureMoveCallback extends GestureResultCallback {
+    public static class GestureMoveCallback extends GestureResultCallback {
 
         private final String name;
 
-        GestureMoveCallback(String name) {
+        public GestureMoveCallback(String name) {
             this.name = name;
         }
 
@@ -201,7 +201,7 @@ public class BaseAccessibilityService extends AccessibilityService {
         movePath.moveTo(start.x, start.y);
         movePath.lineTo(end.x, end.y);
         GestureDescription.Builder builder = new GestureDescription.Builder();
-        GestureDescription.StrokeDescription sd = new GestureDescription.StrokeDescription(movePath, 50, duration);
+        GestureDescription.StrokeDescription sd = new GestureDescription.StrokeDescription(movePath, 1, duration);
         GestureDescription gestureDescription = builder.addStroke(sd).build();
         Log.d(TAG, "start:" + start + " end:" + end + " time:" + duration);
         return dispatchGesture(gestureDescription, callback.start(), null);

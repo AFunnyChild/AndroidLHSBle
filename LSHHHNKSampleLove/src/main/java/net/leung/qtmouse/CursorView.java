@@ -32,12 +32,13 @@ public class CursorView extends BaseFloatView {
     private volatile static CursorView mCursorView= null;
     private final View mView;
     private final View mRlContent;
+    public static   MouseAccessibilityService mService;
 
     public static CursorView getInstance(Context context) {
         if (mCursorView == null) {
             synchronized (CursorView.class) {
                 mCursorView=new CursorView(context);
-
+                mService= (MouseAccessibilityService) context;
             }
         }
         return mCursorView;

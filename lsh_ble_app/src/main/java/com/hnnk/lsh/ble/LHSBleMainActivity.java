@@ -1,12 +1,16 @@
 package com.hnnk.lsh.ble;
 import android.Manifest;
+import android.accessibilityservice.GestureDescription;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Point;
 import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.os.Handler;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -22,6 +26,8 @@ import androidx.core.app.ActivityCompat;
 import com.feng.mydemo.activity.BleScanActivity;
 import com.iflytek.VoiceWakeuperHelper;
 
+import net.leung.qtmouse.BaseAccessibilityService;
+import net.leung.qtmouse.CursorView;
 import net.leung.qtmouse.FloatWindowManager;
 import net.leung.qtmouse.JniEvent;
 import net.leung.qtmouse.LoveApplication;
@@ -67,32 +73,32 @@ public class LHSBleMainActivity extends Activity implements View.OnClickListener
         params.gravity= Gravity.TOP|Gravity.LEFT;
         requestPermissions();
        initWake();
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                System.out.println(Thread.currentThread().getId());
-
-                while (true){
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            //UI操作
-                             if (isSoftShowing()==false){
-
-                                 mVoiceWakeuperHelper.startListening();
-                             }
-                            //
-                        }
-                    });
-
-                }
-            }
-        }).start();
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                System.out.println(Thread.currentThread().getId());
+//
+//                while (true){
+//                    try {
+//                        Thread.sleep(1000);
+//                    } catch (InterruptedException e) {
+//                        e.printStackTrace();
+//                    }
+//                    runOnUiThread(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            //UI操作
+//                             if (isSoftShowing()==false){
+//
+//                                 mVoiceWakeuperHelper.startListening();
+//                             }
+//                            //
+//                        }
+//                    });
+//
+//                }
+//            }
+//        }).start();
 
     }
 
@@ -105,6 +111,15 @@ public class LHSBleMainActivity extends Activity implements View.OnClickListener
                     @Override
                     public void run() {
                         Toast.makeText(LHSBleMainActivity.this, id+"", Toast.LENGTH_SHORT).show();
+                        if(id==1){
+                            MouseAccessibilityService.sendMouseEvent(0,0);
+                        }
+                        if(id==5){
+                            MouseAccessibilityService.setLock(true);
+                        }
+                        if(id==6){
+                            MouseAccessibilityService.setLock(false);
+                        }
                     }
                 });
                 //
@@ -173,13 +188,54 @@ public class LHSBleMainActivity extends Activity implements View.OnClickListener
     }  if (v.getId()==R.id.btn_1) {
           MouseAccessibilityService.setCursorDrop(1);
         }  if (v.getId()==R.id.btn_2) {
-            MouseAccessibilityService.setCursorPosition(900,600);
+            MouseAccessibilityService.setCursorPosition(890,600);
 
 
     }  if (v.getId()==R.id.btn_3) {
-            MouseAccessibilityService.setCursorPosition(920,600);
+            MouseAccessibilityService.sendLongClick();
     }  if (v.getId()==R.id.btn_4) {
-            MouseAccessibilityService.setCursorSize(40);
+//            Point size = new Point();
+//            getWindowManager().getDefaultDisplay().getSize(size);
+//            int  sx1      = size.x/2;
+//            int  sy1    = size.y/2;
+//            Point start=new Point(sx1,sy1);
+//            Point end=new Point(sx1+20,sy1);
+//
+//            new Handler().postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
+//
+//                    CursorView.mService.performGestureMove(start,end,10,performScrollBackwardCB);
+//
+//                }
+//            },2000);
+
+            Point size = new Point();
+            getWindowManager().getDefaultDisplay().getSize(size);
+                    new CountDownTimer(8000, 20) {
+
+                        int  bit=0;
+                        int  sx      = size.x/2;
+                        int  sy     = size.y/2;
+                public void onTick(long millisUntilFinished) {
+                    bit++;
+                    if(bit<150)return;
+                      sx+=8;
+                      sy+=4;
+//                    end.set(sx,sy);
+                    MouseAccessibilityService.setCursorPosition(sx+8,sy);
+
+
+                    Point start=new Point(sx,sy);
+                    Point end=new Point(sx+4,sy);
+
+                    //CursorView.mService.performGestureMove(start,end,10,performScrollBackwardCB);
+                }
+                public void onFinish() {
+
+                }
+            }.start();
+
     }
 
     if(v.getId()==R.id.btn_state){
@@ -188,6 +244,17 @@ public class LHSBleMainActivity extends Activity implements View.OnClickListener
         bleScanActivity.showBleWindow();
     }
     }
+    /**
+     * 滑动结果回调
+     */
+    private BaseAccessibilityService.GestureMoveCallback performScrollBackwardCB = new BaseAccessibilityService.GestureMoveCallback("performScrollBackward") {
+        @Override
+        public void onCancelled(GestureDescription gestureDescription) {
+
+
+            super.onCancelled(gestureDescription);
+        }
+    };
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMouseMove(JniEvent event) {
         switch (event.eventType) {

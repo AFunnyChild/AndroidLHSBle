@@ -184,7 +184,7 @@ public class MouseAccessibilityService extends BaseAccessibilityService {
             public void onEvent(int eventIndex) {
                 if (eventIndex==0){
                     performScrollBackward();
-
+                   // longClick();
                 }else  if(eventIndex==1){
                     performScrollForward();
                 }else  if(eventIndex==2){
@@ -618,7 +618,12 @@ String  voice_text="";
 //                        EventBus.getDefault().post(new JniEvent(JniEvent.ON_RESET_MOUSE));
 //                        break;
 //                    }
-
+                  if(SideBarContent.getInstance().tvLongClick.isChecked()){
+                      longClick();
+                      SideBarContent.getInstance().tvLongClick.setChecked(false);
+                      SideBarContent.getInstance().longClick(false);
+                      break;
+                  }
                     CursorView cursorView = CursorView.getInstance();
                     cursorView.getLocationOnScreen(mLocation);//获取在整个屏幕内的绝对坐标
                     //simulateClick(1000,600);
@@ -653,8 +658,8 @@ String  voice_text="";
             case MouseEvent.SCROLL_RIGHT:
                 performScrollRight();
                 break;
-            case MouseEvent.LOCATION://长按
-               // longClick();
+            case MouseEvent.LONG_CLICK://长按
+                longClick();
                 break;
             case MouseEvent.ZOOM_IN://放大
                 if (Build.VERSION.SDK_INT >= 24) performZoomIn();
@@ -719,7 +724,9 @@ public static void onStartBlueTooth(int isStart) {
 public static void sendMouseEvent(int action, int cancel) {
 EventBus.getDefault().post(new MouseEvent(4));
 }
-
+public static void sendLongClick() {
+        EventBus.getDefault().post(new MouseEvent(MouseEvent.LONG_CLICK));
+    }
 /**
  * 提供接口给C++模拟操作按钮点击消息
  *
@@ -749,8 +756,16 @@ public static void setCursorMoveSpeed(int speed) {
  * @param y
  */
 public static void setCursorPosition(int x, int y) {
-    if (CursorView.getInstance() != null)
+    if (CursorView.getInstance() != null){
+        if(SideBarContent.getInstance().tvLock.isChecked()){
+            int[] location = new  int[2] ;
+            SideBarContent.getInstance().tvLock.getLocationOnScreen(location);
+            int  lockHeight=location[1]+SideBarContent.getInstance().tvLock.getHeight()/3;
+            y=lockHeight;
+        }
         CursorView.getInstance().setPosition(x, y);
+    }
+
     //CursorView.getInstance().setVisibility(View.INVISIBLE);
    // CursorView.getInstance().setPermission();
  //EventBus.getDefault().post(new MouseEvent(0));
@@ -775,7 +790,12 @@ public static void setCursorSize(int  size) {
 
  //EventBus.getDefault().post(new MouseEvent(0));
 }
-
+public  static  void setLock(Boolean  isCheck){
+    SideBarContent.getInstance().lockClick(isCheck);
+}
+public  static  void setLongClick(Boolean  isCheck){
+    SideBarContent.getInstance().longClick(isCheck);
+}
 
 /**
  * 填充文本
