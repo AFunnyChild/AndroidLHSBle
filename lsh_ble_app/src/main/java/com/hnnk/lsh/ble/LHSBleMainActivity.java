@@ -13,6 +13,7 @@ import android.os.CountDownTimer;
 import android.os.Handler;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.AnimationSet;
@@ -56,6 +57,17 @@ public class LHSBleMainActivity extends Activity implements View.OnClickListener
         setContentView(R.layout.activity_main);
         findViewById(R.id.btn_start).setOnClickListener(this);
         findViewById(R.id.btn_state).setOnClickListener(this);
+        findViewById(R.id.ll_content).setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent event) {
+                int x = (int) event.getX();
+                int y = (int) event.getY();
+                MouseAccessibilityService.setCursorPosition(x,y);
+                // 在这里处理触摸点坐标
+
+                return LHSBleMainActivity.super.onTouchEvent(event);
+            }
+        });
         findViewById(R.id.btn_0).setOnClickListener(this);
         findViewById(R.id.btn_1).setOnClickListener(this);
         findViewById(R.id.btn_2).setOnClickListener(this);

@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import androidx.appcompat.widget.AppCompatCheckedTextView;
@@ -40,6 +41,8 @@ public class SideBarContent implements View.OnClickListener {
     public AppCompatCheckedTextView tvLock;
     public AppCompatCheckedTextView tvLongClick;
     private AppCompatTextView mTvVolume;
+    public View mLLHideBar;
+    public View mLLRoot;
 
     public static SideBarContent getInstance() {
         if (mSideBarContent == null) {
@@ -54,7 +57,7 @@ public class SideBarContent implements View.OnClickListener {
 
     private Context mContext;
     private boolean mLeft;
-    private LinearLayout mContentView;
+    private RelativeLayout mContentView;
     private WindowManager mWindowManager;
     private AccessibilityService mSideBarService;
     private ControlBar mControlBar;
@@ -64,7 +67,7 @@ public class SideBarContent implements View.OnClickListener {
     public static WindowManager.LayoutParams mParams;
 
 
-    public LinearLayout getView(Context context,
+    public RelativeLayout getView(Context context,
                          boolean left,
                          WindowManager windowManager,
                          WindowManager.LayoutParams params,
@@ -79,7 +82,7 @@ public class SideBarContent implements View.OnClickListener {
 
         // get layout
         LayoutInflater inflater = LayoutInflater.from(context);
-        mContentView = (LinearLayout) inflater.inflate(R.layout.layout_content, null);
+        mContentView = (RelativeLayout) inflater.inflate(R.layout.layout_content, null);
         // init click
         mContentView.findViewById(R.id.tv_left).  setOnClickListener(this);
         mContentView.findViewById(R.id.tv_back).  setOnClickListener(this);
@@ -93,11 +96,12 @@ public class SideBarContent implements View.OnClickListener {
         tvLock.setOnClickListener(this);
         tvLongClick = mContentView.findViewById(R.id.tv_long_click);
         tvLongClick.setOnClickListener(this);
-        LinearLayout root = mContentView.findViewById(R.id.root);
+        mLLRoot = mContentView.findViewById(R.id.root);
+        mLLHideBar = mContentView.findViewById(R.id.ll_hide_bar);
         if(left) {
-            root.setPadding(15,0,0,0);
+            mLLRoot.setPadding(15,0,0,0);
         }else {
-            root.setPadding(0,0,15,0);
+            mLLRoot.setPadding(0,0,15,0);
         }
         mContentView.setVisibility(View.GONE);
         mWindowManager.addView(mContentView,params);
@@ -199,6 +203,27 @@ public class SideBarContent implements View.OnClickListener {
         }
         return false;
     }
+    int[] location1 = new  int[2] ;
+    public boolean isMouseInSide(int x ,int y){
+        mContentView.getLocationOnScreen(location1);
+        if (x>location1[0]&&x-location1[0]<mContentView.getWidth()){
+            if (y>location1[1]&&y-location1[1]<mContentView.getHeight()){
+                return true;
+            }
+        }
+        return false;
+    }
+    int[] location2 = new  int[2] ;
+    public boolean isMouseInHideSide(int x ,int y){
+        mLLHideBar.getLocationOnScreen(location2);
+        //Log.e("test", "isMouseInHideSide: "+);
+        if (x>location2[0]&&x-location2[0]<mLLHideBar.getWidth()){
+            if (y>location2[1]&&y-location2[1]<mLLHideBar.getHeight()){
+                return true;
+            }
+        }
+        return false;
+    }
     private void brightnessOrVolume(int tag) {
         if(mTagTemp == tag) {
             if(null != mSeekBarView) {
@@ -246,7 +271,7 @@ public class SideBarContent implements View.OnClickListener {
         }
     }
 
-     LinearLayout mContentBarView=null;
+     RelativeLayout mContentBarView=null;
     @SuppressLint({"RtlHardcoded", "InflateParams"})
     public  void createToucher(  AccessibilityService sideBarService) {
         // get window manager
@@ -269,7 +294,9 @@ public class SideBarContent implements View.OnClickListener {
         mParams.x = 0;
         mParams.y = 0;
         // window size
-        mParams.width = ViewGroup.LayoutParams.WRAP_CONTENT;
+        final float scale = sideBarService.getResources().getDisplayMetrics().density;
+        int sideWidth= (int) (650 * scale + 0.5f);
+        mParams.width = sideWidth;
         mParams.height = ViewGroup.LayoutParams.WRAP_CONTENT;
 
 

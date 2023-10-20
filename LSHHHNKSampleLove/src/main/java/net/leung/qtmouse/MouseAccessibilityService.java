@@ -17,6 +17,7 @@ import android.graphics.Point;
 import android.graphics.Rect;
 import android.os.Build;
 import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -35,6 +36,8 @@ import net.leung.qtmouse.tools.Screen;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.Iterator;
 
 import static android.view.accessibility.AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED;
 
@@ -173,6 +176,10 @@ public class MouseAccessibilityService extends BaseAccessibilityService {
         //.setLargeIcon(Icon)
         //.setWhen(System.currentTimeMillis())
     }
+    Boolean m_is_run__side_thread=false;
+    int m_cursorInSideBit=0;
+
+    Handler handler = new Handler(Looper.getMainLooper());
     @Override
     protected void onServiceConnected() {
         super.onServiceConnected();
@@ -204,6 +211,54 @@ public class MouseAccessibilityService extends BaseAccessibilityService {
         CursorView.getInstance().setMoveSpeed(UserSettings.CursorMoveSpeed);
         CursorView.getInstance().setIsShowing(MouseAccessibilityService.this,true);
         CursorView.getInstance().setCursorDrop(1);
+        m_is_run__side_thread=true;
+        new Thread(){
+            @Override
+            public void run() {
+                super.run();
+                while (m_is_run__side_thread){
+                    try {
+                        Thread.sleep(1000);
+                        if (SideBarContent.getInstance().mLLRoot.getVisibility()==View.GONE){
+                            CursorView cursorView = CursorView.getInstance();
+                            cursorView.getLocationOnScreen(mLocation);//获取在整个屏幕内的绝对坐标
+                            if (SideBarContent.getInstance().isMouseInHideSide(mLocation[0]+cursorView.getWidth()/2,mLocation[1]+cursorView.getHeight()-3)){
+                                m_cursorInSideBit=0;
+                                handler.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        SideBarContent.getInstance().mLLRoot.setVisibility(View.VISIBLE);
+                                        SideBarContent.getInstance().mLLHideBar.setVisibility(View.GONE);
+                                    }
+                                });
+
+                            }
+
+                        }else{
+                            CursorView cursorView = CursorView.getInstance();
+                            cursorView.getLocationOnScreen(mLocation);//获取在整个屏幕内的绝对坐标
+                            if (SideBarContent.getInstance().isMouseInSide(mLocation[0]+cursorView.getWidth()-3,mLocation[1]+cursorView.getWidth()/2)==false){
+                                m_cursorInSideBit++;
+
+                            }
+                        }
+                        if(m_cursorInSideBit>=10){
+                            handler.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    SideBarContent.getInstance().mLLRoot.setVisibility(View.GONE);
+                                    SideBarContent.getInstance().mLLHideBar.setVisibility(View.VISIBLE);
+                                }
+                            });
+
+                        }
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+        }.start();
     }
 
     @Override
