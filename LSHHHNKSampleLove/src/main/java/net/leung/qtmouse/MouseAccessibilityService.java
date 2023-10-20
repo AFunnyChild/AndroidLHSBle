@@ -814,9 +814,17 @@ public static void setCursorPosition(int x, int y) {
     if (CursorView.getInstance() != null){
         if(SideBarContent.getInstance().tvLock.isChecked()){
             int[] location = new  int[2] ;
-            SideBarContent.getInstance().tvLock.getLocationOnScreen(location);
-            int  lockHeight=location[1]+SideBarContent.getInstance().tvLock.getHeight()/3;
-            y=lockHeight;
+            if(SideBarContent.getInstance().mLLRoot.getVisibility()==View.VISIBLE){
+                SideBarContent.getInstance().tvLock.getLocationOnScreen(location);
+                int  lockHeight=location[1]+SideBarContent.getInstance().tvLock.getHeight()/3;
+                y=lockHeight;
+            }else{
+                SideBarContent.getInstance().mLLHideBar.getLocationOnScreen(location);
+
+                int  lockHeight=location[1]-CursorView.getInstance().getHeight()*2/3;
+                y=lockHeight;
+            }
+
         }
         CursorView.getInstance().setPosition(x, y);
     }
