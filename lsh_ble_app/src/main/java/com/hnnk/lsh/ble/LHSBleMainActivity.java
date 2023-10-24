@@ -200,11 +200,11 @@ public class LHSBleMainActivity extends Activity implements View.OnClickListener
     }  if (v.getId()==R.id.btn_1) {
           MouseAccessibilityService.setCursorDrop(1);
         }  if (v.getId()==R.id.btn_2) {
-            MouseAccessibilityService.setCursorPosition(890,600);
+            MouseAccessibilityService.setCursorSize(40);
 
 
     }  if (v.getId()==R.id.btn_3) {
-            MouseAccessibilityService.sendLongClick();
+            MouseAccessibilityService.setCursorSize(25);
     }  if (v.getId()==R.id.btn_4) {
 //            Point size = new Point();
 //            getWindowManager().getDefaultDisplay().getSize(size);

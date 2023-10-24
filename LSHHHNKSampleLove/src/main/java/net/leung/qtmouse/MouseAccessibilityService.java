@@ -821,7 +821,7 @@ public static void setCursorPosition(int x, int y) {
             }else{
                 SideBarContent.getInstance().mLLHideBar.getLocationOnScreen(location);
 
-                int  lockHeight=location[1]-CursorView.getInstance().getHeight()*2/3;
+                int  lockHeight=Screen.getHeight()-CursorView.getInstance().getHeight()-5;
                 y=lockHeight;
             }
 
