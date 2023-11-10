@@ -869,6 +869,9 @@ public  static  void setLongClick(Boolean  isCheck){
     SideBarContent.getInstance().tvLongClick.setChecked(isCheck);
     SideBarContent.getInstance().longClick(isCheck);
 }
+public  static  boolean getSideBarVisible(){
+  return SideBarContent.getInstance().mLLRoot.getVisibility()==View.VISIBLE;
+}
 
 /**
  * 填充文本

@@ -27,6 +27,7 @@ import androidx.core.app.ActivityCompat;
 import com.feng.mydemo.activity.BleScanActivity;
 import com.iflytek.VoiceWakeuperHelper;
 
+import net.leung.qtmouse.AccessibilityTestAvtivity;
 import net.leung.qtmouse.BaseAccessibilityService;
 import net.leung.qtmouse.CursorView;
 import net.leung.qtmouse.FloatWindowManager;
@@ -200,8 +201,8 @@ public class LHSBleMainActivity extends Activity implements View.OnClickListener
     }  if (v.getId()==R.id.btn_1) {
           MouseAccessibilityService.setCursorDrop(1);
         }  if (v.getId()==R.id.btn_2) {
-            MouseAccessibilityService.setCursorSize(40);
-
+          boolean  visible=  MouseAccessibilityService.getSideBarVisible();
+            Toast.makeText(this, "visible="+visible, Toast.LENGTH_SHORT).show();
 
     }  if (v.getId()==R.id.btn_3) {
             MouseAccessibilityService.setCursorSize(25);
