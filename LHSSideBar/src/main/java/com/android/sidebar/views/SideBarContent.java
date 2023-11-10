@@ -13,6 +13,7 @@ import android.os.Build;
 
 import android.os.Handler;
 import android.os.SystemClock;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -26,6 +27,7 @@ import android.widget.Toast;
 import androidx.appcompat.widget.AppCompatCheckedTextView;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.core.content.ContextCompat;
+import androidx.percentlayout.widget.PercentRelativeLayout;
 
 import com.android.sidebar.R;
 import com.android.sidebar.utils.PermissionUtil;
@@ -105,6 +107,8 @@ public class SideBarContent implements View.OnClickListener {
         }
         mContentView.setVisibility(View.GONE);
         mWindowManager.addView(mContentView,params);
+
+
         return mContentView;
     }
 
@@ -296,6 +300,8 @@ public class SideBarContent implements View.OnClickListener {
         // window size
         final float scale = sideBarService.getResources().getDisplayMetrics().density;
         int sideWidth= (int) (650 * scale + 0.5f);
+        DisplayMetrics displayMetrics = sideBarService.getResources().getDisplayMetrics();
+        sideWidth = displayMetrics.widthPixels;
         mParams.width = sideWidth;
         mParams.height = ViewGroup.LayoutParams.WRAP_CONTENT;
 
@@ -309,6 +315,7 @@ public class SideBarContent implements View.OnClickListener {
             mSideBarContent =  SideBarContent.getInstance();
             mContentBarView = mSideBarContent.getView(sideBarService,false,windowManager, mParams,sideBarService);
         }
+
     }
 
     public void setIsShowing( boolean isShowing) {

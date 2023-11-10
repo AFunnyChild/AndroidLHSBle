@@ -25,6 +25,7 @@ import android.view.WindowManager.LayoutParams;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
 
+import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 
 import com.android.sidebar.views.SideBarContent;
@@ -213,12 +214,14 @@ public class MouseAccessibilityService extends BaseAccessibilityService {
         CursorView.getInstance().setCursorDrop(1);
         m_is_run__side_thread=true;
         new Thread(){
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void run() {
                 super.run();
                 while (m_is_run__side_thread){
                     try {
                         Thread.sleep(1000);
+
                         if (SideBarContent.getInstance().mLLRoot.getVisibility()==View.GONE){
                             CursorView cursorView = CursorView.getInstance();
                             cursorView.getLocationOnScreen(mLocation);//获取在整个屏幕内的绝对坐标
@@ -239,7 +242,6 @@ public class MouseAccessibilityService extends BaseAccessibilityService {
                             cursorView.getLocationOnScreen(mLocation);//获取在整个屏幕内的绝对坐标
                             if (SideBarContent.getInstance().isMouseInSide(mLocation[0]+cursorView.getWidth()-3,mLocation[1]+cursorView.getWidth()/2)==false){
                                 m_cursorInSideBit++;
-
                             }
                         }
                         if(m_cursorInSideBit>=10){
@@ -265,14 +267,20 @@ public class MouseAccessibilityService extends BaseAccessibilityService {
     public void onAccessibilityEvent(AccessibilityEvent event) {
         super.onAccessibilityEvent(event);
 
-   //  Log.e(TAG, "onAccessibilityEvent: "+getRootInActiveWindow().toString() );
+         //Log.e("onAccessibilityEvent11", event.toString());
         if (event.getEventType()==TYPE_WINDOW_STATE_CHANGED){
            // Log.e(TAG, "onAccessibilityEvent:TYPE_WINDOW_STATE_CHANGED "+event.toString()+event.getContentChangeTypes() );
             if(event.toString().contains("SoftInput")||event.toString().contains("input")){
-            //    Log.e(TAG, "onAccessibilityEvent: SOFTINPUT_SHOW"+event.toString()+event.getContentChangeTypes() );
                 EventBus.getDefault().post(new JniEvent(JniEvent.SOFTINPUT_SHOW));
+                m_cursorInSideBit=11;
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        SideBarContent.getInstance().mLLRoot.setVisibility(View.GONE);
+                        SideBarContent.getInstance().mLLHideBar.setVisibility(View.VISIBLE);
+                    }
+                });
             }else{
-
                 EventBus.getDefault().post(new JniEvent(JniEvent.SOFTINPUT_CAN_CLOSE));
             }
         }

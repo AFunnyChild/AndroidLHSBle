@@ -10,7 +10,7 @@
 
     <!-- SideBar Button Style -->
     <style name="ButtonStyle">
-        <item name="android:layout_width">60dp</item>
+        <item name="android:layout_width">match_parent</item>
         <item name="android:textColor">@color/color_main</item>
         <item name="android:textSize">@dimen/text_size</item>
         <item name="android:gravity">center</item>
@@ -19,17 +19,18 @@
         <item name="android:paddingTop">@dimen/text_padding_top_bottom</item>
         <item name="android:paddingBottom">@dimen/text_padding_top_bottom</item>
         <item name="android:background">@drawable/selector_button</item>
-        <item name="android:layout_height">60dp</item>
+        <item name="android:layout_height">match_parent</item>
         <item name="android:textStyle">bold</item>
     </style>
 
     <style name="LayoutStyle">
-        <item name="android:layout_weight">1</item>
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginLeft">6dp</item>
+        <item name="layout_aspectRatio">100%</item>
+        <item name="layout_widthPercent">9%</item>
+        <item name="layout_marginLeftPercent">2%</item>
+<!--        <item name="android:layout_height">wrap_content</item>-->
+        <item name="android:layout_marginLeft">0dp</item>
         <item name="android:gravity">center</item>
-        <item name="android:layout_marginRight">6dp</item>
+        <item name="android:layout_marginRight">0dp</item>
         <item name="android:layout_marginBottom">15dp</item>
     </style>
 

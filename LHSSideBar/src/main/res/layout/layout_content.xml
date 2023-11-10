@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="650dp"
+<androidx.percentlayout.widget.PercentRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-      >
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+
+    >
    <LinearLayout
         android:layout_centerHorizontal="true"
        android:id="@+id/ll_hide_bar"
@@ -10,14 +12,17 @@
        android:layout_height="10dp"
        android:background="@drawable/selector_button"
        android:orientation="horizontal" />
-    <LinearLayout
+    <androidx.percentlayout.widget.PercentRelativeLayout
 
         android:layout_centerInParent="true"
         android:id="@+id/root"
         android:visibility="gone"
         style="@style/RootLayoutStyle">
 
-        <LinearLayout style="@style/LayoutStyle">
+        <LinearLayout style="@style/LayoutStyle"
+            android:id="@+id/ll_back"
+
+            >
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_back"
@@ -26,7 +31,9 @@
                 android:text="@string/back" />
         </LinearLayout>
 
-        <LinearLayout style="@style/LayoutStyle">
+        <LinearLayout android:id="@+id/ll_home" android:layout_toRightOf="@+id/ll_back" style="@style/LayoutStyle"
+
+            >
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_home"
@@ -37,7 +44,9 @@
 
 
 
-        <LinearLayout style="@style/LayoutStyle">
+        <LinearLayout android:id="@+id/ll_upward" android:layout_toRightOf="@+id/ll_home" style="@style/LayoutStyle"
+
+            >
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_upward"
@@ -46,7 +55,9 @@
                 android:text="@string/upward" />
         </LinearLayout>
 
-        <LinearLayout style="@style/LayoutStyle">
+        <LinearLayout android:id="@+id/ll_down" android:layout_toRightOf="@+id/ll_upward" style="@style/LayoutStyle"
+
+            >
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_down"
@@ -55,7 +66,9 @@
                 android:text="@string/down" />
         </LinearLayout>
 
-        <LinearLayout style="@style/LayoutStyle">
+        <LinearLayout android:id="@+id/ll_left" android:layout_toRightOf="@+id/ll_down" style="@style/LayoutStyle"
+
+            >
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_left"
@@ -63,7 +76,9 @@
                 android:drawableTop="@drawable/ic_left"
                 android:text="@string/left" />
         </LinearLayout>
-        <LinearLayout style="@style/LayoutStyle">
+        <LinearLayout android:id="@+id/ll_right" android:layout_toRightOf="@+id/ll_left" style="@style/LayoutStyle"
+
+            >
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_right"
@@ -72,7 +87,9 @@
                 android:text="@string/right" />
         </LinearLayout>
 
-        <LinearLayout style="@style/LayoutStyle">
+        <LinearLayout android:id="@+id/ll_volume" android:layout_toRightOf="@+id/ll_right" style="@style/LayoutStyle"
+
+            >
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_volume"
@@ -81,7 +98,9 @@
                 android:text="@string/volume" />
         </LinearLayout>
 
-        <LinearLayout style="@style/LayoutStyle">
+        <LinearLayout android:id="@+id/ll_long_click" android:layout_toRightOf="@+id/ll_volume" style="@style/LayoutStyle"
+
+            >
 
             <androidx.appcompat.widget.AppCompatCheckedTextView
                 android:id="@+id/tv_long_click"
@@ -91,7 +110,10 @@
                 android:textAlignment="center"
                 android:text="@string/long_click" />
         </LinearLayout>
-        <LinearLayout style="@style/LayoutStyle">
+        <LinearLayout android:id="@+id/ll_lock" android:layout_toRightOf="@+id/ll_long_click" style="@style/LayoutStyle"
+
+
+            >
 
             <androidx.appcompat.widget.AppCompatCheckedTextView
                 android:id="@+id/tv_lock"
@@ -102,5 +124,5 @@
                 android:text="@string/lock" />
         </LinearLayout>
 
-    </LinearLayout>
-</RelativeLayout>
+    </androidx.percentlayout.widget.PercentRelativeLayout>
+</androidx.percentlayout.widget.PercentRelativeLayout>
