@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.percentlayout.widget.PercentRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+ 
     xmlns:app="http://schemas.android.com/apk/res-auto"
 
     >
@@ -12,108 +13,88 @@
        android:layout_height="10dp"
        android:background="@drawable/selector_button"
        android:orientation="horizontal" />
-    <androidx.percentlayout.widget.PercentRelativeLayout
+    <RelativeLayout
 
         android:layout_centerInParent="true"
         android:id="@+id/root"
         android:visibility="gone"
         style="@style/RootLayoutStyle">
 
-        <LinearLayout style="@style/LayoutStyle"
-            android:id="@+id/ll_back"
-
-            >
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_back"
+                android:layout_toLeftOf="@+id/tv_home"
                 style="@style/ButtonStyle"
                 android:drawableTop="@drawable/ic_back_"
                 android:text="@string/back" />
-        </LinearLayout>
 
-        <LinearLayout android:id="@+id/ll_home" android:layout_toRightOf="@+id/ll_back" style="@style/LayoutStyle"
 
-            >
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_home"
+                android:layout_toLeftOf="@+id/tv_upward"
                 style="@style/ButtonStyle"
                 android:drawableTop="@drawable/ic_home_"
                 android:text="@string/home" />
-        </LinearLayout>
 
 
 
-        <LinearLayout android:id="@+id/ll_upward" android:layout_toRightOf="@+id/ll_home" style="@style/LayoutStyle"
 
-            >
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_upward"
+                android:layout_toLeftOf="@+id/tv_down"
                 style="@style/ButtonStyle"
                 android:drawableTop="@drawable/ic_upward"
                 android:text="@string/upward" />
-        </LinearLayout>
 
-        <LinearLayout android:id="@+id/ll_down" android:layout_toRightOf="@+id/ll_upward" style="@style/LayoutStyle"
 
-            >
+
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_down"
+                android:layout_toLeftOf="@+id/tv_left"
                 style="@style/ButtonStyle"
                 android:drawableTop="@drawable/ic_down"
                 android:text="@string/down" />
-        </LinearLayout>
 
-        <LinearLayout android:id="@+id/ll_left" android:layout_toRightOf="@+id/ll_down" style="@style/LayoutStyle"
-
-            >
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_left"
+                android:layout_toLeftOf="@+id/tv_right"
                 style="@style/ButtonStyle"
                 android:drawableTop="@drawable/ic_left"
                 android:text="@string/left" />
-        </LinearLayout>
-        <LinearLayout android:id="@+id/ll_right" android:layout_toRightOf="@+id/ll_left" style="@style/LayoutStyle"
 
-            >
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_right"
+                android:layout_toLeftOf="@+id/tv_volume"
                 style="@style/ButtonStyle"
                 android:drawableTop="@drawable/ic_right"
                 android:text="@string/right" />
-        </LinearLayout>
 
-        <LinearLayout android:id="@+id/ll_volume" android:layout_toRightOf="@+id/ll_right" style="@style/LayoutStyle"
 
-            >
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_volume"
+                android:layout_toLeftOf="@+id/tv_long_click"
                 style="@style/ButtonStyle"
                 android:drawableTop="@drawable/ic_volume_"
                 android:text="@string/volume" />
-        </LinearLayout>
 
-        <LinearLayout android:id="@+id/ll_long_click" android:layout_toRightOf="@+id/ll_volume" style="@style/LayoutStyle"
 
-            >
+
 
             <androidx.appcompat.widget.AppCompatCheckedTextView
                 android:id="@+id/tv_long_click"
+                android:layout_toLeftOf="@+id/tv_lock"
                 android:checked="false"
                 style="@style/ButtonStyle"
                 android:drawableTop="@drawable/ic_long_click"
                 android:textAlignment="center"
                 android:text="@string/long_click" />
-        </LinearLayout>
-        <LinearLayout android:id="@+id/ll_lock" android:layout_toRightOf="@+id/ll_long_click" style="@style/LayoutStyle"
 
-
-            >
 
             <androidx.appcompat.widget.AppCompatCheckedTextView
                 android:id="@+id/tv_lock"
@@ -121,8 +102,9 @@
                 style="@style/ButtonStyle"
                 android:drawableTop="@drawable/ic_lock_open_"
                  android:textAlignment="center"
+                android:layout_alignParentRight="true"
                 android:text="@string/lock" />
-        </LinearLayout>
 
-    </androidx.percentlayout.widget.PercentRelativeLayout>
-</androidx.percentlayout.widget.PercentRelativeLayout>
+
+    </RelativeLayout>
+</RelativeLayout>

@@ -45,6 +45,13 @@ public class SideBarContent implements View.OnClickListener {
     private AppCompatTextView mTvVolume;
     public View mLLHideBar;
     public View mLLRoot;
+    private int mSreenWidth;
+    private View mTvLeft;
+    private View mTvBack;
+    private View mTvHome;
+    private View mTvUpword;
+    private View mTvDown;
+    private View mTvRight;
 
     public static SideBarContent getInstance() {
         if (mSideBarContent == null) {
@@ -86,20 +93,40 @@ public class SideBarContent implements View.OnClickListener {
         LayoutInflater inflater = LayoutInflater.from(context);
         mContentView = (RelativeLayout) inflater.inflate(R.layout.layout_content, null);
         // init click
-        mContentView.findViewById(R.id.tv_left).  setOnClickListener(this);
-        mContentView.findViewById(R.id.tv_back).  setOnClickListener(this);
-        mContentView.findViewById(R.id.tv_home).  setOnClickListener(this);
-        mContentView.findViewById(R.id.tv_upward).setOnClickListener(this);
-        mContentView.findViewById(R.id.tv_down).  setOnClickListener(this);
-        mTvVolume = mContentView.findViewById(R.id.tv_volume);
-        mTvVolume.setOnClickListener(this);
-        mContentView.findViewById(R.id.tv_right).setOnClickListener(this);
-        tvLock = mContentView.findViewById(R.id.tv_lock);
-        tvLock.setOnClickListener(this);
+        mTvLeft     = mContentView.findViewById(R.id.tv_left);
+        mTvBack     = mContentView.findViewById(R.id.tv_back);
+        mTvHome     = mContentView.findViewById(R.id.tv_home);
+        mTvUpword   = mContentView.findViewById(R.id.tv_upward);
+        mTvDown     = mContentView.findViewById(R.id.tv_down);
+        mTvRight    = mContentView.findViewById(R.id.tv_right);
+        mTvVolume   = mContentView.findViewById(R.id.tv_volume);
+        tvLock      = mContentView.findViewById(R.id.tv_lock);
         tvLongClick = mContentView.findViewById(R.id.tv_long_click);
+        mTvLeft  .setOnClickListener(this);
+         mTvBack  .setOnClickListener(this);
+         mTvHome  .setOnClickListener(this);
+         mTvUpword.setOnClickListener(this);
+         mTvDown  .setOnClickListener(this);
+        mTvVolume.setOnClickListener(this);
+        mTvRight.setOnClickListener(this);
+
+        tvLock.setOnClickListener(this);
+
         tvLongClick.setOnClickListener(this);
         mLLRoot = mContentView.findViewById(R.id.root);
         mLLHideBar = mContentView.findViewById(R.id.ll_hide_bar);
+        int  buttonWidth=mSreenWidth*9/100;
+        int marginLeft=mSreenWidth*2/100;
+
+        setViewSize(mTvLeft     ,buttonWidth,marginLeft);
+        setViewSize(mTvBack     ,buttonWidth,marginLeft);
+        setViewSize(mTvHome     ,buttonWidth,marginLeft);
+        setViewSize(mTvUpword   ,buttonWidth,marginLeft);
+        setViewSize(mTvDown     ,buttonWidth,marginLeft);
+        setViewSize(mTvRight    ,buttonWidth,marginLeft);
+        setViewSize(mTvVolume   ,buttonWidth,marginLeft);
+        setViewSize(tvLock      ,buttonWidth,marginLeft,marginLeft);
+        setViewSize(tvLongClick ,buttonWidth,marginLeft);
         if(left) {
             mLLRoot.setPadding(15,0,0,0);
         }else {
@@ -111,7 +138,20 @@ public class SideBarContent implements View.OnClickListener {
 
         return mContentView;
     }
-
+    void  setViewSize(View v,int  width,int margin){
+        RelativeLayout.LayoutParams  layoutParams = (RelativeLayout.LayoutParams )v.getLayoutParams();
+        layoutParams.width=width;
+        layoutParams.height=width;
+        layoutParams.setMargins(margin,0,0,0);
+       v.setLayoutParams(layoutParams);
+    }
+    void  setViewSize(View v,int  width,int margin,int marginRight){
+        RelativeLayout.LayoutParams  layoutParams = (RelativeLayout.LayoutParams )v.getLayoutParams();
+        layoutParams.width=width;
+        layoutParams.height=width;
+        layoutParams.setMargins(margin,0,marginRight,0);
+       v.setLayoutParams(layoutParams);
+    }
     @Override
     public void onClick(View v) {
         int id = v.getId();
@@ -299,10 +339,9 @@ public class SideBarContent implements View.OnClickListener {
         mParams.y = 0;
         // window size
         final float scale = sideBarService.getResources().getDisplayMetrics().density;
-        int sideWidth= (int) (650 * scale + 0.5f);
         DisplayMetrics displayMetrics = sideBarService.getResources().getDisplayMetrics();
-        sideWidth = displayMetrics.widthPixels;
-        mParams.width = sideWidth;
+        mSreenWidth = displayMetrics.widthPixels;
+        mParams.width = mSreenWidth;
         mParams.height = ViewGroup.LayoutParams.WRAP_CONTENT;
 
 
@@ -360,7 +399,10 @@ public class SideBarContent implements View.OnClickListener {
             mContentView.findViewById(R.id.tv_volume).setVisibility(View.INVISIBLE);
             mContentView.findViewById(R.id.tv_right).setVisibility(View.INVISIBLE);
             mContentView.findViewById(R.id.tv_long_click).setVisibility(View.INVISIBLE);
-
+            WindowManager.LayoutParams params = (WindowManager.LayoutParams)mContentBarView.getLayoutParams();
+            params.width=mSreenWidth*13/100;
+            mParams.gravity = Gravity.BOTTOM | Gravity.RIGHT;
+            mWindowManager.updateViewLayout(mContentView,params);
             tvLock.setTextColor(ContextCompat.getColor(mContext,R.color.color_lock_red));
             drawTop=  mContext.getResources().getDrawable(R.drawable.ic_lock_open_red);
         }else{
@@ -373,6 +415,11 @@ public class SideBarContent implements View.OnClickListener {
             mContentView.findViewById(R.id.tv_volume).setVisibility(View.VISIBLE);
             mContentView.findViewById(R.id.tv_right).setVisibility(View.VISIBLE);
             mContentView.findViewById(R.id.tv_long_click).setVisibility(View.VISIBLE);
+
+            WindowManager.LayoutParams params = (WindowManager.LayoutParams)mContentBarView.getLayoutParams();
+            params.width=mSreenWidth;
+            mParams.gravity = Gravity.BOTTOM | Gravity.CENTER_VERTICAL;
+            mWindowManager.updateViewLayout(mContentView,params);
             tvLock.setTextColor(ContextCompat.getColor(mContext,R.color.color_main));
             drawTop=  mContext.getResources().getDrawable(R.drawable.ic_lock_open_);
         }
