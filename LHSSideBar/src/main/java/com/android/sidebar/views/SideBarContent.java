@@ -116,21 +116,21 @@ public class SideBarContent implements View.OnClickListener {
         mLLRoot = mContentView.findViewById(R.id.root);
         mLLHideBar = mContentView.findViewById(R.id.ll_hide_bar);
         int  buttonWidth=mSreenWidth*9/100;
-        int marginLeft=mSreenWidth*2/100;
+        int marginLeft=mSreenWidth*19/1000;
 
-        setViewSize(mTvLeft     ,buttonWidth,marginLeft);
         setViewSize(mTvBack     ,buttonWidth,marginLeft);
+        setViewSize(mTvLeft     ,buttonWidth,marginLeft);
         setViewSize(mTvHome     ,buttonWidth,marginLeft);
         setViewSize(mTvUpword   ,buttonWidth,marginLeft);
         setViewSize(mTvDown     ,buttonWidth,marginLeft);
         setViewSize(mTvRight    ,buttonWidth,marginLeft);
         setViewSize(mTvVolume   ,buttonWidth,marginLeft);
-        setViewSize(tvLock      ,buttonWidth,marginLeft,marginLeft);
         setViewSize(tvLongClick ,buttonWidth,marginLeft);
+        setViewSize(tvLock      ,buttonWidth,marginLeft,marginLeft);
         if(left) {
-            mLLRoot.setPadding(15,0,0,0);
+            //mLLRoot.setPadding(15,0,0,0);
         }else {
-            mLLRoot.setPadding(0,0,15,0);
+            //mLLRoot.setPadding(0,0,15,0);
         }
         mContentView.setVisibility(View.GONE);
         mWindowManager.addView(mContentView,params);
