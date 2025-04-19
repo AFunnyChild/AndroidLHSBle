@@ -827,10 +827,7 @@ public static void setCursorPosition(int x, int y) {
                 int  lockHeight=location[1]+SideBarContent.getInstance().tvLock.getHeight()/3;
                 y=lockHeight;
             }else{
-                SideBarContent.getInstance().mLLHideBar.getLocationOnScreen(location);
-
-                int  lockHeight=Screen.getHeight()-CursorView.getInstance().getHeight()-5;
-                y=lockHeight;
+                y=Screen.getHeight()-CursorView.getInstance().mIvCursor.getHeight()-5;
             }
 
         }

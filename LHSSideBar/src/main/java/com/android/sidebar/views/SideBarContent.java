@@ -27,7 +27,7 @@ import android.widget.Toast;
 import androidx.appcompat.widget.AppCompatCheckedTextView;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.core.content.ContextCompat;
-import androidx.percentlayout.widget.PercentRelativeLayout;
+//import androidx.percentlayout.widget.PercentRelativeLayout;
 
 import com.android.sidebar.R;
 import com.android.sidebar.utils.PermissionUtil;
